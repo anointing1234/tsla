@@ -1,0 +1,328 @@
+{% extends "../core/base/base.html" %}
+{% load static %}
+{% block contents %}
+
+<!-- Hero Section Starts -->
+<section
+  class="hero-section text-white position-relative"
+  style="
+    height: 100vh;
+    background: url('{% static 'tesla_cars_images/tesla_car_wallper.png' %}') center/cover no-repeat;
+  "
+>
+  <!-- Optional Overlay for Darkening the Background -->
+  <div
+    class="hero-overlay position-absolute w-100 h-100"
+    style="top: 0; left: 0; background: rgba(0, 0, 0, 0.3);"
+  ></div>
+
+  <!-- Content Container -->
+  <div
+    class="container d-flex flex-column justify-content-center align-items-center h-100 position-relative"
+    style="z-index: 2;"
+  >
+    <!-- Main Heading -->
+    <h1 class="display-3 fw-bold text-center mb-1">Model S</h1>
+    <p class="text-center mb-4">Free Supercharging Included</p>
+
+    <!-- Specs Row -->
+    <div
+      class="d-flex flex-column flex-md-row justify-content-center align-items-center mb-4"
+      style="gap: 2rem;"
+    >
+      <div class="text-center">
+        <h4 class="mb-0">348 mi</h4>
+        <small>Range (EPA est.)</small>
+      </div>
+      <div class="text-center">
+        <h4 class="mb-0">1.99 s</h4>
+        <small>0-60 mph</small>
+      </div>
+      <div class="text-center">
+        <h4 class="mb-0">200 mph</h4>
+        <small>Top Speed</small>
+      </div>
+      <div class="text-center">
+        <h4 class="mb-0">1,020 hp</h4>
+        <small>Peak Power</small>
+      </div>
+    </div>
+
+    <!-- Buttons Row -->
+    <div class="d-flex flex-column flex-md-row" style="gap: 1rem;">
+      <a href="#" class="btn btn-primary btn-lg">Order Now</a>
+    </div>
+
+    <!-- Small Note -->
+    <small class="text-center mt-3">
+      Specs displayed are Model S Plaid values.
+    </small>
+  </div>
+</section>
+<!-- Hero Section Ends -->
+
+
+
+<!-- Tesla Cars Section -->
+<div class="container py-5">
+    <h2 class="text-center mb-4">Our Tesla Models</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    
+      <!-- Model S Card -->
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <!-- Car Image -->
+          <img
+            src="{% static 'tesla_cars_images/Mega-Menu-Vehicles-Model-S.png' %}"
+            class="card-img-top"
+            alt="Model S"
+            style="max-height: 200px; object-fit: contain;"
+          />
+          <div class="card-body p-3">
+            <h5 class="card-title fw-bold">Model S</h5>
+            <p class="small text-muted mb-2">Free Supercharging Included</p>
+  
+            <!-- Key Specs (Compact) -->
+            <ul class="list-unstyled mb-3" style="font-size: 0.9rem;">
+              <li><strong>Range:</strong> 348 mi (EPA est.)</li>
+              <li><strong>0-60 mph:</strong> 1.99 s</li>
+              <li><strong>Top Speed:</strong> 200 mph</li>
+              <li><strong>Peak Power:</strong> 1,020 hp</li>
+            </ul>
+  
+            <!-- Discount & Price -->
+            <p class="text-danger fw-bold mb-1">50% Off</p>
+            <p class="mb-3">
+              <strong>Price:</strong>
+              <span class="text-success fw-bold">$44,999</span>
+              <del class="ms-2 text-muted">$89,998</del>
+            </p>
+  
+            <!-- CTA Buttons -->
+            <div class="d-flex justify-content-center gap-4">
+              <a href="#" class="btn btn-primary btn-sm">Order Now</a>
+              <a href="#" class="btn btn-secondary btn-sm">Demo Drive</a>
+            </div>
+          </div>
+          <div class="card-footer text-muted small">
+            Specs are Model S Plaid values.
+          </div>
+        </div>
+      </div>
+      <!-- End Model S Card -->
+  
+      <!-- Model 3 Card -->
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <img
+            src="{% static 'tesla_cars_images/Mega-Menu-Vehicles-Model-3-Performance-LHD.png' %}"
+            class="card-img-top"
+            alt="Model 3"
+            style="max-height: 200px; object-fit: contain;"
+          />
+          <div class="card-body p-3">
+            <h5 class="card-title fw-bold">Model 3</h5>
+            <p class="small text-muted mb-2">Free Supercharging Included</p>
+  
+            <ul class="list-unstyled mb-3" style="font-size: 0.9rem;">
+              <li><strong>Range:</strong> 315 mi (EPA est.)</li>
+              <li><strong>0-60 mph:</strong> 3.1 s</li>
+              <li><strong>Top Speed:</strong> 162 mph</li>
+              <li><strong>Peak Power:</strong> 450 hp</li>
+            </ul>
+  
+            <p class="text-danger fw-bold mb-1">50% Off</p>
+            <p class="mb-3">
+              <strong>Price:</strong>
+              <span class="text-success fw-bold">$24,999</span>
+              <del class="ms-2 text-muted">$49,998</del>
+            </p>
+  
+            <div class="d-flex justify-content-center gap-4">
+              <a href="#" class="btn btn-primary btn-sm">Order Now</a>
+              <a href="#" class="btn btn-secondary btn-sm">Demo Drive</a>
+            </div>
+          </div>
+          <div class="card-footer text-muted small">
+            Specs displayed are Model 3 Performance values.
+          </div>
+        </div>
+      </div>
+      <!-- End Model 3 Card -->
+  
+      <!-- Model Y Card -->
+      <div class="col-md-4">
+        <div class="card h-100 text-center">
+          <img
+            src="{% static 'tesla_cars_images/Mega-Menu-Vehicles-Model-Y.png' %}"
+            class="card-img-top"
+            alt="Model Y"
+            style="max-height: 200px; object-fit: contain;"
+          />
+          <div class="card-body p-3">
+            <h5 class="card-title fw-bold">Model Y</h5>
+            <p class="small text-muted mb-2">Free Supercharging Included</p>
+  
+            <ul class="list-unstyled mb-3" style="font-size: 0.9rem;">
+              <li><strong>Range:</strong> 330 mi (EPA est.)</li>
+              <li><strong>0-60 mph:</strong> 3.5 s</li>
+              <li><strong>Top Speed:</strong> 155 mph</li>
+              <li><strong>Peak Power:</strong> 456 hp</li>
+            </ul>
+  
+            <p class="text-danger fw-bold mb-1">50% Off</p>
+            <p class="mb-3">
+              <strong>Price:</strong>
+              <span class="text-success fw-bold">$29,999</span>
+              <del class="ms-2 text-muted">$59,998</del>
+            </p>
+  
+            <div class="d-flex justify-content-center gap-4">
+              <a href="#" class="btn btn-primary btn-sm">Order Now</a>
+              <a href="#" class="btn btn-secondary btn-sm">Demo Drive</a>
+            </div>
+          </div>
+          <div class="card-footer text-muted small">
+            Specs displayed are Model Y Performance values.
+          </div>
+        </div>
+      </div>
+      <!-- End Model Y Card -->
+  
+      <!-- More Cards (Model X, Cybertruck, etc.) with similar structure... -->
+  
+    </div>
+
+
+    <div class="row row-cols-1 mt-5 row-cols-sm-2 row-cols-md-3 g-4">
+  
+        <!-- New Model Y Card -->
+        <div class="col-md-4">
+          <div class="card h-100 text-center">
+            <!-- Car Image -->
+            <img
+              src="{% static 'tesla_cars_images/Mega-Menu-Vehicles-Model-Y-2-v2.png' %}"
+              class="card-img-top"
+              alt="Model Y"
+              style="max-height: 200px; object-fit: contain;"
+            />
+            <div class="card-body p-3">
+              <h5 class="card-title fw-bold">New Model Y</h5>
+              <p class="small text-muted mb-2">Free Supercharging Included</p>
+      
+              <!-- Key Specs -->
+              <ul class="list-unstyled mb-3" style="font-size: 0.9rem;">
+                <li><strong>Range:</strong> 303 mi (EPA est.)</li>
+                <li><strong>0-60 mph:</strong> 3.5 s</li>
+                <li><strong>Top Speed:</strong> 155 mph</li>
+                <li><strong>Peak Power:</strong> 456 hp</li>
+              </ul>
+      
+              <!-- Discount & Price -->
+              <p class="text-danger fw-bold mb-1">Special Offer</p>
+              <p class="mb-3">
+                <strong>Price:</strong>
+                <span class="text-success fw-bold">$65,990</span>
+                <del class="ms-2 text-muted">$75,990</del>
+              </p>
+      
+              <!-- CTA Buttons -->
+              <div class="d-flex justify-content-center gap-4">
+                <a href="#" class="btn btn-primary btn-sm">Order Now</a>
+                <a href="#" class="btn btn-secondary btn-sm">Demo Drive</a>
+              </div>
+            </div>
+            <div class="card-footer text-muted small">
+              Specs are for Model Y Performance.
+            </div>
+          </div>
+        </div>
+        <!-- End New Model Y Card -->
+      
+        <!-- Model X Plaid Card -->
+        <div class="col-md-4">
+          <div class="card h-100 text-center">
+            <img
+              src="{% static 'tesla_cars_images/Mega-Menu-Vehicles-Model-X.png' %}"
+              class="card-img-top"
+              alt="Model X Plaid"
+              style="max-height: 200px; object-fit: contain;"
+            />
+            <div class="card-body p-3">
+              <h5 class="card-title fw-bold">Model X Plaid</h5>
+              <p class="small text-muted mb-2">Free Supercharging Included</p>
+      
+              <ul class="list-unstyled mb-3" style="font-size: 0.9rem;">
+                <li><strong>Range:</strong> 333 mi (EPA est.)</li>
+                <li><strong>0-60 mph:</strong> 2.5 s</li>
+                <li><strong>Top Speed:</strong> 163 mph</li>
+                <li><strong>Peak Power:</strong> 1,020 hp</li>
+              </ul>
+      
+              <p class="text-danger fw-bold mb-1">Special Offer</p>
+              <p class="mb-3">
+                <strong>Price:</strong>
+                <span class="text-success fw-bold">$119,990</span>
+                <del class="ms-2 text-muted">$129,990</del>
+              </p>
+      
+              <div class="d-flex justify-content-center gap-4">
+                <a href="#" class="btn btn-primary btn-sm">Order Now</a>
+                <a href="#" class="btn btn-secondary btn-sm">Demo Drive</a>
+              </div>
+            </div>
+            <div class="card-footer text-muted small">
+              Specs are for Model X Plaid.
+            </div>
+          </div>
+        </div>
+        <!-- End Model X Plaid Card -->
+      
+        <!-- Cybertruck Card -->
+        <div class="col-md-4">
+          <div class="card h-100 text-center">
+            <img
+              src="{% static 'tesla_cars_images/Mega-Menu-Vehicles-Cybertruck-1x.png' %}"
+              class="card-img-top"
+              alt="Cybertruck"
+              style="max-height: 200px; object-fit: contain;"
+            />
+            <div class="card-body p-3">
+              <h5 class="card-title fw-bold">Cybertruck</h5>
+              <p class="small text-muted mb-2">Future Innovation</p>
+      
+              <ul class="list-unstyled mb-3" style="font-size: 0.9rem;">
+                <li><strong>Range:</strong> 500+ mi (est.)</li>
+                <li><strong>0-60 mph:</strong> Under 3.0 s (est.)</li>
+                <li><strong>Top Speed:</strong> 130 mph (est.)</li>
+                <li><strong>Peak Power:</strong> Not disclosed</li>
+              </ul>
+      
+              <p class="text-danger fw-bold mb-1">Special Offer</p>
+              <p class="mb-3">
+                <strong>Price:</strong>
+                <span class="text-success fw-bold">$49,900</span>
+                <del class="ms-2 text-muted">$59,900</del>
+              </p>
+      
+              <div class="d-flex justify-content-center gap-4">
+                <a href="#" class="btn btn-primary btn-sm">Order Now</a>
+                <a href="#" class="btn btn-secondary btn-sm">Demo Drive</a>
+              </div>
+            </div>
+            <div class="card-footer text-muted small">
+              Specs are estimated for the upcoming Cybertruck.
+            </div>
+          </div>
+        </div>
+        <!-- End Cybertruck Card -->
+      
+      </div>
+      
+
+
+
+  </div>
+  
+
+{% endblock contents %}

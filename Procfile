@@ -1,0 +1,1 @@
+web: gunicorn Access_forex.wsgi --log-file -
