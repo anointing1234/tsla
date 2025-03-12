@@ -1,1 +1,1 @@
-web: gunicorn Access_forex.wsgi --log-file -
+web: gunicorn tesla_lagacy.wsgi --log-file -
