@@ -311,13 +311,13 @@ def update_withdrawal_account(request):
         # Ensure required fields are filled
         if not wallet_address or not currency:
             messages.error(request, "Wallet address and currency are required.")
-            return render(request, "Dashboard/pages/profile.html")  # Redirect instead of render
+            return render(request, "dashboard/pages/profile.html")  # Redirect instead of render
 
         # Ensure valid currency selection
         valid_currencies = ["BTC", "ETH", "USDT_TRX", "USDT_ETH", "LTC", "TRX", "BCH"]
         if currency not in valid_currencies:
             messages.error(request, "Invalid currency selected.")
-            return render(request, "Dashboard/pages/profile.html")
+            return render(request, "dashboard/pages/profile.html")
 
         # Update or create wallet address
         wallet, created = WalletAddress.objects.update_or_create(
@@ -332,7 +332,7 @@ def update_withdrawal_account(request):
 
         return redirect("profile")  # Redirect after updating
 
-    return render(request, "Dashboard/pages/profile.html")
+    return render(request, "dashboard/pages/profile.html")
 
 
 
@@ -353,12 +353,12 @@ def update_password(request):
         # Check if current password is correct
         if not check_password(current_password, user.password):
             messages.error(request, "Current password is incorrect!")
-            return render(request, "Dashboard/pages/profile.html")
+            return render(request, "dashboard/pages/profile.html")
 
         # Check if new password matches confirmation
         if new_password != confirm_password:
             messages.error(request, "New password and confirmation do not match!")
-            return render(request, "Dashboard/pages/profile.html")
+            return render(request, "dashboard/pages/profile.html")
 
         # Update password
         user.set_password(new_password)
@@ -368,8 +368,8 @@ def update_password(request):
         update_session_auth_hash(request, user)
 
         messages.success(request, "Password updated successfully!")
-        return render(request, "Dashboard/pages/profile.html")
-    return render(request, "Dashboard/pages/profile.html")
+        return render(request, "dashboard/pages/profile.html")
+    return render(request, "dashboard/pages/profile.html")
 
 
 
@@ -392,9 +392,9 @@ def update_profile(request):
         user.save()
 
         messages.success(request, "Profile updated successfully!")
-        return render(request, "Dashboard/pages/profile.html") # Change to your profile URL name
+        return render(request, "dashboard/pages/profile.html") # Change to your profile URL name
 
-    return render(request, "Dashboard/pages/profile.html")
+    return render(request, "dashboard/pages/profile.html")
 
 
 
@@ -409,7 +409,7 @@ def update_profile_picture(request):
         messages.success(request, "Profile picture updated successfully!")
     else:
         messages.error(request, "No file selected. Please choose a valid image.")
-    return render(request, "Dashboard/pages/profile.html")
+    return render(request, "dashboard/pages/profile.html")
 
 
 
@@ -427,23 +427,23 @@ def deposit_funds(request):
         # Validate input fields
         if not payment_method or not deposit_amount or not payment_screenshot:
             messages.error(request, "All fields are required.")
-            return render(request, "Dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
+            return render(request, "dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
 
         # Validate deposit amount
         try:
             deposit_amount = float(deposit_amount)
             if deposit_amount <= 0:
                 messages.error(request, "Deposit amount must be greater than zero.")
-                return render(request, "Dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
+                return render(request, "dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
         except ValueError:
             messages.error(request, "Invalid deposit amount format.")
-            return render(request, "Dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
+            return render(request, "dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
 
         # Fetch wallet address from PaymentGateway
         gateway = PaymentGateway.objects.filter(currency=payment_method).first()
         if not gateway:
             messages.error(request, f"No payment gateway found for {payment_method}.")
-            return render(request, "Dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
+            return render(request, "dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
 
         # Generate a unique transaction reference
         tx_ref = f"DEP-{uuid.uuid4().hex[:10].upper()}"
@@ -463,7 +463,7 @@ def deposit_funds(request):
         # ✅ Use redirect to make messages persist
         return redirect("Deposit")  # Ensure 'deposit_page' is the correct URL name for the deposit page
 
-    return render(request, "Dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
+    return render(request, "dashboard/pages/Deposit.html", {"payment_gateways": payment_gateways})
 
 
 
@@ -572,7 +572,7 @@ def withdraw_funds(request):
         return JsonResponse({"success": True, "message": "Withdrawal request submitted successfully."})
 
     # For GET requests, render the page as before
-    return render(request, "Dashboard/pages/withdraw.html", {"balance": balance})
+    return render(request, "dashboard/pages/withdraw.html", {"balance": balance})
 
 
 def send_withdrawal_code(request):

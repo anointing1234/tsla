@@ -97,42 +97,42 @@ def dash(request):
         print(f"Total Investment for {request.user}: {total_investment}")  # Debugging
     else:
         total_investment = 0.00
-    return render(request,"Dashboard/pages/index.html",{'total_investment': total_investment})             
+    return render(request,"dashboard/pages/index.html",{'total_investment': total_investment})             
 
 
 
 def profile_view(request):
-    return render(request,"Dashboard/pages/profile.html")    
+    return render(request,"dashboard/pages/profile.html")    
 
 def referals(request):
-    return render(request,'Dashboard/pages/referrals.html')   
+    return render(request,'dashboard/pages/referrals.html')   
 
 def Deposit_view(request):
     payment_gateways = PaymentGateway.objects.all()
-    return render(request,'Dashboard/pages/Deposit.html',{"payment_gateways": payment_gateways})  
+    return render(request,'dashboard/pages/Deposit.html',{"payment_gateways": payment_gateways})  
 
 def Deposit_his_view(request):
     deposits = DepositTransaction.objects.filter(user=request.user).order_by("-date") 
     context = {
         'deposits': deposits
     }
-    return render(request,'Dashboard/pages/Deposit_history.html',context)            
+    return render(request,'dashboard/pages/Deposit_history.html',context)            
 
 def purchase_plan(request):
     plans = ForexPlan.objects.all() 
-    return render(request,'Dashboard/pages/purchase_plan.html',{'plans': plans})            
+    return render(request,'dashboard/pages/purchase_plan.html',{'plans': plans})            
 
 def view_plans(request):
     purchased_plans = Users_Investment.objects.filter(user=request.user).order_by('-start_date')
-    return render(request,'Dashboard/pages/view_plan.html',{'purchased_plans': purchased_plans})            
+    return render(request,'dashboard/pages/view_plan.html',{'purchased_plans': purchased_plans})            
 
 def withdraw_view(request):
     wallet_addresses = WalletAddress.objects.filter(user=request.user)
-    return render(request,'Dashboard/pages/withdraw.html', {'wallet_addresses': wallet_addresses})
+    return render(request,'dashboard/pages/withdraw.html', {'wallet_addresses': wallet_addresses})
 
 def withdraw_history_view(request):
     withdrawals = WithdrawTransaction.objects.filter(user=request.user)
-    return render(request,'Dashboard/pages/withdraw_history.html',{'withdrawals': withdrawals})
+    return render(request,'dashboard/pages/withdraw_history.html',{'withdrawals': withdrawals})
 
    
 
