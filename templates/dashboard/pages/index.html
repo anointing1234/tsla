@@ -1,0 +1,295 @@
+{% extends '../core/base.html' %}
+{% load static %}
+{% block contents %}
+{% load humanize %}
+
+<style>
+    .carddiv{
+        height: 200px;
+        position: relative; /* Position relative to allow absolute positioning of the overlay */
+        overflow: hidden; /* Prevent overflow of the overlay */
+    }
+    
+    .carddiv::before {
+        content: ""; /* Create a pseudo-element */
+        position: absolute; /* Position it absolutely within the card */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        
+        background-size: cover;
+        background-repeat: no-repeat;
+        filter: brightness(0.5) contrast(1.2); /* Adjust brightness and contrast */
+        z-index: 1; /* Place it below the text */
+    }
+    
+    .card-body {
+        position: relative; /* Position relative to allow stacking of text above the overlay */
+        z-index: 2; /* Place it above the overlay */
+        color: white; /* Ensure text is white for better visibility */
+    }
+    .card-title {
+        font-size: 30px;
+    }
+</style>
+
+<style>
+  @media (max-width: 576px) {
+      .btn {
+          padding: 8px 12px; /* Smaller padding for small screens */
+          font-size: 14px; /* Smaller font size */
+      }
+  }
+</style>
+
+<div class="container">
+    <div style="background-color:black;" class="page-inner">
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="card carddiv bg-dark card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <h5 class="fw-bold text-light">Total Balance 
+                                        <i class="fa-solid fa-eye toggle-balance-icon"
+                                           data-target="available-balance-credit-1"
+                                           data-key="balanceHidden-savings"
+                                           style="cursor:pointer;"></i>
+                                    </h5>
+                                    <h2 class="card-title text-light mt-3 mb-3 toggle-balance" id="available-balance-credit-1"
+                                        data-hidden="true"
+                                        data-balance="${{ request.user.balance.usdt_balance|intcomma }}">${{ request.user.balance.usdt_balance|intcomma }}</h2>
+                                    <p class="rounded text-center mt-2" style="background-color:rgb(105, 101, 101); color:white; padding:5px;">
+                                        BTC: <span class="text-success" id="btc-price">Loading...</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Displaying Prices with Symbols -->
+                        <p class="text-light text-start mt-2">
+                            <span>ETH: <span id="eth-price">Loading...</span></span> &nbsp; 
+                            <span>TRX: <span id="trx-price">Loading...</span></span> &nbsp; 
+                            <span>LTC: <span id="ltc-price">Loading...</span></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-6 col-md-4">
+                <div class="card bg-dark   card-stats card-round">
+                    <div class="card-body ">
+                        <div class="row align-items-center">
+                            <div class="col  card-round py-2 col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <h5 class="fw-bold text-light">Total profits 
+                                        <i class="fa-solid fa-eye toggle-balance-icon"
+                                           data-target="available-balance-credit-2"
+                                           data-key="balanceHidden-savings"
+                                           style="cursor:pointer;"></i>
+                                    </h5>
+                                    <h2 class="card-title text-light toggle-balance" id="available-balance-credit-2"
+                                        data-hidden="true"
+                                        data-balance="{{ request.user.balance.total_profits|intcomma }}">${{ request.user.balance.total_profits|intcomma }}</h2>
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Displaying Prices with Symbols -->
+                      
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="card  bg-dark card-stats card-round">
+                    <div class="card-body ">
+                        <div class="row align-items-center">
+                            <div class="col  card-round py-2  col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <h5 class="fw-bold text-light">Total investments
+                                        <i class="fa-solid fa-eye toggle-balance-icon"
+                                           data-target="available-balance-credit-3"
+                                           data-key="balanceHidden-savings"
+                                           style="cursor:pointer;"></i>
+                                    </h5>
+                                              <h2 class="card-title text-light toggle-balance" id="available-balance-credit-3"
+                                            data-hidden="true"
+                                            data-balance=" ${{ total_investment|intcomma }}">
+                                            ${{ total_investment|intcomma }}
+                                        </h2>
+                                       
+                                                                        
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Displaying Prices with Symbols -->
+                      
+                    </div>
+                </div>
+            </div>
+    
+
+            <!-- New Button Section -->
+            <div class="col-12 mt-4 mb-5">
+              <div class="d-flex justify-content-center flex-wrap">
+                  <a href="{% url 'Deposit' %}" class="btn" style="background: linear-gradient(45deg, #6a11cb, #2575fc); color: white; border: none; margin: 5px; padding: 10px 15px; border-radius:20px;" onclick="addCrypto()">Add Crypto</a>
+                  <a href="{% url 'withdraw' %}" class="btn" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; border: none; margin: 5px; padding: 10px 15px; border-radius:20px;" onclick="withdraw()">Withdraw</a>
+                  <a href="https://www.coinbase.com" target="_blank" class="btn" style="background: linear-gradient(45deg, #00c6ff, #0072ff); color: white; border: none; margin: 5px; padding: 10px 15px; border-radius:20px;">
+                    Buy Crypto
+                  </a>
+                  
+              </div>
+          </div>
+       
+
+
+               <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+    {
+    "width": "100%",
+    "height": "610",
+    "symbol": "BITSTAMP:BTCUSD",
+    "interval": "D",
+    "timezone": "Etc/UTC",
+    "theme": "dark",
+    "style": "9",
+    "locale": "en",
+    "hide_top_toolbar": true,
+    "withdateranges": true,
+    "allow_symbol_change": true,
+    "calendar": false,
+    "hide_volume": true,
+    "support_host": "https://www.tradingview.com"
+  }
+    </script>
+  </div>
+
+<!-- TradingView Widget END -->
+
+          
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    const apiKey = 'coinrankingccb1f9fa3faa00602976ee13e42ad747132d9c6136b69225';
+    const coinsUrl = 'https://api.coinranking.com/v2/coins?limit=50&orderBy=marketCap&orderDirection=desc';
+
+    // Function to fetch live prices for BTC, ETH, TRX, and LTC
+    function fetchLivePrices() {
+        fetch(coinsUrl, {
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': apiKey
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const coins = data.data.coins;
+            const btcData = coins.find(coin => coin.name === 'Bitcoin');
+            const ethData = coins.find(coin => coin.name === 'Ethereum');
+            const trxData = coins.find(coin => coin.name === 'TRON');
+            const ltcData = coins.find(coin => coin.name === 'Litecoin');
+
+            // Update BTC price
+            if (btcData) {
+                const btcPrice = parseFloat(btcData.price);
+                document.getElementById('btc-price').innerText = `$${btcPrice.toFixed(2)}`;
+            } else {
+                document.getElementById('btc-price').innerText = 'BTC not found';
+            }
+
+            // Update ETH price
+            if (ethData) {
+                const ethPrice = parseFloat(ethData.price);
+                document.getElementById('eth-price').innerText = `$${ethPrice.toFixed(2)}`;
+            } else {
+                document.getElementById('eth-price').innerText = 'ETH not found';
+            }
+
+            // Update TRX price
+            if (trxData) {
+                const trxPrice = parseFloat(trxData.price);
+                document.getElementById('trx-price').innerText = `$${trxPrice.toFixed(2)}`;
+            } else {
+                document.getElementById('trx-price').innerText = 'TRX not found';
+            }
+
+            // Update LTC price
+            if (ltcData) {
+                const ltcPrice = parseFloat(ltcData.price);
+                document.getElementById('ltc-price').innerText = `$${ltcPrice.toFixed(2)}`;
+            } else {
+                document.getElementById('ltc-price').innerText = 'LTC not found';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching prices:', error);
+            document.getElementById('btc-price').innerText = 'Error fetching BTC price';
+            document.getElementById('eth-price').innerText = 'Error fetching ETH price';
+            document.getElementById('trx-price').innerText = 'Error fetching TRX price';
+            document.getElementById('ltc-price').innerText = 'Error fetching LTC price';
+        });
+    }
+
+    // Fetch live prices every 30 seconds
+    setInterval(fetchLivePrices, 30000);
+    // Initial fetch
+    fetchLivePrices();
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const toggleIcons = document.querySelectorAll(".toggle-balance-icon");
+
+      function updateUI(element, isHidden) {
+          const originalBalance = element.getAttribute("data-balance");
+
+          if (!originalBalance) return; // Ensure data-balance is present
+
+          element.textContent = isHidden ? "*******" : originalBalance;
+          element.setAttribute("data-hidden", isHidden.toString());
+      }
+
+      toggleIcons.forEach(function (icon) {
+          const targetId = icon.getAttribute("data-target");
+          const storageKey = icon.getAttribute("data-key");
+          const balanceElement = document.getElementById(targetId);
+
+          if (!balanceElement) return; // Ensure the balance element exists
+
+          let storedState = localStorage.getItem(storageKey) || "false"; // Default to "false" if null
+          let isHidden = storedState === "true";
+
+          updateUI(balanceElement, isHidden);
+
+          icon.classList.toggle("fa-eye", !isHidden);
+          icon.classList.toggle("fa-eye-slash", isHidden);
+
+          icon.addEventListener("click", function () {
+              const currentlyHidden = balanceElement.getAttribute("data-hidden") === "true";
+              const newHidden = !currentlyHidden;
+
+              updateUI(balanceElement, newHidden);
+
+              icon.classList.toggle("fa-eye", !newHidden);
+              icon.classList.toggle("fa-eye-slash", newHidden);
+
+              localStorage.setItem(storageKey, newHidden.toString());
+          });
+      });
+  });
+</script>
+
+
+{% endblock contents %}

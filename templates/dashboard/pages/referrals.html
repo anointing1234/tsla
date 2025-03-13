@@ -1,0 +1,77 @@
+{% extends '../core/base.html' %}
+{% load static %}
+{% block contents %}
+
+<style>
+    .table-container {
+        max-height: 300px; /* Set max height for scrolling */
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .table thead {
+        background-color: #0d6efd;
+        color: white;
+    }
+    .no-referrals {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: gray;
+        padding: 20px;
+    }
+</style>
+
+
+
+<div class="container">
+    <div class="page-inner bg-dark">
+        <div class="row mb-5 pb-5 p-0">
+            <div class="row mx-1">
+                       
+
+<div class="container mt-5">
+    <div class="card mt-5 pt-5">
+        <div class="card-header text-center bg-dark text-white">
+            <h4>My Referrals</h4>
+        </div>
+        <div class="card-body">
+            {% if referrals %}
+                <div class="table-container">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>User Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for referral in referrals %}
+                                <tr>
+                                    <td>{{ referral.referred_user.email }}</td>
+                                    <td>{{ referral.referred_user.user_code }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-referrals">No referrals found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div> 
+                    </div>
+                </div>
+            </div> <!-- End Main Row -->
+        </div>
+
+
+
+  
+
+
+
+
+
+{% endblock contents %}

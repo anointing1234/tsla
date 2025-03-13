@@ -1,0 +1,140 @@
+{% extends '../core/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block contents %}
+<div class="container">
+    <div class="page-inner bg-dark">
+        <div class="row mb-5 pb-5 p-0">
+            <div class="row mx-1">
+                <h2 class="text-white text-center my-4">Investment Plans</h2>
+                {% for plan in plans %}
+                <div class="col-md-3 my-3">
+                    <div class="card text-center bg-light shadow">
+                        <div class="card-header bg-dark text-white">
+                            <h5>{{ plan.name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-dark">
+                                <strong>{{ plan.percentage }}%</strong> Return in <strong>{{ plan.duration }}</strong>
+                            </p>
+                            <p class="text-dark">
+                                <strong>{{ plan.commission }}%</strong> Commission
+                            </p>
+                            <p class="text-dark">
+                                Capital Insurance: <strong>{{ plan.capital_insurance }}%</strong>
+                            </p>
+                            <p class="text-dark">
+                                Min Investment: <strong>${{ plan.min_amount|intcomma }}</strong>
+                            </p>
+                            <p class="text-dark">
+                                Max Investment: 
+                                {% if plan.max_amount %}
+                                    <strong>${{ plan.max_amount|intcomma }}</strong>
+                                {% else %}
+                                    <strong>Unlimited</strong>
+                                {% endif %}
+                            </p>
+                            <!-- Purchase Plan Button -->
+                            <form method="POST" action="{% url 'purchase-plan' %}" onsubmit="return confirmPurchase(this, event);">
+                                {% csrf_token %}
+                                <input type="hidden" name="plan_id" value="{{ plan.id }}">
+                                <input type="hidden" name="amount" value="{{ plan.min_amount }}">
+                                <button type="submit" class="btn btn-dark w-100">Purchase Plan</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-white text-center">No investment plans available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<!-- Toastify JS -->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+    // Custom confirmation function using a Toastify alert as a modal dialog.
+    function confirmPurchase(form, event) {
+        // Prevent the default form submission
+        event.preventDefault();
+
+        // Calculate an approximate vertical offset to center the toast (adjust as needed)
+        var offsetY = window.innerHeight / 2 - 100;
+
+        // Create the confirmation toast with custom HTML content.
+        var confirmationToast = Toastify({
+            text: "<div style='text-align:center; color: white;'>Are you sure you want to make this purchase?<br><br>" +
+                  "<button id='confirmYes' class='btn btn-success btn-sm' style='margin-right:10px;'>Yes</button>" +
+                  "<button id='confirmNo' class='btn btn-danger btn-sm'>Cancel</button></div>",
+            duration: 0,           // 0 means it will not auto-dismiss.
+            close: false,
+            gravity: "top",        // We'll use an offset to position it vertically.
+            position: "center",    // Horizontal centering.
+            offset: { x: 0, y: offsetY },
+            backgroundColor: "#343a40",
+            stopOnFocus: true,
+            escapeMarkup: false    // Allows HTML in the text.
+        });
+        confirmationToast.showToast();
+
+        // Use a small delay to ensure the toast content is rendered.
+        setTimeout(function() {
+            var yesButton = document.getElementById("confirmYes");
+            var noButton = document.getElementById("confirmNo");
+
+            if (yesButton) {
+                yesButton.addEventListener("click", function() {
+                    confirmationToast.hideToast();
+                    // Disable the submit button and show a loading spinner.
+                    var button = form.querySelector("button[type='submit']");
+                    button.disabled = true;
+                    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                    // Submit the form programmatically.
+                    form.submit();
+                });
+            }
+            if (noButton) {
+                noButton.addEventListener("click", function() {
+                    confirmationToast.hideToast();
+                });
+            }
+        }, 100);
+
+        // Return false to prevent the default submission until confirmed.
+        return false;
+    }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        {% if messages %}
+            let successMessageShown = false;
+            {% for message in messages %}
+                Toastify({
+                    text: "{{ message|safe }}",
+                    duration: 5000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "{% if message.tags == 'success' %}green{% else %}red{% endif %}",
+                }).showToast();
+
+                {% if message.tags == 'success' %}
+                    successMessageShown = true;
+                {% endif %}
+            {% endfor %}
+
+            // Redirect after 5 seconds if a success message was shown.
+            if (successMessageShown) {
+                setTimeout(function () {
+                    window.location.href = "{% url 'view_plans' %}";
+                }, 5000); // Adjust timeout as needed.
+            }
+        {% endif %}
+    });
+</script>
+
+{% endblock contents %}

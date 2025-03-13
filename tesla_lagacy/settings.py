@@ -32,12 +32,15 @@ SECRET_KEY = 'django-insecure--n_@(^_d!uv@3+(7^s0(_%+50+*n8z&tuum4f3#z*g+fz60%4h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://tsla-production.up.railway.app"]
 ALLOWED_HOSTS = ["tsla-production.up.railway.app"]
 
 
+
+
 # Application definition
+AUTH_USER_MODEL = 'accounts.Account'
 
 INSTALLED_APPS = [
     "unfold",
@@ -93,15 +96,15 @@ WSGI_APPLICATION = 'tesla_lagacy.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE':'django.db.backends.postgresql',
-#         'NAME':'access',
-#         'USER':'postgres',
-#         'PASSWORD':'1234',
-#         'HOST':'localhost',  
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME':'tesla',
+        'USER':'postgres',
+        'PASSWORD':'1234',
+        'HOST':'localhost',  
+    }
+}
 
 
 # DATABASES = {
@@ -184,137 +187,113 @@ EMAIL_USE_SSL = False
 
 
 
-# UNFOLD = {
-#     "SITE_HEADER": "AccessForexConcierge",
-#     "SHOW_SIDEBAR": True,
-#     "SITE_TITLE": "AccessForexConcierge",
-#     "SITE_SUBHEADER": "AccessForexConcierge Admin Panel",
-#     "SITE_URL": "/",
-#     "SITE_ICON": {
-#         "light": lambda request: static("modules/uss-dashboard/GUI/assets/images/logo.png"),
-#         "dark": lambda request: static("modules/uss-dashboard/GUI/assets/images/logo.png"),
-#     },
-#     "SITE_LOGO": {
-#         "light": lambda request: static("modules/uss-dashboard/GUI/assets/images/logo.png"),
-#         "dark": lambda request: static("modules/uss-dashboard/GUI/assets/images/logo.png"),
-#     },
-#     "DASHBOARD": {
-#         "show_search": True,
-#         "show_all_applications": True,
-#         "cards": [
-#             {
-#                 "title": _("Users"),
-#                 "icon": "group",
-#                 "link": reverse_lazy("admin:accounts_account_changelist"),
-#                 "description": _("Manage registered users."),
-#             },
-#             # {
-#             #     "title": _("Deposits"),
-#             #     "icon": "account_balance",
-#             #     "link": reverse_lazy("admin:accounts_deposit_changelist"),
-#             #     "description": _("Manage deposit transactions."),
-#             # },
-#             # {
-#             #     "title": _("Transfers"),
-#             #     "icon": "swap_horiz",
-#             #     "link": reverse_lazy("admin:accounts_transfer_changelist"),
-#             #     "description": _("Manage fund transfers."),
-#             # },
-#             # {
-#             #     "title": _("Transactions"),
-#             #     "icon": "receipt",
-#             #     "link": reverse_lazy("admin:accounts_transaction_changelist"),
-#             #     "description": _("Track user transactions."),
-#             # },
-#         ],
-#     },
-#     "SIDEBAR": {
-#         "show_search": True,
-#         "show_all_applications": True,
-#         "navigation": [
-#             {
-#                 "title": _("User Management"),
-#                 "icon": "account_circle",
-#                 "collapsible": False,
-#                 "items": [
-#                     {
-#                         "title": _("Users"),
-#                         "icon": "group",
-#                         "link": reverse_lazy("admin:accounts_account_changelist"),
-#                     },
-#                     {
-#                         "title": _("Account Balances"),
-#                         "icon": "account_balance_wallet",
-#                         "link": reverse_lazy("admin:accounts_balance_changelist"),
-#                     },
-#                     {
-#                         "title": _("Forex Plans"),  # Adding Forex Plans to the sidebar
-#                         "icon": "monetization_on",  # Material Icon for Finance
-#                         "link": reverse_lazy("admin:accounts_forexplan_changelist"),  # Ensure this matches your Django app name
-#                     },
-#                 ],
-#             },
-#             {
-#                 "title": _("Banking & Cards"),
-#                 "icon": "credit_card",
-#                 "collapsible": False,
-#                 "separator": True,
-#                 "items": [
-#                     # {
-#                     #     "title": _("Cards"),
-#                     #     "icon": "credit_card",
-#                     #     "link": reverse_lazy("admin:accounts_card_changelist"),
-#                     # },
-#                     # {
-#                     #     "title": _("Deposits"),
-#                     #     "icon": "account_balance",
-#                     #     "link": reverse_lazy("admin:accounts_deposit_changelist"),
-#                     # },
-#                     # {
-#                     #     "title": _("Transfers"),
-#                     #     "icon": "swap_horiz",
-#                     #     "link": reverse_lazy("admin:accounts_transfer_changelist"),
-#                     # },
-#                     # {
-#                     #     "title": _("Transfer Codes"),
-#                     #     "icon": "confirmation_number",
-#                     #     "link": reverse_lazy("admin:accounts_transfercode_changelist"),
-#                     # },
-#                 ],
-#             },
-#             {
-#                 "title": _("Financial Services"),
-#                 "icon": "attach_money",
-#                 "collapsible": True,
-#                 "separator": True,
-#                 "items": [
-#                     # {
-#                     #     "title": _("Exchanges"),
-#                     #     "icon": "currency_exchange",
-#                     #     "link": reverse_lazy("admin:accounts_exchange_changelist"),
-#                     # },
-#                     # {
-#                     #     "title": _("Exchange Rates"),
-#                     #     "icon": "bar_chart",
-#                     #     "link": reverse_lazy("admin:accounts_exchangerate_changelist"),
-#                     # },
-#                     # {
-#                     #     "title": _("Loan Requests"),
-#                     #     "icon": "request_quote",
-#                     #     "link": reverse_lazy("admin:accounts_loanrequest_changelist"),
-#                     # },
-#                     # {
-#                     #     "title": _("Payment Gateways"),
-#                     #     "icon": "payment",
-#                     #     "link": reverse_lazy("admin:accounts_paymentgateway_changelist"),
-#                     # },
-#                     # {
-#                     #     "title": _("Transactions"),
-#                     #     "icon": "receipt",
-#                     #     "link": reverse_lazy("admin:accounts_transaction_changelist"),
-#                     # },
-#                 ],
-#             },
-#         ],
-#     },
-# }
+
+UNFOLD = {
+    "SITE_HEADER": "AccessForexConcierge",
+    "SHOW_SIDEBAR": True,
+    "SITE_TITLE": "AccessForexConcierge",
+    "SITE_SUBHEADER": "AccessForexConcierge Admin Panel",
+    "SITE_URL": "/",
+    "SITE_ICON": {
+        "light": lambda request: static("british-trading-central.png"),
+        "dark": lambda request: static("british-trading-central.png"),
+    },
+    "SITE_LOGO": {
+        "light": lambda request: static("british-trading-central.png"),
+        "dark": lambda request: static("british-trading-central.png"),
+    },
+    "DASHBOARD": {
+        "show_search": True,
+        "show_all_applications": True,
+        "cards": [
+            {
+                "title": _("Users"),
+                "icon": "group",
+                "link": reverse_lazy("admin:accounts_account_changelist"),
+                "description": _("Manage registered users."),
+            },
+                {
+                         "title": _("Payment Gateways"),
+                         "icon": "payment",
+                         "link": reverse_lazy("admin:accounts_paymentgateway_changelist"),
+                     },
+                     {
+                         "title": _("Deposit Transactions"),
+                         "icon": "account_balance",
+                         "link": reverse_lazy("admin:accounts_deposittransaction_changelist"),
+                     },
+                     {
+                         "title": _("Withdrawal Transactions"),
+                         "icon": "swap_horiz",
+                         "link": reverse_lazy("admin:accounts_withdrawtransaction_changelist"),
+                 },
+        ],
+    },
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
+        "navigation": [
+            {
+                "title": _("User Management"),
+                "icon": "account_circle",
+                "collapsible": False,
+                "items": [
+                    {
+                        "title": _("Users"),
+                        "icon": "group",
+                        "link": reverse_lazy("admin:accounts_account_changelist")  # Ensure "accounts" is the correct app name,
+                    },
+                    {
+                        "title": _("Account Balances"),
+                        "icon": "account_balance_wallet",
+                        "link": reverse_lazy("admin:accounts_balance_changelist"),
+                    },
+                    {
+                        "title": _("Forex Plans"),  # Adding Forex Plans to the sidebar
+                        "icon": "monetization_on",  # Material Icon for Finance
+                        "link": reverse_lazy("admin:accounts_forexplan_changelist"),  # Ensure this matches your Django app name
+                    },
+                     {
+                         "title": _("Wallet Addresses"),
+                         "icon": "wallet",
+                         "link": reverse_lazy("admin:accounts_walletaddress_changelist"),
+                     },
+                     {
+                         "title": _("Referrals"),
+                         "icon": "person_add",
+                         "link": reverse_lazy("admin:accounts_referral_changelist"),
+                     },
+                    
+                ],
+            },
+            
+            {
+                "title": _("Financial Services"),
+                "icon": "attach_money",
+                "collapsible": True,
+                "separator": True,
+                "items": [
+                     {
+                         "title": _("Payment Gateways"),
+                         "icon": "payment",
+                         "link": reverse_lazy("admin:accounts_paymentgateway_changelist"),
+                     },
+                     {
+                         "title": _("Deposit Transactions"),
+                         "icon": "account_balance",
+                         "link": reverse_lazy("admin:accounts_deposittransaction_changelist"),
+                     },
+                     {
+                         "title": _("Withdrawal Transactions"),
+                         "icon": "swap_horiz",
+                         "link": reverse_lazy("admin:accounts_withdrawtransaction_changelist"),
+                     },
+                ],
+            },
+        ],
+    },
+}
+
+
+
+

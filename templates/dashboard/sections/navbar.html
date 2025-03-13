@@ -1,0 +1,227 @@
+ {% load static %}
+ {% load humanize %}
+ <!-- Sidebar -->
+ <div class="sidebar" data-background-color="light">
+    <div class="sidebar-logo">
+      <!-- Logo Header -->
+      <div class="logo-header" data-background-color="dark">
+        <a href="index.html" class="logo align-item-center">
+          <img src="{% static 'british-trading-central.png' %}" alt="navbar brand" class="navbar-brand" height="60" />
+        </a>
+        <div class="nav-toggle">
+          <button class="btn btn-toggle toggle-sidebar">
+            <i class="gg-menu-right"></i>
+          </button>
+          <button class="btn btn-toggle sidenav-toggler">
+            <i class="gg-menu-left"></i>
+          </button>
+        </div>
+        <button class="topbar-toggler more">
+          <i class="gg-more-vertical-alt"></i>
+        </button>
+      </div>
+      <!-- End Logo Header -->
+    </div>
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+      <div class="sidebar-content">
+        <ul class="nav nav-secondary">
+          <li class="nav-item ">
+            <a  href="#dashboard" class="collapsed" aria-expanded="false">
+                <div class="col  bg-dark border py-2  col-stats ms-3 ms-sm-0">
+                    <div class="numbers">
+                       <p> <h5 class="fw-bold text-light text-center"><span>Wallet balance </span>
+                            
+                       </h5>
+                       <h4 class="card-title text-light text-center toggle-balance" id="available-balance-credit"
+                           data-hidden="true"
+                           data-balance="{{ request.user.balance.usdt_balance|intcomma }}">${{ request.user.balance.usdt_balance|intcomma }}</h4>
+                   </p>
+                    </div>
+                </div>
+            </a>
+          </li>
+   
+
+          <li class="nav-section">
+            <span class="sidebar-mini-icon">
+              <i class="fa fa-ellipsis-h"></i>
+            </span>
+            <h4 class="text-section"></h4>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'dash' %}">
+                <i class="fas fa-home"></i>
+              <p>Dashboard</p>
+            </a>
+            
+          </li>
+          <li class="nav-item">
+            <a  href="{% url 'profile' %}">
+                <i class="fa-solid fa-user"></i>
+              <p>Profile</p>
+           
+            </a>
+            
+          </li>
+          {% comment %} <li class="nav-item">
+            <a  href="{% url 'referals' %}">
+                <i class="fa-sharp fa-solid fa-user-plus fa-2xl"></i>
+              <p>Referrals</p>
+             
+            </a>
+          
+          </li> {% endcomment %}
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#maps">
+                <i class="fas fa-wallet"></i>
+              <p>Deposit</p>
+              <span class="caret"></span>  </a>
+            <div class="collapse" id="maps">
+              <ul class="nav nav-collapse">
+                <li>
+                  <a href="{% url 'Deposit' %}">
+                    <span class="sub-item">Deposit</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'Deposit_his' %}">
+                    <span class="sub-item">Deposit History</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#plan">
+                <i class="fas fa-wallet"></i>
+              <p>Plans</p>
+              <span class="caret"></span>
+            </a>
+            <div class="collapse" id="plan">
+              <ul class="nav nav-collapse">
+                <li>
+                 <a href="{% url 'purchase_plan' %}">
+                    <span class="sub-item">Purchase a plan</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'view_plans' %}">
+                    <span class="sub-item">View plans</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#with">
+                <i class="fas fa-wallet"></i>
+              <p>Withdrawal</p>
+              <span class="caret"></span>
+            </a>
+      
+            <div class="collapse" id="with">
+              <ul class="nav nav-collapse">
+                <li>
+                  <a href="{% url 'withdraw' %}">
+                    <span class="sub-item">Withdraw</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'withdraw_history' %}">
+                    <span class="sub-item">Withdraw History</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+       
+          <li class="nav-item">
+            <a href="">
+                <i class="fa-solid fa-address-book"></i>
+              <p>Support</p>
+            
+            </a>
+          </li>
+        
+          <li class="nav-item">
+            <a href="#" onclick="document.getElementById('logout-form').submit();" style="display: flex; align-items: center;">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <p>Log out</p>
+            </a>
+            <form id="logout-form" action="{% url 'logout_view' %}" method="POST" style="display: none;">
+                {% csrf_token %}
+            </form>
+        </li>
+        
+        
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- End Sidebar -->
+
+  <div class="main-panel">
+    <div class="main-header">
+      <div class="main-header-logo">
+        <!-- Logo Header -->
+        <div class="logo-header" data-background-color="dark">
+          <a href="index.html" class="logo">
+            <img src="{% static 'modules/uss-dashboard/GUI/assets/images/logo.png' %}" alt="navbar brand" class="navbar-brand" height="20" />
+          </a>
+          <div class="nav-toggle">
+            <button class="btn btn-toggle toggle-sidebar">
+              <i class="gg-menu-right"></i>
+            </button>
+            <button class="btn btn-toggle sidenav-toggler">
+              <i class="gg-menu-left"></i>
+            </button>
+          </div>
+          <button class="topbar-toggler more">
+            <i class="gg-more-vertical-alt"></i>
+          </button>
+        </div>
+        <!-- End Logo Header -->
+      </div>
+      <!-- Navbar Header -->
+      <nav class="navbar navbar-header navbar-header-dark bg-dark navbar-expand-lg border-bottom" >
+        <div class="container-fluid">
+            <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                <h2 class="text-white fw-bold">Dashboard</h2>
+              </nav>
+          <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+            <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+            </li>
+            <li class="nav-item topbar-user dropdown hidden-caret">
+              <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                <div class="avatar-sm">
+                  <img src="{{ user.get_profile_picture_url }}" alt="..." class="avatar-img rounded-circle" />
+                </div>
+                <span class="profile-username">
+                  <span class="op-7 text-light">Hi,</span>
+                  <span class="fw-bold text-light">{{ request.user.username }}</span>
+                </span>
+              </a>
+              <ul class="dropdown-menu dropdown-user animated fadeIn">
+                <div class="dropdown-user-scroll scrollbar-outer">
+                  <li>
+                    <div class="user-box">
+                      <div class="avatar-lg">
+                        <img src="{{ user.get_profile_picture_url }}" alt="image profile" class="avatar-img rounded" />
+                      </div>
+                      <div class="u-text">
+                        <h4>{{ request.user.username }}</h4>
+                        <p class="text-muted">{{ request.user.email }}</p>
+                        <a href="{% url 'profile' %}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                      </div>
+                    </div>
+                  </li>
+                 
+                </div>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+    </div>

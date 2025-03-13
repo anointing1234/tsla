@@ -24,7 +24,8 @@ import requests
 from django.contrib.auth.decorators import login_required
 # from accounts.models import Transaction,Card
 from django.db.models import Sum
-# from accounts.models import ForexPlan
+from accounts.models import ForexPlan,PaymentGateway,DepositTransaction,WalletAddress,Users_Investment,WithdrawTransaction
+from django.db.models import Sum
 
 
 def home_view(request):
@@ -75,6 +76,64 @@ def news_view(request):
 
 def tesla_cars_view(request):
     return render(request,'home/tesla_cars.html')
+
+
+
+
+def signup_view(request):
+    return render(request,'forms/signup.html') 
+
+
+def login_view(request):
+    return render(request,'forms/login.html') 
+
+def dash(request):
+    if request.user.is_authenticated:
+        investments_exist = Users_Investment.objects.filter(user=request.user).exists()
+        if investments_exist:
+            total_investment = Users_Investment.objects.filter(user=request.user).aggregate(total=Sum('total'))['total'] or 0.00
+        else:
+            total_investment = 0.00
+        print(f"Total Investment for {request.user}: {total_investment}")  # Debugging
+    else:
+        total_investment = 0.00
+    return render(request,'Dashboard/pages/index.html',{'total_investment': total_investment})             
+
+
+
+def profile_view(request):
+    return render(request,"Dashboard/pages/profile.html")    
+
+def referals(request):
+    return render(request,'Dashboard/pages/referrals.html')   
+
+def Deposit_view(request):
+    payment_gateways = PaymentGateway.objects.all()
+    return render(request,'Dashboard/pages/Deposit.html',{"payment_gateways": payment_gateways})  
+
+def Deposit_his_view(request):
+    deposits = DepositTransaction.objects.filter(user=request.user).order_by("-date") 
+    context = {
+        'deposits': deposits
+    }
+    return render(request,'Dashboard/pages/Deposit_history.html',context)            
+
+def purchase_plan(request):
+    plans = ForexPlan.objects.all() 
+    return render(request,'Dashboard/pages/purchase_plan.html',{'plans': plans})            
+
+def view_plans(request):
+    purchased_plans = Users_Investment.objects.filter(user=request.user).order_by('-start_date')
+    return render(request,'Dashboard/pages/view_plan.html',{'purchased_plans': purchased_plans})            
+
+def withdraw_view(request):
+    wallet_addresses = WalletAddress.objects.filter(user=request.user)
+    return render(request,'Dashboard/pages/withdraw.html', {'wallet_addresses': wallet_addresses})
+
+def withdraw_history_view(request):
+    withdrawals = WithdrawTransaction.objects.filter(user=request.user)
+    return render(request,'Dashboard/pages/withdraw_history.html',{'withdrawals': withdrawals})
+
    
 
 

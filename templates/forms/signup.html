@@ -1,0 +1,340 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    
+   
+    <title>Home | Tesla Legacy Capital Partners - Leading Trading Platform in the USA</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name='description' content='ACCESS FOREX CONCIERGE LTD is your trusted partner in the world of digital finance'>
+			<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+        
+            <link rel="stylesheet" href="{% static 'cores/assets/css/bootstrap.min.css' %}" data-name="bootstrap">
+			<link rel="stylesheet" href="{% static 'cores/assets/vendor/bootstrap-icons/bootstrap-icons.min.css' %}" data-name="bootstrap-icon">
+			<link rel="stylesheet" href="{% static 'cores/assets/css/animate.min.css' %}" data-name="animate">
+			<link rel="stylesheet" href="{% static 'cores/assets/vendor/glightbox/glightbox.min.css' %}" data-name="glightbox">
+			<link rel="stylesheet" href="{% static 'cores/assets/vendor/toastify/toastify.min.css' %}" data-name="toastify">
+			<link rel="stylesheet" href="{% static 'cores/assets/css/font-size.min.css' %}" data-name="font-size">
+			<link rel="stylesheet" href="{% static 'cores/assets/css/main.css' %}" data-name="main-css"> 				
+			<link rel="stylesheet" href="{% static 'modules/uss-dashboard/GUI/themes/classic/assets/css/default.css'%}">        
+</head>
+
+
+
+<style>
+.auth-cover-wrapper,
+.auth-bg-image {
+	background-image: url("{% static 'crypto_web.jpg' %}") !important;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+</style>
+
+
+<body>
+            
+        
+    <div class="row g-0 min-vh-100">
+
+        
+            <div class="col-lg-6">
+                
+                                
+                    <div  class="auth-cover-wrapper">
+                        <div class="auth-cover px-sm-5">
+                            <div class="title text-center">
+							
+                                                                                                                                                
+							
+                                                                    
+                                                                            
+                               <h1 class="text-white mb-2">
+								Tesla Legacy Capital Partners 					
+                                    </h1>
+                                
+                                                                    <p class="text-light">
+																		
+																		LEADING TRADING PLATFORM IN THE USA
+																			
+                                    </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                                 
+            </div>
+
+         
+        
+            <div class="col-lg-6">
+                        
+                
+                    <div class="row g-0 align-items-center justify-content-center bg-light p-5 h-100">
+                        <div class="col-sm-10 col-md-9 m-auto">
+
+                            <h4 class="text-center text-dark mb-3">
+								CREATE AN ACCOUNT			
+									</h4>  
+                                
+    <form class="form row" action="{% url 'register' %}" method="post" id="register-form">
+		{% csrf_token %}
+	<fieldset class="collection-wrapper col-12 primary-collection" data-el-context="collection.fieldset">
+		<div class="row collection-container" data-el-context="collection.container">
+			<div class="frame col-12 my-1 user-email-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container my-1 input-group" data-el-context="gadget.container">
+							<span class="input-affix input-group-text" data-el-context="gadget.prefix"><i class='bi bi-at'></i></span>
+							<input type="email" class="form-control" data-el-context="gadget.widget" required="" placeholder="Email" value="" name="user[email]" id="field-widget-1">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame col-12 my-1 user-password-field" data-el-context="field.frame">
+                <div class="field-wrapper" data-el-context="field.wrapper">
+                    <div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+                        <div class="widget-container my-1 input-group" data-el-context="gadget.container">
+                            <span class="input-affix input-group-text" data-el-context="gadget.prefix">
+                                <i class='bi bi-lock'></i>
+                            </span>
+                            <input type="password" class="form-control" data-el-context="gadget.widget" required="" 
+                                   placeholder="Password" pattern="^.{4,}$" name="user[password]" id="field-widget-2">
+                             <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('field-widget-2', 'toggle-password-icon')">
+                                <i class="bi bi-eye" id="toggle-password-icon"></i>
+                            </button> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="frame col-12 my-1 user-confirmpassword-field" data-el-context="field.frame">
+                <div class="field-wrapper" data-el-context="field.wrapper">
+                    <div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+                        <div class="widget-container my-1 input-group" data-el-context="gadget.container">
+                            <span class="input-affix input-group-text" data-el-context="gadget.prefix">
+                                <i class='bi bi-shield-lock'></i>
+                            </span>
+                            <input type="password" class="form-control" data-el-context="gadget.widget" required="" 
+                                   placeholder="Confirm Password" pattern="^.{4,}$" name="user[confirmPassword]" id="field-widget-3">
+                             <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('field-widget-3', 'toggle-confirm-password-icon')">
+                                <i class="bi bi-eye" id="toggle-confirm-password-icon"></i>
+                            </button> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+           
+            
+			<div class="frame col-12 my-1 user-agree-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container input-single my-1 form-check" data-el-context="gadget.container">
+							<input type="checkbox" class="form-check-input" data-el-context="gadget.widget" required="" data-anonymous="" id="field-widget-4">
+							<label class="form-check-label user-select-none small" data-el-context="gadget.label" for="field-widget-4"><span>
+                    I agree to the 
+                    <a href='javascript:void(0)' target='_self'>terms of service</a> &amp; 
+                    <a href='javascript:void(0)' target='_self'>privacy policy</a>
+                </span></label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame col-12 d-none nonce-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container input-single my-1" data-el-context="gadget.container">
+							<input type="hidden" class="form-control" data-el-context="gadget.widget" required="" value="836bc1a2116d4201c9c8c9bc1a84a4c91ebad483:a5788e" name="nonce" id="field-widget-5">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame col-12 my-1 submit-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container input-single my-1" data-el-context="gadget.container">
+							<button type="submit" class="btn btn-dark w-100" data-el-context="gadget.widget" required="" data-anonymous="" id="field-widget-6">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+</form> 
+
+
+                            
+    <hr>
+
+        <div class="my-1">
+        <p class="text-sm text-center">
+            <span>Already have an account?</span>
+            <a href="{% url 'login' %}" class="hover-underline text-nowrap">
+                Sign In
+            </a>
+        </p>
+    </div>
+
+
+
+                        </div>
+                    </div>
+
+                 
+            </div>
+
+         
+    </div>
+
+
+            
+	<script type="text/javascript" src="{% static 'cores/assets/js/vue.global.prod.min.js' %}" data-name="vue"></script>
+	<script type="text/javascript" src="{% static 'cores/assets/js/jquery-3.7.1.min.js' %}" data-name="jquery"></script>
+	<script type="text/javascript" src="{% static 'cores/assets/js/bootstrap.bundle.min.js' %}" data-name="bootstrap-bundle"></script>
+	<script type="text/javascript" src="{% static 'cores/assets/js/bootbox.all.min.js' %}" data-name="bootbox"></script>
+	<script type="text/javascript" src="{% static 'cores/assets/vendor/glightbox/glightbox.min.js' %}" data-name="glightbox"></script>
+	<script type="text/javascript" src="{% static 'cores/assets/vendor/toastify/toastify-js.js' %}" data-name="toastify"></script>
+	<script type="text/javascript" src="{% static 'cores/assets/vendor/notiflix/notiflix-loading-aio-3.2.7.min.js' %}" data-name="notiflix-loading"></script>
+	<script type="text/javascript" src="{% static 'cores/assets/vendor/notiflix/notiflix-block-aio-3.2.7.min.js' %}" data-name="notiflix-block"></script>
+	<script type="text/javascript" src="{% static 'cores/assets/js/main.js' %}" data-name="main-js"></script>
+	
+	<script src="{% static 'modules/uss-dashboard/GUI/assets/js/data-magic.js' %}"></script>
+	<script src="{% static 'modules/uss-dashboard/Foundation/User/assets/js/security.js' %}"></script>
+
+	<!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<!-- Toastify JS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function () {
+		document.getElementById("register-form").addEventListener("submit", function (event) {
+			event.preventDefault(); // Prevent default form submission
+	
+			let form = event.target;
+			let submitButton = form.querySelector("button[type='submit']");
+			let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+	
+			// Disable button while processing
+			submitButton.disabled = true;
+			submitButton.innerText = "Processing...";
+	
+			function showToast(message, type) {
+				let bgColor;
+				if (type === "error") {
+					bgColor = "linear-gradient(to right, #ff416c, #ff4b2b)";
+				} else if (type === "warning") {
+					bgColor = "linear-gradient(to right, #ffcc00, #ff9900)";
+				} else {
+					bgColor = "linear-gradient(to right, #00b09b, #96c93d)";
+				}
+	
+				Toastify({
+					text: message,
+					duration: 4000,
+					close: true,
+					gravity: "top",
+					position: "right",
+					style: { background: bgColor, borderRadius: "8px" }
+				}).showToast();
+			}
+	
+			let email = document.getElementById("field-widget-1").value.trim();
+			let password = document.getElementById("field-widget-2").value.trim();
+			let confirmPassword = document.getElementById("field-widget-3").value.trim();
+			let termsChecked = document.getElementById("field-widget-4").checked;
+	
+			if (!email || !password || !confirmPassword) {
+				showToast("All fields are required!", "error");
+				submitButton.disabled = false;
+				submitButton.innerText = "Register";
+				return;
+			}
+	
+			if (password.length < 6) {
+				showToast("Password must be at least 6 characters!", "error");
+				submitButton.disabled = false;
+				submitButton.innerText = "Register";
+				return;
+			}
+	
+			if (password !== confirmPassword) {
+				showToast("Passwords do not match!", "error");
+				submitButton.disabled = false;
+				submitButton.innerText = "Register";
+				return;
+			}
+	
+			if (!termsChecked) {
+				showToast("You must agree to the Terms and Privacy Policy!", "warning");
+				submitButton.disabled = false;
+				submitButton.innerText = "Register";
+				return;
+			}
+	
+			// Prepare form data for JSON request
+			let formData = JSON.stringify({
+				email: email,
+				password: password,
+				confirmPassword: confirmPassword
+			});
+	
+			// Send request to Django
+			fetch(form.action, {
+				method: "POST",
+				body: formData,
+				headers: {
+					"X-CSRFToken": csrfToken,
+					"Content-Type": "application/json" // Send as JSON
+				}
+			})
+			.then(response => response.json()) // Expect JSON response
+			.then(data => {
+				if (data.success) {
+					showToast("Registration Successful! Redirecting...", "success");
+					setTimeout(() => {
+						window.location.href = "{% url 'login' %}";  // Redirect to login page
+					}, 2000);
+				} else {
+					showToast(data.error || "Registration failed!", "error");
+					submitButton.disabled = false;
+					submitButton.innerText = "Register";
+				}
+			})
+			.catch(error => {
+				showToast("Something went wrong! Try again.", "error");
+				submitButton.disabled = false;
+				submitButton.innerText = "Register";
+			});
+		});
+	});
+	
+</script>
+
+
+
+<script>
+    function togglePassword(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    }
+</script>
+
+    
+</body>
+
+</html>
