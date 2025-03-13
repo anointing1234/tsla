@@ -97,7 +97,7 @@ def dash(request):
         print(f"Total Investment for {request.user}: {total_investment}")  # Debugging
     else:
         total_investment = 0.00
-    return render(request,'Dashboard/pages/index.html',{'total_investment': total_investment})             
+    return render(request,"Dashboard/pages/index.html",{'total_investment': total_investment})             
 
 
 
