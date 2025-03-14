@@ -1,294 +1,440 @@
 {% extends '../core/base.html' %}
 {% load static %}
-{% block contents %}
 {% load humanize %}
 
-<style>   
-    .card-body {
-        position: relative; /* Position relative to allow stacking of text above the overlay */
-        z-index: 2; /* Place it above the overlay */
-        color: white; /* Ensure text is white for better visibility */
-    }
-    .card-title {
-        font-size: 30px;
-    }
-</style>
-
+{% block contents %}
 <style>
-  @media (max-width: 576px) {
-      .btn {
-          padding: 8px 12px; /* Smaller padding for small screens */
-          font-size: 14px; /* Smaller font size */
-      }
+  /* Custom styling for stat cards and weekly cards */
+  .stat-card {
+    background-color:black;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .stat-card .card-body {
+    padding: 20px;
+    text-align: center;
+    color: white;
+  }
+  .stat-card h5 {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .stat-card h3 {
+    font-size: 28px;
+    margin: 0;
+  }
+  .weekly-card {
+    background-color: #343a40;
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+  }
+  .weekly-card h6 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  .weekly-card .value {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .weekly-card .trend {
+    font-size: 14px;
+  }
+  /* Ensure charts and widget containers are responsive */
+  .tradingview-widget-container {
+    margin-bottom: 30px;
   }
 </style>
 
+
+
+<style>
+    .table-container {
+        max-height: 250px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        position: relative;
+    }
+    .table thead {
+        position: sticky;
+        top: 0;
+        background-color: #0d6efd;
+        color: white;
+        z-index: 2;
+        font-size: 14px;
+    }
+    .table th, .table td {
+        padding: 8px;
+        font-size: 13px;
+        text-align: left;
+    }
+    .no-withdrawals {
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: gray;
+        padding: 10px;
+    }
+</style>
+
 <div class="container">
-    <div style="background-color:black;" class="page-inner">
-        <div class="row">
-            <div class="col-sm-6 col-md-4">
-                <div class="card carddiv bg-dark card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <h5 class="fw-bold text-light">Total Balance 
-                                        <i class="fa-solid fa-eye toggle-balance-icon"
-                                           data-target="available-balance-credit-1"
-                                           data-key="balanceHidden-savings"
-                                           style="cursor:pointer;"></i>
-                                    </h5>
-                                    <h3 class="card-title text-light mt-3 mb-3 toggle-balance" id="available-balance-credit-1"
-                                        data-hidden="true"
-                                        data-balance="${{ request.user.balance.usdt_balance|intcomma }}">${{ request.user.balance.usdt_balance|intcomma }}</h3>
-                                  
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Displaying Prices with Symbols -->
-                      
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-sm-6 col-md-4">
-                <div class="card bg-dark   card-stats card-round">
-                    <div class="card-body ">
-                        <div class="row align-items-center">
-                            <div class="col  card-round py-2 col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <h5 class="fw-bold text-light">Total profits 
-                                        <i class="fa-solid fa-eye toggle-balance-icon"
-                                           data-target="available-balance-credit-2"
-                                           data-key="balanceHidden-savings"
-                                           style="cursor:pointer;"></i>
-                                    </h5>
-                                    <h3 class="card-title text-light toggle-balance" id="available-balance-credit-2"
-                                        data-hidden="true"
-                                        data-balance="{{ request.user.balance.total_profits|intcomma }}">${{ request.user.balance.total_profits|intcomma }}</h3>
-                                
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Displaying Prices with Symbols -->
-                      
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <div class="card  bg-dark card-stats card-round">
-                    <div class="card-body ">
-                        <div class="row align-items-center">
-                            <div class="col  card-round py-2  col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <h5 class="fw-bold text-light">Total investments
-                                        <i class="fa-solid fa-eye toggle-balance-icon"
-                                           data-target="available-balance-credit-3"
-                                           data-key="balanceHidden-savings"
-                                           style="cursor:pointer;"></i>
-                                    </h5>
-                                              <h3 class="card-title text-light toggle-balance" id="available-balance-credit-3"
-                                            data-hidden="true"
-                                            data-balance=" ${{ total_investment|intcomma }}">
-                                            ${{ total_investment|intcomma }}
-                                        </h3>
-                                       
-                                                                        
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Displaying Prices with Symbols -->
-                      
-                    </div>
-                </div>
-            </div>
-    
-
-            
+  <div style="background-color:black;" class="page-inner  py-4">
+    <!-- Statistics Cards -->
+    <div class="row">
+      <div class="col-sm-6 col-md-4">
+        <div class="card stat-card border border-white     border-2">
+          <div class="card-body">
+            <h5>Total Balance 
+              <i class="fa-solid fa-eye toggle-balance-icon" data-target="available-balance-credit-1" data-key="balanceHidden-savings" style="cursor:pointer;"></i>
+            </h5>
+            <h3 id="available-balance-credit-1" class="toggle-balance" data-hidden="true" data-balance="${{ request.user.balance.usdt_balance|intcomma }}">
+              ${{ request.user.balance.usdt_balance|intcomma }}
+            </h3>
           </div>
-       
-
-
-           <!-- TradingView Widget BEGIN -->
-  <div class="tradingview-widget-container">
-    <div id="tradingview_19631">
-      <div
-        id="tradingview_e4a60-wrapper"
-        style="
-          position: relative;
-          box-sizing: content-box;
-          font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto,
-            Ubuntu, sans-serif;
-          margin: 0px auto !important;
-          padding: 0px !important;
-          width: auto;
-          height: calc(466px);
-        "
-      >
-        <iframe
-          title="advanced chart TradingView widget"
-          lang="en"
-          id="tradingview_e4a60"
-          frameborder="0"
-          allowtransparency="true"
-          scrolling="no"
-          allowfullscreen="true"
-          src="https://s.tradingview.com/widgetembed/?hideideas=1&amp;overrides=%7B%7D&amp;enabled_features=%5B%5D&amp;disabled_features=%5B%5D&amp;locale=en#%7B%22symbol%22%3A%22COINBASE%3ABTCUSD%22%2C%22frameElementId%22%3A%22tradingview_e4a60%22%2C%22interval%22%3A%22D%22%2C%22allow_symbol_change%22%3A%221%22%2C%22save_image%22%3A%221%22%2C%22hotlist%22%3A%221%22%2C%22studies%22%3A%22%5B%5D%22%2C%22theme%22%3A%22Dark%22%2C%22style%22%3A%220%22%2C%22timezone%22%3A%22Etc%2FUTC%22%2C%22studies_overrides%22%3A%22%7B%7D%22%2C%22utm_source%22%3A%22sprintfxoptions.net%22%2C%22utm_medium%22%3A%22widget_new%22%2C%22utm_campaign%22%3A%22chart%22%2C%22utm_term%22%3A%22COINBASE%3ABTCUSD%22%2C%22page-uri%22%3A%22sprintfxoptions.net%2Fsecured%2Findex.php%22%7D"
-          style="
-            width: 100%;
-            height: 100%;
-            margin: 0px !important;
-            padding: 0px !important;
-          "
-        ></iframe>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="card stat-card border border-white     border-2">
+          <div class="card-body">
+            <h5>Total Profits 
+              <i class="fa-solid fa-eye toggle-balance-icon" data-target="available-balance-credit-2" data-key="balanceHidden-savings" style="cursor:pointer;"></i>
+            </h5>
+            <h3 id="available-balance-credit-2" class="toggle-balance" data-hidden="true" data-balance="${{ request.user.balance.total_profits|intcomma }}">
+              ${{ request.user.balance.total_profits|intcomma }}
+            </h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="card stat-card border border-white     border-2">
+          <div class="card-body">
+            <h5>Total Investments 
+              <i class="fa-solid fa-eye toggle-balance-icon" data-target="available-balance-credit-3" data-key="balanceHidden-savings" style="cursor:pointer;"></i>
+            </h5>
+            <h3 id="available-balance-credit-3" class="toggle-balance" data-hidden="true" data-balance="${{ total_investment|intcomma }}">
+              ${{ total_investment|intcomma }}
+            </h3>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="tradingview-widget-copyright" style="width: 100%"></div>
-    <script
-      type="text/javascript"
-      src="https://s3.tradingview.com/tv.js"
-    ></script>
-    <script type="text/javascript">
-      new TradingView.widget({
-        width: "auto",
-        height: 498,
-        symbol: "COINBASE:BTCUSD",
-        interval: "D",
-        timezone: "Etc/UTC",
-        theme: "Dark",
-        style: "0",
-        locale: "en",
-        toolbar_bg: "#f1f3f6",
-        enable_publishing: false,
-        allow_symbol_change: true,
-        hotlist: true,
-        container_id: "tradingview_19631",
-      });
-    </script>
-  </div>
-  <!-- TradingView Widget END -->
 
-          
+    <!-- TradingView Widget -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="tradingview-widget-container">
+          <div id="tradingview_19631" style="height: 466px;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+          <script type="text/javascript">
+            new TradingView.widget({
+              width: "100%",
+              height: 466,
+              symbol: "COINBASE:BTCUSD",
+              interval: "D",
+              timezone: "Etc/UTC",
+              theme: "Dark",
+              style: "0",
+              locale: "en",
+              toolbar_bg: "#f1f3f6",
+              enable_publishing: false,
+              allow_symbol_change: true,
+              hotlist: true,
+              container_id: "tradingview_19631"
+            });
+          </script>
+        </div>
+      </div>
+    </div>
 
-
-
-
+    <!-- Row containing Area Chart (left) and Doughnut Chart (right) -->
+<div class="row mt-4">
+    <!-- Left: Area Chart with Weekly Deposit & Withdraw -->
+    <div class="col-lg-8 mb-3">
+        <div class="card" style="background-color: #343a40; border: none;">
+            <div class="card-body">
+                <!-- Top Row: Weekly Deposit & Withdraw Info -->
+                <div class="d-flex justify-content-between align-items-center text-white mb-3">
+                    <div>
+                        <h6 class="mb-0">WEEKLY DEPOSIT</h6>
+                        <span class="fw-bold">$155,389</span>
+                        <span class="text-success ms-2">
+                            <i class="fa fa-level-up"></i> +99%
+                        </span>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">WEEKLY WITHDRAW</h6>
+                        <span class="fw-bold">$183,642</span>
+                        <span class="text-warning ms-2">
+                            <i class="fa fa-level-down"></i> -25%
+                        </span>
+                    </div>
+                </div>
+                <!-- Area Chart Canvas -->
+                <div style="height: 280px;">
+                    <canvas id="areaChart" width="100%" height="100%"></canvas>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Right: Doughnut Chart & Stats -->
+    <div class="col-lg-4 mb-3">
+        <div class="card" style="border: none;">
+            <div class="card-header bg-dark text-white">
+                <strong>Statistics</strong>
+            </div>
+            <div class="card-body" style="background-color: #343a40;">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <canvas id="doughnutChart" style="height: 200px; width: 100%;"></canvas>
+                    </div>
+                    <div class="col-md-6 text-white">
+                        <div class="mb-2 text-success">
+                            <i class="fa fa-circle-o me-2"></i>Desktop 74%
+                        </div>
+                        <div class="mb-2 text-info">
+                            <i class="fa fa-circle-o me-2"></i>Tablet 63%
+                        </div>
+                        <div class="mb-2 text-warning">
+                            <i class="fa fa-circle-o me-2"></i>Mobile 27%
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group list-group-divider list-group-full mt-3">
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                        Chrome
+                        <span class="float-right text-success">
+                            <i class="fa fa-caret-up"></i> 98%
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                        Firefox
+                        <span class="float-right text-success">
+                            <i class="fa fa-caret-up"></i> 40%
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                        Opera
+                        <span class="float-right text-danger">
+                            <i class="fa fa-caret-down"></i> 83%
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+                    
+    <div class="container mt-4">
+        <div class="card mt-4 pt-3">
+            <div class="card-header text-center bg-dark text-white">
+                <h5>My Withdrawals</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Uniqid</th>
+                                <th>Currency</th>
+                                <th>Amount</th>
+                                <th>Tx Ref</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if withdrawals %}
+                                {% for withdrawal in withdrawals %}
+                                    <tr>
+                                        <td>{{ withdrawal.uniqid }}</td>
+                                        <td>{{ withdrawal.currency }}</td>
+                                        <td>${{ withdrawal.amount|floatformat:2 }}</td>
+                                        <td>{{ withdrawal.tx_ref }}</td>
+                                        <td>{{ withdrawal.date|date:"M d, Y" }}</td>
+                                        <td>
+                                            {% if withdrawal.status == "pending" %}
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            {% elif withdrawal.status == "completed" %}
+                                                <span class="badge bg-success">Approved</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Rejected</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="no-withdrawals">No withdrawals found.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+
+
+
 </div>
 
-
-
-
+<!-- Include Chart.js (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const apiKey = 'coinrankingccb1f9fa3faa00602976ee13e42ad747132d9c6136b69225';
-    const coinsUrl = 'https://api.coinranking.com/v2/coins?limit=50&orderBy=marketCap&orderDirection=desc';
-
-    // Function to fetch live prices for BTC, ETH, TRX, and LTC
-    function fetchLivePrices() {
-        fetch(coinsUrl, {
-            headers: {
-                'Content-Type': 'application/json',
-                'x-access-token': apiKey
+document.addEventListener("DOMContentLoaded", function() {
+    // === AREA CHART ===
+    const areaCtx = document.getElementById('areaChart').getContext('2d');
+    new Chart(areaCtx, {
+        type: 'line',
+        data: {
+            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            datasets: [
+                {
+                    label: "Data 1",
+                    data: [15, 53, 45, 70, 55, 85, 95],  // Replace with real data
+                    borderColor: "#28a745",
+                    backgroundColor: "rgba(40, 167, 69, 0.2)",
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: "Data 2",
+                    data: [10, 30, 25, 50, 40, 60, 80],  // Replace with real data
+                    borderColor: "#007bff",
+                    backgroundColor: "rgba(0, 123, 255, 0.2)",
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { grid: { display: false } },
+                y: { grid: { color: "rgba(255,255,255,0.1)" }, ticks: { color: "#fff" } }
+            },
+            plugins: {
+                legend: { display: true, labels: { color: "#fff" } },
+                title: { display: false }
+            },
+            elements: {
+                point: { radius: 3 }
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const coins = data.data.coins;
-            const btcData = coins.find(coin => coin.name === 'Bitcoin');
-            const ethData = coins.find(coin => coin.name === 'Ethereum');
-            const trxData = coins.find(coin => coin.name === 'TRON');
-            const ltcData = coins.find(coin => coin.name === 'Litecoin');
+        }
+    });
 
-            // Update BTC price
-            if (btcData) {
-                const btcPrice = parseFloat(btcData.price);
-                document.getElementById('btc-price').innerText = `$${btcPrice.toFixed(2)}`;
-            } else {
-                document.getElementById('btc-price').innerText = 'BTC not found';
+    // === DOUGHNUT CHART ===
+    const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+    new Chart(doughnutCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ["Desktop", "Tablet", "Mobile"],
+            datasets: [{
+                data: [74, 63, 27], // Replace with real data
+                backgroundColor: ["#28a745", "#17a2b8", "#ffc107"]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }, // Hide legend if you prefer the custom labels
+                title: { display: false }
             }
-
-            // Update ETH price
-            if (ethData) {
-                const ethPrice = parseFloat(ethData.price);
-                document.getElementById('eth-price').innerText = `$${ethPrice.toFixed(2)}`;
-            } else {
-                document.getElementById('eth-price').innerText = 'ETH not found';
-            }
-
-            // Update TRX price
-            if (trxData) {
-                const trxPrice = parseFloat(trxData.price);
-                document.getElementById('trx-price').innerText = `$${trxPrice.toFixed(2)}`;
-            } else {
-                document.getElementById('trx-price').innerText = 'TRX not found';
-            }
-
-            // Update LTC price
-            if (ltcData) {
-                const ltcPrice = parseFloat(ltcData.price);
-                document.getElementById('ltc-price').innerText = `$${ltcPrice.toFixed(2)}`;
-            } else {
-                document.getElementById('ltc-price').innerText = 'LTC not found';
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching prices:', error);
-            document.getElementById('btc-price').innerText = 'Error fetching BTC price';
-            document.getElementById('eth-price').innerText = 'Error fetching ETH price';
-            document.getElementById('trx-price').innerText = 'Error fetching TRX price';
-            document.getElementById('ltc-price').innerText = 'Error fetching LTC price';
-        });
-    }
-
-    // Fetch live prices every 30 seconds
-    setInterval(fetchLivePrices, 30000);
-    // Initial fetch
-    fetchLivePrices();
+        }
+    });
+});
 </script>
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+<!-- Live Prices Script -->
+<script>
+  const apiKey = 'coinrankingccb1f9fa3faa00602976ee13e42ad747132d9c6136b69225';
+  const coinsUrl = 'https://api.coinranking.com/v2/coins?limit=50&orderBy=marketCap&orderDirection=desc';
+
+  function fetchLivePrices() {
+    fetch(coinsUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': apiKey
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const coins = data.data.coins;
+      const btcData = coins.find(coin => coin.name === 'Bitcoin');
+      const ethData = coins.find(coin => coin.name === 'Ethereum');
+      const trxData = coins.find(coin => coin.name === 'TRON');
+      const ltcData = coins.find(coin => coin.name === 'Litecoin');
+
+      if (btcData) {
+        const btcPrice = parseFloat(btcData.price);
+        document.getElementById('btc-price').innerText = `$${btcPrice.toFixed(2)}`;
+      }
+      if (ethData) {
+        const ethPrice = parseFloat(ethData.price);
+        document.getElementById('eth-price').innerText = `$${ethPrice.toFixed(2)}`;
+      }
+      if (trxData) {
+        const trxPrice = parseFloat(trxData.price);
+        document.getElementById('trx-price').innerText = `$${trxPrice.toFixed(2)}`;
+      }
+      if (ltcData) {
+        const ltcPrice = parseFloat(ltcData.price);
+        document.getElementById('ltc-price').innerText = `$${ltcPrice.toFixed(2)}`;
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching prices:', error);
+    });
+  }
+
+  setInterval(fetchLivePrices, 30000);
+  fetchLivePrices();
+</script>
+
+<!-- Toggle Balance Script -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
       const toggleIcons = document.querySelectorAll(".toggle-balance-icon");
 
-      function updateUI(element, isHidden) {
-          const originalBalance = element.getAttribute("data-balance");
-
-          if (!originalBalance) return; // Ensure data-balance is present
-
-          element.textContent = isHidden ? "*******" : originalBalance;
-          element.setAttribute("data-hidden", isHidden.toString());
-      }
-
       toggleIcons.forEach(function (icon) {
           const targetId = icon.getAttribute("data-target");
-          const storageKey = icon.getAttribute("data-key");
           const balanceElement = document.getElementById(targetId);
-
-          if (!balanceElement) return; // Ensure the balance element exists
-
-          let storedState = localStorage.getItem(storageKey) || "false"; // Default to "false" if null
+          if (!balanceElement) return;
+          let storedState = localStorage.getItem("balanceHidden-savings") || "false";
           let isHidden = storedState === "true";
-
-          updateUI(balanceElement, isHidden);
-
+          balanceElement.textContent = isHidden ? "*******" : balanceElement.getAttribute("data-balance");
           icon.classList.toggle("fa-eye", !isHidden);
           icon.classList.toggle("fa-eye-slash", isHidden);
-
           icon.addEventListener("click", function () {
               const currentlyHidden = balanceElement.getAttribute("data-hidden") === "true";
               const newHidden = !currentlyHidden;
-
-              updateUI(balanceElement, newHidden);
-
+              balanceElement.textContent = newHidden ? "*******" : balanceElement.getAttribute("data-balance");
+              balanceElement.setAttribute("data-hidden", newHidden.toString());
               icon.classList.toggle("fa-eye", !newHidden);
               icon.classList.toggle("fa-eye-slash", newHidden);
-
-              localStorage.setItem(storageKey, newHidden.toString());
+              localStorage.setItem("balanceHidden-savings", newHidden.toString());
           });
       });
   });
 </script>
-
 
 {% endblock contents %}

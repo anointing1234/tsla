@@ -41,6 +41,12 @@ class Account(AbstractBaseUser , PermissionsMixin):  # Inherit from PermissionsM
     fullname = models.CharField(max_length=200)
     phone = models.CharField(max_length=15,)
     country = models.CharField(max_length=50,)
+    currency = models.CharField(max_length=10, choices=[  
+        ("USD", "US Dollar"), ("EUR", "Euro"), ("GBP", "British Pound"),
+        ("JPY", "Japanese Yen"), ("CAD", "Canadian Dollar"), ("AUD", "Australian Dollar"),
+        ("CHF", "Swiss Franc"), ("CNY", "Chinese Yuan"), ("INR", "Indian Rupee"),
+        ("BTC", "Bitcoin"), ("ETH", "Ethereum"), ("USDT", "Tether"),
+    ], default="USD")  # Default currency is USD
     profile_picture = models.ImageField(
         upload_to='profile_pics/', 
         blank=True, 

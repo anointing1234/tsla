@@ -16,48 +16,114 @@
     
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static  'style/css.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css.css' %}">
+
+    <style>
+        /* Floating Google Translator Button */
+        #translate-button {
+            position: fixed;
+            left: 10px;
+            bottom: 50px;
+            background-color:rgb(4, 13, 23);
+            color: white;
+            border:1px solid white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Language selection container */
+        #language-select {
+            position: fixed;
+            left: 10px;
+            bottom: 100px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            display: none; /* Hidden by default */
+            z-index: 1000;
+        }
+
+        /* Apply Button */
+        #apply-language {
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            #translate-button {
+                bottom: 30px;
+                left: 5px;
+            }
+
+            #language-select {
+                bottom: 80px;
+                left: 5px;
+                width: 180px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+    <!-- Floating Google Translate Button -->
+    <button id="translate-button">Language</button>
+    <div id="language-select">
+        <label for="select-language">Select Language:</label>
+        <div id="google_translate_element"></div>
+        <button id="apply-language">Apply</button>
+    </div>
 
+    {% include "../section/navbar.html" %} 
+    {% block contents %}{% endblock contents %} 
+    {% include "../section/footer.html" %} 
 
-     {% include "../section/navbar.html" %} 
-     {% block contents %}{% endblock contents %} 
-     {% include "../section/footer.html" %} 
-
-
-
-
-
-
-
-     <!-- Smartsupp Live Chat script -->
-<!-- Smartsupp Live Chat script -->
-<script type="text/javascript">
-    var _smartsupp = _smartsupp || {};
-    _smartsupp.key = '74cae9ecadc79dd3c0d23b0db7779b24cc00c570';
-    window.smartsupp||(function(d) {
-      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-      c.type='text/javascript';c.charset='utf-8';c.async=true;
-      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-    })(document);
+    <!-- Smartsupp Live Chat script -->
+    <script type="text/javascript">
+        var _smartsupp = _smartsupp || {};
+        _smartsupp.key = '74cae9ecadc79dd3c0d23b0db7779b24cc00c570';
+        window.smartsupp||(function(d) {
+          var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+          s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+          c.type='text/javascript';c.charset='utf-8';c.async=true;
+          c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+        })(document);
     </script>
 
+    <script>
+        document.getElementById('translate-button').addEventListener('click', function () {
+            var langBox = document.getElementById('language-select');
+            langBox.style.display = (langBox.style.display === 'block') ? 'none' : 'block';
+        });
 
-   </body>
-    
-        <script src="{% static 'ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js' %}"></script>
-        <script src="{% static 'maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'kit.fontawesome.com/a076d05399.js' %}"></script>
-        <script src="{% static 'script/js.js' %}"></script>
-        <script src="{% static 'widgets.coingecko.com/coingecko-coin-price-marquee-widget.js' %}"></script>
-    
-    
-        
-      
-     
-    <!-- Mirrored from eliteteslatradersfirm.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 13 Jul 2021 19:26:10 GMT -->
-    </html>        
+        document.getElementById('apply-language').addEventListener('click', function () {
+            document.getElementById('language-select').style.display = 'none';
+        });
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+    </script>
+
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'kit.fontawesome.com/a076d05399.js' %}"></script>
+    <script src="{% static 'script/js.js' %}"></script>
+    <script src="{% static 'widgets.coingecko.com/coingecko-coin-price-marquee-widget.js' %}"></script>
+
+</body>
+</html>

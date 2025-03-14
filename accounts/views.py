@@ -29,6 +29,7 @@ from requests.exceptions import ConnectionError
 import requests 
 import uuid
 # from accounts.form  
+import traceback
 # from .models import 
 import random
 from django.utils.crypto import get_random_string
@@ -46,21 +47,33 @@ from .models import  WalletAddress,PaymentGateway,DepositTransaction,WithdrawTra
 
 User = get_user_model()
 
+
 def register(request):
     if request.method == "POST":
         try:
-            # Parse JSON data (if sent as JSON)
+            # If data is sent as JSON
             if request.content_type == "application/json":
                 data = json.loads(request.body)
                 email = data.get("email")
                 password = data.get("password")
                 confirm_password = data.get("confirmPassword")
-            else:  # If form data (multipart/form-data)
+                first_name = data.get("first_name")
+                phone = data.get("phone")
+                country = data.get("country")
+                currency = data.get("currency")
+                language = data.get("language")  # Optional, if applicable
+            else:  # If form data is sent (multipart/form-data or application/x-www-form-urlencoded)
                 email = request.POST.get("user[email]")
                 password = request.POST.get("user[password]")
                 confirm_password = request.POST.get("user[confirmPassword]")
+                first_name = request.POST.get("user[first_name]")
+                phone = request.POST.get("user[phone]")
+                country = request.POST.get("user[country]")
+                currency = request.POST.get("user[currency]")
+                language = request.POST.get("user[language]")  # Optional, if provided
 
-            if not email or not password or not confirm_password:
+            # Validate required fields
+            if not all([first_name,phone, email, country, currency, password, confirm_password]):
                 return JsonResponse({'success': False, 'error': 'All fields are required!'})
 
             if password != confirm_password:
@@ -69,21 +82,74 @@ def register(request):
             if User.objects.filter(email=email).exists():
                 return JsonResponse({'success': False, 'error': 'Email is already in use!'})
 
-         
-            # Create and save user
-            user = User.objects.create_user(email=email,password=password)
+            # Create and save user with additional fields
+            user = User.objects.create_user(email=email, password=password)
+            user.fullname = first_name
+            user.phone = phone
+            user.country = country
+            user.currency = currency
+            # Optionally set language if your model has it
+            if language:
+                user.language = language
             user.save()
 
             # Log in the user
             login(request, user)
 
-            return JsonResponse({'success': True, 'message': 'Registration successful!'})
+            # Prepare welcome email details
+            subject = "Welcome to Tesla Legacy Capital Partners"
+            # Plain text version
+            message_text = (
+                f"Dear {first_name},\n\n"
+                "Welcome to Tesla Legacy Capital Partners! We are delighted to have you on board.\n\n"
+                "Explore our platform and start your journey towards smarter investments.\n\n"
+                "Best Regards,\n"
+                "Tesla Legacy Capital Partners Team"
+            )
+            # HTML version (professional and well-formatted)
+            message_html = f"""
+                <html>
+                  <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
+                    <div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd;">
+                      <h2 style="color: #0072ff; text-align: center;">Welcome to Tesla Legacy Capital Partners</h2>
+                      <p>Dear {first_name}</p>
+                      <p>
+                        Thank you for registering with <strong>Tesla Legacy Capital Partners</strong> – the leading trading platform in the USA.
+                        We are excited to help you explore new financial opportunities and achieve your investment goals.
+                      </p>
+                      <p>
+                        Your account has been successfully created. You can now log in and start exploring our features.
+                      </p>
+                      <p>
+                        If you have any questions or need assistance, please feel free to contact our support team.
+                      </p>
+                      <p style="margin-top: 30px;">Best Regards,<br>
+                         <em>Tesla Legacy Capital Partners Team</em>
+                      </p>
+                    </div>
+                  </body>
+                </html>
+            """
+
+            # Send welcome email to the registered user
+            send_mail(
+                subject,
+                message_text,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                html_message=message_html,
+                fail_silently=False,
+            )
+
+            return JsonResponse({'success': True, 'message': 'Registration successful! A welcome email has been sent.'})
 
         except Exception as e:
-            return JsonResponse({'success': False, 'error': f'Error: {str(e)}'})
+            # For debugging, you can log the traceback or error message
+            error_message = f"Error: {str(e)}"
+            traceback.print_exc()
+            return JsonResponse({'success': False, 'error': error_message})
 
     return render(request, 'forms/signup.html')
-
 
 
 

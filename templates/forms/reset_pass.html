@@ -234,6 +234,44 @@
 </script>
 
 
+
+<script>
+    function togglePassword(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    }
+    </script>
+    
+    <script>
+        var wa_btnSetting = {
+            btnColor: "#16BE45",
+            ctaText: "WhatsApp Us",
+            cornerRadius: 40,
+            marginBottom: 20,
+            marginLeft: 20,
+            marginRight: 20,
+            btnPosition: "left",
+            whatsAppNumber: "‪+19173840715‬",
+            welcomeMessage: "Hello",
+            zIndex: 999999,
+            btnColorScheme: "light",
+        };
+        window.onload = () => {
+            _waEmbed(wa_btnSetting);
+        };
+    </script>
+    
+    <script async src="https://d2mpatx37cqexb.cloudfront.net/delightchat-whatsapp-widget/embeds/embed.min.js"></script>
+    
     
 </body>
 
