@@ -85,44 +85,101 @@
 <div class="container">
   <div style="background-color:black;" class="page-inner  py-4">
     <!-- Statistics Cards -->
-    <div class="row">
-      <div class="col-sm-6 col-md-4">
-        <div class="card stat-card border border-white     border-2">
-          <div class="card-body">
-            <h5>Total Balance 
-              <i class="fa-solid fa-eye toggle-balance-icon" data-target="available-balance-credit-1" data-key="balanceHidden-savings" style="cursor:pointer;"></i>
-            </h5>
-            <h3 id="available-balance-credit-1" class="toggle-balance" data-hidden="true" data-balance="${{ request.user.balance.usdt_balance|intcomma }}">
-              ${{ request.user.balance.usdt_balance|intcomma }}
-            </h3>
+  
+        <!-- Total Balance Card -->
+        <div class="row justify-content-center">
+            <!-- Available Balance Card -->
+            <div class="col-sm-6 col-md-3">
+              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats  ">
+                <div class="card-body text-start">
+                  <div class="row align-items-center">
+                      <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                              <p class="card-category text-warning fw-bold">AVAILABLE BALANCE</p>
+                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.usdt_balance|intcomma }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-icon">
+                          <div class="icon-big text-center text-light  bubble-shadow-small">
+                          <i class="fas fa-dollar-sign fa-3x"></i>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Total Profits Card -->
+            <div class="col-sm-6 col-md-3">
+              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
+                <div class="card-body text-start">
+                  <div class="row align-items-center">
+                      <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                              <p class="card-categor text-light text-warning fw-bold">TOTAL PROFITS</p>
+                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.total_profits|intcomma }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-icon">
+                          <div class="icon-big text-center text-light bubble-shadow-small">
+                            <i class="fas fa-chart-line"></i>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Total Investments Card -->
+            <div class="col-sm-6 col-md-3">
+              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
+                <div class="card-body text-start">
+                  <div class="row align-items-center">
+                      <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                              <p class="card-category text-success">TOTAL INVESTMENTS</p>
+                              <h4 class="card-title text-light">{{ request.user.currency }} {{ total_investment|intcomma }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-icon">
+                          <div class="icon-big text-center text-light  bubble-shadow-small">
+                            <i class="fas fa-hand-holding-usd"></i>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Fourth Card (e.g., another stat) -->
+            <div class="col-sm-6 col-md-3">
+              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
+                <div class="card-body text-start">
+                  <div class="row align-items-center">
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                            <p class="card-category fw-bold text-info">ACCOUNT LEVEL</p>
+                            {% if plans %}
+                              {% for plan in plans %}
+                                <h4 class="card-title">{{ plan.plan }}</h4>
+                              {% endfor %}
+                            {% else %}
+                              <h4 class="card-title text-light">STARTER</h4>
+                            {% endif %}
+                          </div>                          
+                        </div>
+                        <div class="col-icon">
+                          <div class="icon-big text-center text-light bubble-shadow-small">
+                            <i class="fas fa-university"></i>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-4">
-        <div class="card stat-card border border-white     border-2">
-          <div class="card-body">
-            <h5>Total Profits 
-              <i class="fa-solid fa-eye toggle-balance-icon" data-target="available-balance-credit-2" data-key="balanceHidden-savings" style="cursor:pointer;"></i>
-            </h5>
-            <h3 id="available-balance-credit-2" class="toggle-balance" data-hidden="true" data-balance="${{ request.user.balance.total_profits|intcomma }}">
-              ${{ request.user.balance.total_profits|intcomma }}
-            </h3>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-4">
-        <div class="card stat-card border border-white     border-2">
-          <div class="card-body">
-            <h5>Total Investments 
-              <i class="fa-solid fa-eye toggle-balance-icon" data-target="available-balance-credit-3" data-key="balanceHidden-savings" style="cursor:pointer;"></i>
-            </h5>
-            <h3 id="available-balance-credit-3" class="toggle-balance" data-hidden="true" data-balance="${{ total_investment|intcomma }}">
-              ${{ total_investment|intcomma }}
-            </h3>
-          </div>
-        </div>
-      </div>
-    </div>
+          
+      
 
     <!-- TradingView Widget -->
     <div class="row mb-4">

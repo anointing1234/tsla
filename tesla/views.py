@@ -89,6 +89,7 @@ def login_view(request):
 
 def dash(request):
     if request.user.is_authenticated:
+        plan = Users_Investment.objects.filter(user=request.user).order_by('-start_date')
         investments_exist = Users_Investment.objects.filter(user=request.user).exists()
         if investments_exist:
             total_investment = Users_Investment.objects.filter(user=request.user).aggregate(total=Sum('total'))['total'] or 0.00
@@ -97,7 +98,11 @@ def dash(request):
         print(f"Total Investment for {request.user}: {total_investment}")  # Debugging
     else:
         total_investment = 0.00
-    return render(request,"dashboard/pages/index.html",{'total_investment': total_investment})             
+    return render(request,"dashboard/pages/index.html",
+                  {
+                      'total_investment': total_investment,
+                      'plans': plan,
+                      })             
 
 
 
