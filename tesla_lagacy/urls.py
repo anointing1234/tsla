@@ -21,6 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve 
 from django.conf.urls import handler404, handler500
+from tesla import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +29,8 @@ urlpatterns = [
     path('accounts/',include('accounts.urls')),
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
-
 ]
+
+
+handler404 = views.custom_404_view
+handler500 = views.custom_500_view

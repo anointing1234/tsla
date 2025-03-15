@@ -139,7 +139,15 @@ def withdraw_history_view(request):
     withdrawals = WithdrawTransaction.objects.filter(user=request.user)
     return render(request,'dashboard/pages/withdraw_history.html',{'withdrawals': withdrawals})
 
-   
+
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+def custom_500_view(request):
+    return render(request, '500.html', status=500)
+
+
 
 
 

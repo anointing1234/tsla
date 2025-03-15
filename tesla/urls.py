@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 from django.views.static import serve 
+from django.conf.urls import handler404, handler500
 
 
 urlpatterns = [ 
@@ -32,5 +33,6 @@ urlpatterns = [
 
 
 
- 
+handler404 = views.custom_404_view
+handler500 = views.custom_500_view 
 
