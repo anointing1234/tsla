@@ -189,10 +189,10 @@ EMAIL_USE_SSL = False
 
 
 UNFOLD = {
-    "SITE_HEADER": "AccessForexConcierge",
+    "SITE_HEADER": "Tesla Admin logins ",
     "SHOW_SIDEBAR": True,
-    "SITE_TITLE": "AccessForexConcierge",
-    "SITE_SUBHEADER": "AccessForexConcierge Admin Panel",
+    "SITE_TITLE": "Tesla Admin panel ",
+    "SITE_SUBHEADER": "Tesla Admin panel ",
     "SITE_URL": "/",
     "SITE_ICON": {
         "light": lambda request: static("british-trading-central.png"),

@@ -139,6 +139,11 @@ def withdraw_history_view(request):
     withdrawals = WithdrawTransaction.objects.filter(user=request.user)
     return render(request,'dashboard/pages/withdraw_history.html',{'withdrawals': withdrawals})
 
+def first_view(request):
+   return render(request,'dashboard/first_page.html')
+
+
+
 
 
 def custom_404_view(request, exception):
@@ -146,6 +151,8 @@ def custom_404_view(request, exception):
 
 def custom_500_view(request):
     return render(request, '500.html', status=500)
+
+
 
 
 

@@ -25,6 +25,7 @@ from tesla import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',include('tesla.urls')),
     path('en/',include('tesla.urls')),
     path('accounts/',include('accounts.urls')),
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),

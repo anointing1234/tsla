@@ -7,6 +7,7 @@ from django.conf.urls import handler404, handler500
 
 
 urlpatterns = [ 
+    path('',views.first_view,name="first"),
     path('home/',views.home_view,name="home"),
     path('faQ/',views.faQ_view,name="faQ"),
     path('contact/',views.contact_view,name="contact"),
