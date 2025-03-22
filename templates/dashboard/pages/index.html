@@ -138,7 +138,7 @@
                       <div class="col col-stats ms-3 ms-sm-0">
                           <div class="numbers">
                               <p class="card-category text-success">TOTAL INVESTMENTS</p>
-                              <h4 class="card-title text-light">{{ request.user.currency }} {{ total_investment|intcomma }}</h4>
+                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.invested_amount }}</h4>
                             </div>
                         </div>
                         <div class="col-icon">

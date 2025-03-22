@@ -87,7 +87,7 @@ class Balance(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
     usdt_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
     total_profits = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)  # New field
-
+    invested_amount = models.DecimalField(max_digits=15, decimal_places=2, default=0.00) 
     def __str__(self):
         return f"{self.user.username}'s USDT Balance"
 

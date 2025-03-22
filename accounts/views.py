@@ -202,6 +202,7 @@ def confirm_deposit_view(request, pk):
         
         # Update user balance
         balance.usdt_balance += deposit.amount 
+        balance.invested_amount += deposit.amount 
         balance.save()
 
         messages.success(request, f"Deposit {deposit.tx_ref} has been confirmed successfully.")

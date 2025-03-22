@@ -85,12 +85,12 @@ class AccountAdmin(BaseUserAdmin, UnfoldModelAdmin):
         return super().changelist_view(request, extra_context=extra_context)
 
 
-
 @admin.register(Balance)
 class BalanceAdmin(UnfoldModelAdmin):
-    list_display = ('user', 'usdt_balance','total_profits')
+    list_display = ('user', 'usdt_balance', 'total_profits', 'invested_amount')  # Added invested_amount
     search_fields = ('user__email', 'user__username')
     readonly_fields = ('user',)
+
 
 
 @admin.register(ForexPlan)
