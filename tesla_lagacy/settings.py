@@ -258,11 +258,11 @@ UNFOLD = {
                          "icon": "wallet",
                          "link": reverse_lazy("admin:accounts_walletaddress_changelist"),
                      },
-                     {
-                         "title": _("Referrals"),
-                         "icon": "person_add",
-                         "link": reverse_lazy("admin:accounts_referral_changelist"),
-                     },
+                    #  {
+                    #      "title": _("Referrals"),
+                    #      "icon": "person_add",
+                    #      "link": reverse_lazy("admin:accounts_referral_changelist"),
+                    #  },
                     
                 ],
             },
