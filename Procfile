@@ -1,1 +1,0 @@
-web: gunicorn tesla_lagacy.wsgi --log-file -
