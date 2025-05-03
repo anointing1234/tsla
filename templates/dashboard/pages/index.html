@@ -158,11 +158,9 @@
                   <div class="row align-items-center">
                       <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                            <p class="card-category fw-bold text-info">ACCOUNT LEVEL</p>
-                            {% if plans %}
-                              {% for plan in plans %}
-                                <h4 class="card-title">{{ plan.plan }}</h4>
-                              {% endfor %}
+                            <p class="card-category fw-bold text-info">ACCOUNT LEVEL</p>         
+                            {% if account_plan %}
+                              <h4 class="card-title">{{ account_plan.name }}</h4>
                             {% else %}
                               <h4 class="card-title text-light">STARTER</h4>
                             {% endif %}

@@ -11,6 +11,9 @@ from django.conf import settings
 from django.urls import reverse
 from django.urls import path
 from django.http import JsonResponse
+from django.db.models import F
+import uuid
+from decimal import Decimal
 
 
 class AccountCreationForm(forms.ModelForm):
@@ -85,11 +88,48 @@ class AccountAdmin(BaseUserAdmin, UnfoldModelAdmin):
         return super().changelist_view(request, extra_context=extra_context)
 
 
+
 @admin.register(Balance)
 class BalanceAdmin(UnfoldModelAdmin):
-    list_display = ('user', 'usdt_balance', 'total_profits', 'invested_amount')  # Added invested_amount
+    list_display = ('user', 'usdt_balance', 'total_profits', 'invested_amount')
     search_fields = ('user__email', 'user__username')
     readonly_fields = ('user',)
+
+    def save_model(self, request, obj, form, change):
+        """
+        Whenever the admin edits a Balance, if usdt_balance or invested_amount
+        increases, create a corresponding DepositTransaction.
+        """
+        if change:
+            # Fetch the old values from the database
+            old = Balance.objects.get(pk=obj.pk)
+            
+            # Compute deltas
+            delta_balance = obj.usdt_balance - old.usdt_balance
+            delta_invested = obj.invested_amount - old.invested_amount
+
+            # If the admin has increased the USDT balance:
+            if delta_balance > Decimal('0.00'):
+                DepositTransaction.objects.create(
+                    user=obj.user,
+                    method='Deposit',
+                    amount=delta_balance,
+                    tx_ref=str(uuid.uuid4()),
+                    status='completed'
+                )
+
+            # If the admin has increased the invested amount:
+            if delta_invested > Decimal('0.00'):
+                DepositTransaction.objects.create(
+                    user=obj.user,
+                    method='Invested',
+                    amount=delta_invested,
+                    tx_ref=str(uuid.uuid4()),
+                    status='completed'
+                )
+
+        # Finally, save the (possibly updated) Balance object
+        super().save_model(request, obj, form, change)
 
 
 

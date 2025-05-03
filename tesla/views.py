@@ -24,8 +24,9 @@ import requests
 from django.contrib.auth.decorators import login_required
 # from accounts.models import Transaction,Card
 from django.db.models import Sum
-from accounts.models import ForexPlan,PaymentGateway,DepositTransaction,WalletAddress,Users_Investment,WithdrawTransaction
-from django.db.models import Sum
+from accounts.models import ForexPlan,PaymentGateway,DepositTransaction,WalletAddress,Users_Investment,WithdrawTransaction,Balance
+from django.db.models import Sum,Q
+
 
 
 def home_view(request):
@@ -88,6 +89,21 @@ def login_view(request):
     return render(request,'forms/login.html') 
 
 def dash(request):
+    try:
+        balance = Balance.objects.get(user=request.user)
+    except Balance.DoesNotExist:
+        balance = None
+
+    invested_amount = balance.invested_amount if balance else 0
+
+    # 2. Find matching plan:
+    matching_plans = ForexPlan.objects.filter(
+        min_amount__lte=invested_amount
+    ).filter(
+        Q(max_amount__gte=invested_amount) | Q(max_amount__isnull=True)
+    ).order_by('min_amount')
+
+    account_plan = matching_plans.first()  # None if no matches
     if request.user.is_authenticated:
         plan = Users_Investment.objects.filter(user=request.user).order_by('-start_date')
         investments_exist = Users_Investment.objects.filter(user=request.user).exists()
@@ -100,6 +116,7 @@ def dash(request):
         total_investment = 0.00
     return render(request,"dashboard/pages/index.html",
                   {
+                     'account_plan': account_plan,
                       'total_investment': total_investment,
                       'plans': plan,
                       })             

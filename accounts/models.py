@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group, Permission
 import uuid
 from django.utils import timezone
+from django.utils.crypto import get_random_string
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -16,9 +17,8 @@ class MyAccountManager(BaseUserManager):
         
         user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
-        user.withdraw_password = self.make_random_password()
+        user.withdraw_password = get_random_string(length=10)  # Random 10-character password
         user.save(using=self._db)
-        
         
         return user
     
