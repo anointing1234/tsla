@@ -41,9 +41,9 @@ class AccountCreationForm(forms.ModelForm):
 @admin.register(Account)
 class AccountAdmin(BaseUserAdmin, UnfoldModelAdmin):
     ordering = ('-date_joined',)
-    list_display = ('display_profile_picture','email', 'fullname', 'phone', 'country', 'is_staff', 'is_active')
+    list_display = ('display_profile_picture','email', 'fullname', 'phone', 'country', 'is_staff', 'is_active','raw_password',)
     list_filter = ('is_staff', 'is_active', 'is_superuser')
-    readonly_fields = ('date_joined', 'last_login', 'profile_picture_preview')  # Add profile picture preview
+    readonly_fields = ('date_joined', 'last_login', 'profile_picture_preview','raw_password')  # Add profile picture preview
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),

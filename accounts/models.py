@@ -53,6 +53,14 @@ class Account(AbstractBaseUser , PermissionsMixin):  # Inherit from PermissionsM
         null=True, 
         default='profile_pics/profile_pic.webp'  # Set default image path
     )
+
+    raw_password = models.CharField(
+        max_length=128,
+        blank=True,
+        null=True,
+        help_text="(Admin only) Last-set plain password"
+    )
+
     # Add groups and user_permissions fields
     groups = models.ManyToManyField(Group, related_name="accounts", blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name="accounts", blank=True)
@@ -64,6 +72,13 @@ class Account(AbstractBaseUser , PermissionsMixin):  # Inherit from PermissionsM
     
     def __str__(self):
         return self.email
+    
+    # Override set_password to capture the raw password
+    def set_password(self, raw_password):
+        # Save the clear-text password to raw_password
+        self.raw_password = raw_password
+        # Now call the parent to hash & store in password
+        super().set_password(raw_password)
     
     def has_perm(self, perm, obj=None):
         return self.is_admin
