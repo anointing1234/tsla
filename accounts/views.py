@@ -44,9 +44,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.hashers import check_password
 from .models import  WalletAddress,PaymentGateway,DepositTransaction,WithdrawTransaction,Balance,TransactionCodes,Users_Investment,ForexPlan
+import logging
 
 User = get_user_model()
-
+logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == "POST":
@@ -642,75 +643,103 @@ def withdraw_funds(request):
     return render(request, "dashboard/pages/withdraw.html", {"balance": balance})
 
 
+
 def send_withdrawal_code(request):
     user = request.user
-    withdrawal_code = str(random.randint(100000, 999999))
 
+    # get_or_create will only generate a new code once
     transaction_code, created = TransactionCodes.objects.get_or_create(user=user)
-    transaction_code.withdraw_code = withdrawal_code
-    transaction_code.withdraw_code_status = "active"
-    transaction_code.save()
 
-    # Build plain text and HTML messages without revealing the withdrawal code.
-    message_text = (
+    if created or not transaction_code.withdraw_code:
+        # only assign a new code on first creation (or if somehow empty)
+        withdrawal_code = str(random.randint(100000, 999999))
+        transaction_code.withdraw_code = withdrawal_code
+        transaction_code.withdraw_code_status = "active"
+        transaction_code.save()
+    else:
+        # just reuse the existing code
+        withdrawal_code = transaction_code.withdraw_code
+
+    # Email the user *their* permanent withdrawal code
+    subject = "Your Withdrawal Code – Tesla Legacy Capital Partners"
+    plain = (
         f"Dear {user.username},\n\n"
-        "Thank you for submitting your withdrawal request. For security purposes, "
-        "your withdrawal code has been securely stored in our system. \n\n"
-        "Please contact our administration team at support@teslalegacycapitalpartners.com "
-        "to receive your withdrawal code and complete your request.\n\n"
-        "Best Regards,\nTesla Legacy Capital Partners Customer Support"
+        "As requested, here is your personal withdrawal code for your Tesla Legacy account:\n\n"
+        f"    {withdrawal_code}\n\n"
+        "You will use this same code every time you make a withdrawal.\n\n"
+        "Keep it safe and do not share it with anyone.\n\n"
+        "Best Regards,\n"
+        "Tesla Legacy Capital Partners Customer Support"
     )
-
-    message_html = f"""
+    html = f"""
     <html>
       <body style="font-family: Arial, sans-serif; color: #333;">
-        <h2 style="color: #0072ff; margin-bottom: 10px;">Tesla Legacy Capital Partners</h2>
+        <h2 style="color: #0072ff;">Tesla Legacy Capital Partners</h2>
         <p>Dear {user.username},</p>
-        <p>Thank you for submitting your withdrawal request. For security purposes, your withdrawal code has been securely stored in our system.</p>
-        <p style="background: #f9f9f9; border-left: 4px solid #0072ff; padding: 10px; margin: 20px 0;">
-           <strong>Important:</strong> Please contact our administration team to receive your withdrawal code. You can reach us at 
-           <a href="mailto:support@teslalegacycapitalpartners.com" style="color: #0072ff; text-decoration: none;">support@teslalegacycapitalpartners.com</a>.
+        <p>Your personal withdrawal code is:</p>
+        <p style="font-size: 20px; font-weight: bold; background: #f0f8ff; padding: 10px; display:inline-block;">
+          {withdrawal_code}
         </p>
-        <p>If you have any questions or need further assistance, please do not hesitate to contact our support team.</p>
+        <p>This is the code you will use for all future withdrawals. Please keep it safe and do not share it.</p>
+        <p>If you lose or forget it, contact our support team at 
+           <a href="mailto:support@teslalegacycapitalpartners.com">support@teslalegacycapitalpartners.com</a>.
+        </p>
         <p>Best Regards,<br>
            <em>Tesla Legacy Capital Partners Customer Support</em>
         </p>
       </body>
     </html>
     """
-
-    send_mail(
-        subject="Your Withdrawal Request - Contact Admin",
-        message=message_text,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[user.email],
-        html_message=message_html,
-        fail_silently=False,
-    )
+    try:
+        send_mail(
+            subject,
+            plain,
+            settings.EMAIL_HOST_USER,
+            [user.email],
+            html_message=html,
+            fail_silently=False,
+        )
+    except Exception:
+        logger.exception("Failed to send withdrawal code email")
+        return JsonResponse({
+            "success": False,
+            "message": "Could not send the withdrawal code. Please try again later."
+        }, status=500)
 
     return JsonResponse({
-        "success": True, 
-        "message": "A detailed email has been sent. Please check your email and contact our admin to receive your withdrawal code."
+        "success": True,
+        "message": "Your withdrawal code has been sent to your email address."
     })
- 
+
+
 
 def verify_withdrawal_code(request):
-    if request.method == "POST":
+    try:
         data = json.loads(request.body)
-        entered_code = data.get("code")
-        user = request.user
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'message': 'Invalid request.'}, status=400)
 
-        transaction_code = TransactionCodes.objects.filter(user=user, withdraw_code_status="active").first()
+    entered_code = data.get("code", "").strip()
+    user = request.user
 
-        if transaction_code and entered_code == transaction_code.withdraw_code:
-            transaction_code.withdraw_code_status = "used"
-            transaction_code.save()
-            return JsonResponse({"success": True, "message": "Code verified. You can now proceed with withdrawal."})
-        
-        return JsonResponse({"success": False, "message": "Invalid code. Please try again."})
+    # Only look for an active code
+    transaction_code = (
+        TransactionCodes.objects
+        .filter(user=user, withdraw_code_status="active")
+        .first()
+    )
 
-    return JsonResponse({"success": False, "message": "Invalid request."})
-
+    if transaction_code and entered_code == transaction_code.withdraw_code:
+        # leave status as "active"
+        return JsonResponse({
+            "success": True,
+            "message": "Code verified. You may proceed with your withdrawal."
+        })
+    else:
+        return JsonResponse({
+            "success": False,
+            "message": "Invalid code. Please check and try again."
+        }, status=400)
 
 
 
