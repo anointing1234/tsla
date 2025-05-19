@@ -34,7 +34,6 @@
 
 <div class="container-fluid gradient-bg mt-5">
     <div class="centered-container">
-        <!-- Updated card with larger width -->
         <div class="card form-card mt-5 pt-5" style="width: 100%; max-width: 600px;">
             <div class="card-body">
                 <div class="card-header text-center bg-dark text-white py-2">
@@ -69,10 +68,10 @@
                         <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
-                                <input type="number" class="form-control" name="withdraw_amount" required placeholder="Withdrawal Amount" step="0.01">
+                                <input type="number" class="form-control" name="withdraw_amount" required placeholder="Withdrawal Amount" step="0.01" min="0.01">
                             </div>
                         </div>
-                        <!-- Request Code Button -->
+                        <!-- Withdraw Button -->
                         <div class="mb-3">
                             <button type="button" id="request-code" class="btn btn-dark w-100">Withdraw</button>
                         </div>
@@ -83,7 +82,11 @@
     </div>
 </div>
 
+<!-- jQuery (make sure you have this loaded) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
+    // Build a JS map of currency → address
     const walletAddresses = {
         {% for wallet in wallet_addresses %}
             "{{ wallet.currency }}": "{{ wallet.address }}",
@@ -91,32 +94,50 @@
     };
 
     function updateWithdrawAddress() {
-        let withdrawCurrency = document.getElementById("withdrawCurrency").value;
-        let withdrawAddressField = document.getElementById("withdrawAddress");
+        const withdrawCurrency = document.getElementById("withdrawCurrency").value;
+        const withdrawAddressField = document.getElementById("withdrawAddress");
         withdrawAddressField.value = walletAddresses[withdrawCurrency] || '';
     }
 
     function copyWithdrawAddress() {
-        let withdrawAddressField = document.getElementById("withdrawAddress");
-        navigator.clipboard.writeText(withdrawAddressField.value)
-            .then(() => {
-                alert("Withdrawal address copied!");
-            })
-            .catch(err => console.error("Error copying withdrawal address:", err));
+        const addr = document.getElementById("withdrawAddress").value;
+        if (!addr) return;
+        navigator.clipboard.writeText(addr)
+            .then(() => alert("Withdrawal address copied!"))
+            .catch(err => console.error("Copy failed:", err));
     }
 
-    // Set default withdrawal address on page load
+    // Initialize address field on load
     window.onload = updateWithdrawAddress;
 </script>
 
-<!-- SweetAlert2 CSS & JS -->
+<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     document.getElementById("request-code").addEventListener("click", function () {
-        let button = this;
-        button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
-        button.disabled = true;
+        const btn = this;
+        const currency = document.getElementById("withdrawCurrency").value;
+        const amount   = document.querySelector("input[name='withdraw_amount']").value;
+
+        // --- Validation ---
+        if (!currency) {
+            return Swal.fire({
+                icon: "warning",
+                title: "Oops!",
+                text: "Please select a currency before withdrawing.",
+            });
+        }
+        if (!amount || parseFloat(amount) <= 0) {
+            return Swal.fire({
+                icon: "warning",
+                title: "Oops!",
+                text: "Please enter a withdrawal amount greater than zero.",
+            });
+        }
+
+        // --- Send code AJAX ---
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+        btn.disabled = true;
 
         $.ajax({
             url: "{% url 'send_withdrawal_code' %}",
@@ -149,8 +170,8 @@
                 });
             },
             complete: function () {
-                button.innerHTML = "Withdraw";
-                button.disabled = false;
+                btn.innerHTML = "Withdraw";
+                btn.disabled = false;
             }
         });
     });
@@ -172,16 +193,12 @@
                     },
                     body: JSON.stringify({ code: code })
                 })
-                .then(response => response.json())
+                .then(res => res.json())
                 .then(data => {
-                    if (!data.success) {
-                        throw new Error(data.message);
-                    }
+                    if (!data.success) throw new Error(data.message);
                     return data;
                 })
-                .catch(error => {
-                    Swal.showValidationMessage(error.message);
-                });
+                .catch(err => Swal.showValidationMessage(err.message));
             }
         }).then((result) => {
             if (result.isConfirmed) {
@@ -192,12 +209,13 @@
                     timer: 2000,
                     showConfirmButton: false
                 });
-                let formData = $("form").serialize();
+                // submit the form
+                const formData = $("form").serialize();
                 $.ajax({
                     url: "{% url 'withdraw_funds' %}",
                     type: "POST",
                     data: formData,
-                    success: function(response) {
+                    success: function() {
                         Swal.fire({
                             icon: "success",
                             title: "Withdrawal Successful!",
@@ -208,7 +226,7 @@
                             window.location.href = "{% url 'withdraw_history' %}";
                         });
                     },
-                    error: function(error) {
+                    error: function() {
                         Swal.fire({
                             icon: "error",
                             title: "Withdrawal Failed!",
@@ -220,7 +238,5 @@
         });
     }
 </script>
-
-
 
 {% endblock contents %}
