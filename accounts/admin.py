@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from unfold.admin import ModelAdmin as UnfoldModelAdmin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from .models import Account, Balance ,ForexPlan,DepositTransaction,WithdrawTransaction,WalletAddress, Referral, PaymentGateway,Users_Investment,TransactionCodes
+from .models import Account, Balance ,ForexPlan,DepositTransaction,WithdrawTransaction,WalletAddress, Referral, PaymentGateway,Users_Investment,TransactionCodes,BankWithdrawal
 from django.utils.html import format_html
 from django.conf import settings
 from django.urls import reverse
@@ -256,3 +256,48 @@ admin.site.site_header = "Transaction Codes Management"
 admin.site.site_title = "Transaction Codes Admin"
 admin.site.index_title = "Manage Transaction Codes"
 
+
+
+
+@admin.action(description="Mark selected withdrawals as Confirmed (Successful)")
+def mark_as_confirmed(modeladmin, request, queryset):
+    queryset.update(status="Successful")
+
+@admin.action(description="Mark selected withdrawals as Declined (Rejected)")
+def mark_as_declined(modeladmin, request, queryset):
+    queryset.update(status="Rejected")
+
+
+@admin.register(BankWithdrawal)
+class BankWithdrawalAdmin(UnfoldModelAdmin):
+    list_display = ("user", "bank_name", "fullname", "account_number", "currency", "status", "created_at")
+    list_filter = ("status", "currency", "created_at")
+    search_fields = ("user__email", "bank_name", "account_number", "fullname")
+    actions = [mark_as_confirmed, mark_as_declined]
+    readonly_fields = ("user", "bank_name", "fullname", "account_number", "swift_code", "currency", "created_at")
+
+    def has_change_permission(self, request, obj=None):
+        if obj and obj.status in ["Successful", "Rejected"]:
+            return False
+        return super().has_change_permission(request, obj)
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+        # Update the corresponding WithdrawTransaction with withdraw_address='Bank Transfer'
+        WithdrawTransaction.objects.filter(
+            user=obj.user,
+            amount=obj.amount,
+            currency=obj.currency,
+            withdraw_address="Bank Transfer",
+            status="pending"
+        ).update(status=self._map_bank_status(obj.status))
+
+    def _map_bank_status(self, bank_status):
+        # Maps bank withdrawal status to WithdrawTransaction status
+        mapping = {
+            "Pending": "pending",
+            "Successful": "completed",
+            "Rejected": "failed"
+        }
+        return mapping.get(bank_status, "pending")  # fallback to pending

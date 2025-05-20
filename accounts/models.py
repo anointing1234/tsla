@@ -272,4 +272,44 @@ class TransactionCodes(models.Model):
         return f"{self.user.username}'s Transaction Codes"
                 
 
-        
+
+
+
+class BankWithdrawal(models.Model):
+    """Model to store user's bank withdrawal details."""
+
+    CURRENCY_CHOICES = [
+        ("USD", "US Dollar"),
+        ("EUR", "Euro"),
+        ("GBP", "British Pound"),
+        ("JPY", "Japanese Yen"),
+        ("CAD", "Canadian Dollar"),
+        ("AUD", "Australian Dollar"),
+        ("CHF", "Swiss Franc"),
+        ("CNY", "Chinese Yuan"),
+        ("INR", "Indian Rupee"),
+    ]
+
+    STATUS_CHOICES = [
+        ("Pending", "Pending"),
+        ("Processing", "Processing"),
+        ("Successful", "Successful"),
+        ("Rejected", "Rejected"),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bank_withdrawals")
+    bank_name = models.CharField(max_length=100)
+    fullname = models.CharField(max_length=200)
+    amount = models.DecimalField(max_digits=15,decimal_places=2,default="0.00")
+    account_number = models.CharField(max_length=50)
+    swift_code = models.CharField(max_length=20)
+    currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Pending")  # <- New status field
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def mark_as_successful(self):
+        self.status = "Successful"
+        self.save()
+
+    def __str__(self):
+        return f"{self.user.email} - {self.bank_name} ({self.currency}) - {self.status}"

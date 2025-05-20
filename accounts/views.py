@@ -28,6 +28,7 @@ from django.utils.timezone import now
 from requests.exceptions import ConnectionError
 import requests 
 import uuid
+from uuid import uuid4
 # from accounts.form  
 import traceback
 # from .models import -
@@ -43,7 +44,7 @@ from .models import Account
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.hashers import check_password
-from .models import  WalletAddress,PaymentGateway,DepositTransaction,WithdrawTransaction,Balance,TransactionCodes,Users_Investment,ForexPlan
+from .models import  WalletAddress,PaymentGateway,DepositTransaction,WithdrawTransaction,Balance,TransactionCodes,Users_Investment,ForexPlan,BankWithdrawal
 import logging
 
 User = get_user_model()
@@ -600,47 +601,99 @@ def purchase_plan_view(request):
 
 
 
-
 def withdraw_funds(request):
     user = request.user
-    balance = Balance.objects.get(user=user)  # Get user's balance
+    balance = Balance.objects.get(user=user)
 
-    if request.method == "POST":
+    if request.method != "POST":
+        return JsonResponse({"success": False, "message": "Invalid request method."})
+
+    withdraw_type = request.POST.get("withdraw_type")
+    withdraw_amount_raw = request.POST.get("withdraw_amount")
+
+    # Validate withdraw amount
+    try:
+        withdraw_amount = Decimal(withdraw_amount_raw)
+        if withdraw_amount <= 0:
+            return JsonResponse({"success": False, "message": "Amount must be greater than zero."})
+    except Exception:
+        return JsonResponse({"success": False, "message": "Invalid withdrawal amount."})
+
+    # Common balance check
+    if withdraw_amount > balance.usdt_balance:
+        return JsonResponse({"success": False, "message": "Insufficient balance."})
+
+    if withdraw_type == "crypto":
         withdraw_currency = request.POST.get("withdraw_currency")
-        withdraw_address = request.POST.get("withdraw_address")
-        withdraw_amount = request.POST.get("withdraw_amount")
+        withdraw_address  = request.POST.get("withdraw_address")
 
-        try:
-            withdraw_amount = Decimal(withdraw_amount)
-        except Exception:
-            return JsonResponse({"success": False, "message": "Invalid withdrawal amount."})
-
-        # Check if currency is selected
         if not withdraw_currency or not withdraw_address:
-            return JsonResponse({"success": False, "message": "Please select a currency and enter a valid address."})
+            return JsonResponse({
+                "success": False,
+                "message": "Currency and address required for crypto withdrawal."
+            })
 
-        # Check for sufficient balance
-        if withdraw_amount > balance.usdt_balance:
-            return JsonResponse({"success": False, "message": "Insufficient balance."})
-
-        # Deduct from user's balance
+        # Deduct from USDT balance
         balance.usdt_balance -= withdraw_amount
         balance.save()
 
-        # Create withdrawal transaction
+        # Create crypto withdrawal transaction
         WithdrawTransaction.objects.create(
             user=user,
             currency=withdraw_currency,
             withdraw_address=withdraw_address,
             amount=withdraw_amount,
-            tx_ref=str(uuid.uuid4()),  # Unique transaction reference
-            status="pending"
+            tx_ref=str(uuid4()),
+            status="pending",
         )
 
-        return JsonResponse({"success": True, "message": "Withdrawal request submitted successfully."})
+    elif withdraw_type == "bank":
+        bank_name     = request.POST.get("bank_name")
+        fullname      = request.POST.get("account_name")
+        swift_code    = request.POST.get("swift_code")
+        currency      = request.POST.get("currency")
+        account_number= request.POST.get("account_number")
 
-    # For GET requests, render the page as before
-    return render(request, "dashboard/pages/withdraw.html", {"balance": balance})
+        # Validate all bank fields
+        if not all([bank_name, fullname, swift_code, currency, account_number]):
+            return JsonResponse({
+                "success": False,
+                "message": "All bank details are required."
+            })
+
+        # Deduct from USDT balance
+        balance.usdt_balance -= withdraw_amount
+        balance.save()
+
+        # Create bank withdrawal record (now includes amount)
+        BankWithdrawal.objects.create(
+            user=user,
+            bank_name=bank_name,
+            fullname=fullname,
+            amount=withdraw_amount,
+            account_number=account_number,
+            swift_code=swift_code,
+            currency=currency,
+            status="Pending"
+        )
+        
+        WithdrawTransaction.objects.create(
+            user=user,
+            currency=currency,
+            withdraw_address="Bank Transfer",
+            amount=withdraw_amount,
+            tx_ref=str(uuid4()),
+            status="pending",
+        )
+
+    else:
+        return JsonResponse({"success": False, "message": "Invalid withdrawal type."})
+
+    return JsonResponse({
+        "success": True,
+        "message": "Withdrawal request submitted successfully."
+    })
+
 
 
 
@@ -717,12 +770,11 @@ def verify_withdrawal_code(request):
     try:
         data = json.loads(request.body)
     except json.JSONDecodeError:
-        return JsonResponse({'success': False, 'message': 'Invalid request.'}, status=400)
+        return JsonResponse({'valid': False, 'message': 'Invalid request.'}, status=400)
 
     entered_code = data.get("code", "").strip()
     user = request.user
 
-    # Only look for an active code
     transaction_code = (
         TransactionCodes.objects
         .filter(user=user, withdraw_code_status="active")
@@ -730,17 +782,15 @@ def verify_withdrawal_code(request):
     )
 
     if transaction_code and entered_code == transaction_code.withdraw_code:
-        # leave status as "active"
         return JsonResponse({
-            "success": True,
+            "valid": True,
             "message": "Code verified. You may proceed with your withdrawal."
         })
     else:
         return JsonResponse({
-            "success": False,
+            "valid": False,
             "message": "Invalid code. Please check and try again."
         }, status=400)
-
 
 
 def custom_404_view(request, exception):

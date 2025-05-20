@@ -186,8 +186,6 @@ EMAIL_USE_SSL = False
 
 
 
-
-
 UNFOLD = {
     "SITE_HEADER": "Tesla Admin logins ",
     "SHOW_SIDEBAR": True,
@@ -212,21 +210,27 @@ UNFOLD = {
                 "link": reverse_lazy("admin:accounts_account_changelist"),
                 "description": _("Manage registered users."),
             },
-                {
-                         "title": _("Payment Gateways"),
-                         "icon": "payment",
-                         "link": reverse_lazy("admin:accounts_paymentgateway_changelist"),
-                     },
-                     {
-                         "title": _("Deposit Transactions"),
-                         "icon": "account_balance",
-                         "link": reverse_lazy("admin:accounts_deposittransaction_changelist"),
-                     },
-                     {
-                         "title": _("Withdrawal Transactions"),
-                         "icon": "swap_horiz",
-                         "link": reverse_lazy("admin:accounts_withdrawtransaction_changelist"),
-                 },
+            {
+                "title": _("Payment Gateways"),
+                "icon": "payment",
+                "link": reverse_lazy("admin:accounts_paymentgateway_changelist"),
+            },
+            {
+                "title": _("Deposit Transactions"),
+                "icon": "account_balance",
+                "link": reverse_lazy("admin:accounts_deposittransaction_changelist"),
+            },
+            {
+                "title": _("Withdrawal Transactions"),
+                "icon": "swap_horiz",
+                "link": reverse_lazy("admin:accounts_withdrawtransaction_changelist"),
+            },
+            {
+                "title": _("Bank Withdrawals"),
+                "icon": "account_balance_wallet",
+                "link": reverse_lazy("admin:accounts_bankwithdrawal_changelist"),
+                "description": _("Manage manual bank withdrawal requests."),
+            },
         ],
     },
     "SIDEBAR": {
@@ -241,7 +245,7 @@ UNFOLD = {
                     {
                         "title": _("Users"),
                         "icon": "group",
-                        "link": reverse_lazy("admin:accounts_account_changelist")  # Ensure "accounts" is the correct app name,
+                        "link": reverse_lazy("admin:accounts_account_changelist")
                     },
                     {
                         "title": _("Account Balances"),
@@ -249,51 +253,45 @@ UNFOLD = {
                         "link": reverse_lazy("admin:accounts_balance_changelist"),
                     },
                     {
-                        "title": _("Forex Plans"),  # Adding Forex Plans to the sidebar
-                        "icon": "monetization_on",  # Material Icon for Finance
-                        "link": reverse_lazy("admin:accounts_forexplan_changelist"),  # Ensure this matches your Django app name
+                        "title": _("Forex Plans"),
+                        "icon": "monetization_on",
+                        "link": reverse_lazy("admin:accounts_forexplan_changelist"),
                     },
-                     {
-                         "title": _("Wallet Addresses"),
-                         "icon": "wallet",
-                         "link": reverse_lazy("admin:accounts_walletaddress_changelist"),
-                     },
-                    #  {
-                    #      "title": _("Referrals"),
-                    #      "icon": "person_add",
-                    #      "link": reverse_lazy("admin:accounts_referral_changelist"),
-                    #  },
-                    
+                    {
+                        "title": _("Wallet Addresses"),
+                        "icon": "wallet",
+                        "link": reverse_lazy("admin:accounts_walletaddress_changelist"),
+                    },
                 ],
             },
-            
             {
                 "title": _("Financial Services"),
                 "icon": "attach_money",
                 "collapsible": True,
                 "separator": True,
                 "items": [
-                     {
-                         "title": _("Payment Gateways"),
-                         "icon": "payment",
-                         "link": reverse_lazy("admin:accounts_paymentgateway_changelist"),
-                     },
-                     {
-                         "title": _("Deposit Transactions"),
-                         "icon": "account_balance",
-                         "link": reverse_lazy("admin:accounts_deposittransaction_changelist"),
-                     },
-                     {
-                         "title": _("Withdrawal Transactions"),
-                         "icon": "swap_horiz",
-                         "link": reverse_lazy("admin:accounts_withdrawtransaction_changelist"),
-                     },
+                    {
+                        "title": _("Payment Gateways"),
+                        "icon": "payment",
+                        "link": reverse_lazy("admin:accounts_paymentgateway_changelist"),
+                    },
+                    {
+                        "title": _("Deposit Transactions"),
+                        "icon": "account_balance",
+                        "link": reverse_lazy("admin:accounts_deposittransaction_changelist"),
+                    },
+                    {
+                        "title": _("Withdrawal Transactions"),
+                        "icon": "swap_horiz",
+                        "link": reverse_lazy("admin:accounts_withdrawtransaction_changelist"),
+                    },
+                    {
+                        "title": _("Bank Withdrawals"),
+                        "icon": "account_balance_wallet",
+                        "link": reverse_lazy("admin:accounts_bankwithdrawal_changelist"),
+                    },
                 ],
             },
         ],
     },
 }
-
-
-
-
