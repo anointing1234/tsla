@@ -1,0 +1,272 @@
+{% extends '../core/base.html' %}
+{% load static %}
+{% block contents %}
+{% load humanize %}
+
+<style>
+    .nav-tabs .nav-link.active {
+        background-color:rgb(16, 17, 18);
+        color: white;
+    }
+    .missing-field {
+        color: red;
+        font-size: 14px;
+    }
+</style>
+
+
+
+<div class="container">
+    <div style="background-color:black;" class="page-inner ">
+        <div class="row mb-5 pb-5 p-0">
+            <div class="row mx-3">
+                <div class="container-fluid mt-5">
+                    <div class="row me-3">
+                        <!-- Profile Sidebar -->
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header text-center">
+                                    <img style="width: 100px; height: 100px; object-fit: cover;" 
+                                        src="{{ user.get_profile_picture_url }}" 
+                                        alt="Profile Picture" class="avatar-img rounded-circle" />
+                                    
+                                    <div class="mb-3">
+                                        <form id="profilePictureForm" method="POST" action="{% url 'update_profile_picture' %}" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <input type="file" class="d-none" id="id_profile_picture" name="profile_picture" accept="image/*" 
+                                                onchange="document.getElementById('profilePictureForm').submit();">
+                                            <button type="button" class="btn btn-dark  py-2 mt-3" 
+                                                onclick="document.getElementById('id_profile_picture').click();">
+                                                <i class="fa fa-camera"></i> Update Photo
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <h5 class="text-center text-dark">{{ request.user.username }}</h5>
+                                    <p class="text-dark text-center">Date Joined: {{ request.user.date_joined }}</p>
+                                    <p class="text-dark text-center">Last Seen: {{ request.user.last_login }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Content -->
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs" id="profileTabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile">Profile</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="password-tab" data-bs-toggle="tab" href="#password">Password</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="withdrawal-tab" data-bs-toggle="tab" href="#withdrawal">Withdrawal Account</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body tab-content">
+                                    <!-- Profile Tab -->
+                                    <div class="tab-pane fade show active" id="profile">
+                                        <form class="form row" method="post" action="{% url 'update_profile' %}">
+                                            {% csrf_token %}
+                                            <fieldset class="col-12">
+                                                <div class="row">
+                                                    <!-- Email -->
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                                            <input type="email" class="form-control" name="email" required placeholder="Email" value="{{ request.user.email }}">
+                                                        </div>
+                                                        {% if not request.user.email %}
+                                                            <p class="missing-field">Email is not set!</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <!-- Full Name -->
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                                            <input type="text" class="form-control" name="fullname" required placeholder="Full Name" value="{{ request.user.fullname }}">
+                                                        </div>
+                                                        {% if not request.user.fullname %}
+                                                            <p class="missing-field">Full Name is not set!</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <!-- Country -->
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-globe"></i></span>
+                                                            <input type="text" class="form-control" name="country" required placeholder="Country" value="{{ request.user.country }}">
+                                                        </div>
+                                                        {% if not request.user.country or request.user.country == "Not set" %}
+                                                            <p class="text-danger">Country is not set</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-phone"></i>
+                                                            </span>
+                                                            <input type="text" class="form-control" name="phone" required placeholder="Phone" value="{{ request.user.phone }}">
+                                                        </div>
+                                                        {% if not request.user.phone or request.user.phone == "Not set" %}
+                                                            <p class="text-danger">Phone number is not set</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-12 my-2">
+                                                        <button type="submit" class="btn btn-dark w-100">Update Profile</button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+
+                                    <!-- Password Tab -->
+                                    <div class="tab-pane fade" id="password">
+                                        <form class="form row" method="post" action="{% url 'update_password' %}">
+                                            {% csrf_token %}
+                                            <fieldset class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                                            <input type="password" class="form-control" name="current_password" required placeholder="Current Password" id="field-widget-1">
+                                                            <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('field-widget-1', 'toggle-confirm-password-icon')">
+                                                                <i class="fa-solid fa-eye" id="toggle-confirm-password-icon"></i>
+                                                            </button> 
+                                                        </div>
+                                                    </div>
+                                                    <!-- New Password -->
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                                            <input type="password" class="form-control" name="new_password" required placeholder="New Password" id="field-widget-2">
+                                                            <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('field-widget-2', 'toggle-confirm-password-icon')">
+                                                                <i class="fa-solid fa-eye" id="toggle-confirm-password-icon"></i>
+                                                            </button> 
+                                                        </div>
+                                                    </div>
+                                                    <!-- Confirm Password -->
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                                            <input type="password" class="form-control" name="confirm_password" required placeholder="Confirm Password" id="field-widget-2">
+                                                            <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('field-widget-2', 'toggle-confirm-password-icon')">
+                                                                <i class="fa-solid fa-eye" id="toggle-confirm-password-icon"></i>
+                                                            </button> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 my-2">
+                                                        <button type="submit" class="btn btn-dark w-100">Update Password</button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                    <!-- Withdrawal Account Tab -->
+                                    <div class="tab-pane fade" id="withdrawal">
+                                        <form class="form row" method="post" action="{% url 'update_withdrawal' %}">
+                                            {% csrf_token %}
+                                            <fieldset class="col-12">
+                                                <div class="row">
+                                                    <!-- Wallet Address -->
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-wallet"></i></span>
+                                                            <input type="text" class="form-control" name="wallet_address" required 
+                                                                   placeholder="Wallet Address" value="{{ request.user.wallet_addresses.first.address }}">
+                                                        </div>
+                                                        {% if not request.user.wallet_addresses.first.address %}
+                                                            <p class="missing-field text-danger">Wallet address is not set!</p>
+                                                        {% endif %}
+                                                    </div>
+                                    
+                                                    <!-- Currency Selection -->
+                                                    <div class="col-12 my-2">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-coins"></i></span>
+                                                            <select class="form-control" name="currency" required>
+                                                                <option value="">
+                                                                    {% if  request.user.wallet_addresses.first.currency %}
+                                                                    Currency: {{ request.user.wallet_addresses.first.currency }}
+                                                                    {% else %}
+                                                                    Select Currency
+                                                                    {% endif %}
+                                                                </option>
+                                                                <option value="BTC">Bitcoin (BTC)</option>
+                                                                <option value="ETH">Ethereum (ETH)</option>
+                                                                <option value="USDT_TRX">Tether (USDT - TRX)</option>
+                                                                <option value="USDT_ETH">Tether (USDT - ETH)</option>
+                                                                <option value="LTC">Litecoin (LTC)</option>
+                                                                <option value="TRX">Tron (TRX)</option>
+                                                                <option value="BCH">Bitcoin Cash (BCH)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                    
+                                                    <div class="col-12 my-2">
+                                                        <button type="submit" class="btn btn-dark w-100">Update Withdrawal Account</button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+                        </div> <!-- End Profile Content -->
+                    </div>
+                </div>
+            </div> <!-- End Main Row -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<!-- Toastify JS -->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% for message in messages %}
+            Toastify({
+                text: "{{ message }}",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "{% if message.tags == 'success' %}#28a745{% else %}#dc3545{% endif %}",
+                stopOnFocus: true
+            }).showToast();
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+
+
+
+<script>
+    function togglePassword(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+</script>
+
+
+{% endblock contents %}
+

@@ -1,0 +1,56 @@
+{% load static %}
+
+
+
+<nav  id="nav" class="navbar navbar-expand-sm navbar-dark ">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#"><img src="{% static 'british-trading-central.png' %}" style="width:60px;" class="img-responsive" alt="Tesla Legacy Capital Partners"></a>
+    <span class="navbar-brand d-none text-light d-lg-block">Tesla Legacy Capital Partners</span>
+    
+    <button class="navbar-toggler bg-dark" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+  
+    <ul class="navbar-nav ml-auto">
+               
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'home' %}">HOME</a>
+            </li>
+
+
+        <li class="nav-item">
+        <a class="nav-link text-dark" href="{% url 'about' %}">ABOUT</a>
+        </li>
+
+        <li class="nav-item">
+        <a class="nav-link text-dark" href="{% url 'awards' %}">AWARDS</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="{% url 'tesla_cars' %}">TESLA CARS</a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="{% url 'affilate' %}">AFFILIATE</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="{% url 'news' %}">NEWS</a>
+        </li>
+        
+        <li class="nav-item dropdown">
+            <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="#">SUPPORT
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-dark" href="{% url 'faQ' %}">FAQ</a></li>
+              <li><a class="dropdown-item nav-link text-dark" href="{% url 'contact' %}">CONTACT</a></li>  
+              <li><a class="dropdown-item nav-link text-dark" href="{% url 'academic' %}">ACADEMY</a></li>
+            </ul>
+            </li>
+    
+      <li class="navbar-btn">
+      <a class="btn btn-red" href="{% url 'login' %}">LOG IN</a>
+      </li>
+    </ul>
+
+    </div>
+</nav>

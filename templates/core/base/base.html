@@ -1,0 +1,132 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en-UK">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Tesla Legacy Capital Partners">
+    <meta name="description" content="Trade with a trusted broker offering top-tier conditions. Get up to a 30% deposit bonus, fast withdrawals, free trading tools, and expert technical analysis. The smarter way to trade Forex and cryptocurrency with confidence.">
+    <meta name="keywords" content="Bitcoin, cryptocurrency, Forex trading, investment, trading platform, best trading conditions, BTC to USD, ETH to USD, buy Bitcoin, financial markets">
+    <meta property="og:image" content="fb-share.jpg' %}">
+    <meta property="og:description" content="Maximize your financial potential with Tesla Legacy Capital Partners. Let your money work for you through smart investments and expert trading strategies.">
+    <script src="https://kit.fontawesome.com/58f7fb8902.js" crossorigin="anonymous"></script>
+    <title>Home | Tesla Legacy Capital Partners - Leading Trading Platform in the USA</title>
+    
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'style/css.css' %}">
+
+    <style>
+        /* Floating Google Translator Button */
+        #translate-button {
+            position: fixed;
+            left: 10px;
+            bottom: 50px;
+            background-color:rgb(4, 13, 23);
+            color: white;
+            border:1px solid white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Language selection container */
+        #language-select {
+            position: fixed;
+            left: 10px;
+            bottom: 100px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            display: none; /* Hidden by default */
+            z-index: 1000;
+        }
+
+        /* Apply Button */
+        #apply-language {
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            #translate-button {
+                bottom: 30px;
+                left: 5px;
+            }
+
+            #language-select {
+                bottom: 80px;
+                left: 5px;
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating Google Translate Button -->
+    <button id="translate-button">Language</button>
+    <div id="language-select">
+        <label for="select-language">Select Language:</label>
+        <div id="google_translate_element"></div>
+        <button id="apply-language">Apply</button>
+    </div>
+
+    {% include "../section/navbar.html" %} 
+    {% block contents %}{% endblock contents %} 
+    {% include "../section/footer.html" %} 
+
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6891f1a1b40fb6192870bbc7/1j1t1fpl4';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+    <script>
+        document.getElementById('translate-button').addEventListener('click', function () {
+            var langBox = document.getElementById('language-select');
+            langBox.style.display = (langBox.style.display === 'block') ? 'none' : 'block';
+        });
+
+        document.getElementById('apply-language').addEventListener('click', function () {
+            document.getElementById('language-select').style.display = 'none';
+        });
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+    </script>
+
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'kit.fontawesome.com/a076d05399.js' %}"></script>
+    <script src="{% static 'script/js.js' %}"></script>
+    <script src="{% static 'widgets.coingecko.com/coingecko-coin-price-marquee-widget.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pnotify@5.2.0/dist/PNotify.js"></script>
+
+</body>
+</html>

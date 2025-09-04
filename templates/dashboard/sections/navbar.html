@@ -1,0 +1,186 @@
+{% load static %}
+ {% load humanize %}
+
+ <style>
+  .nav-item a p{
+    color:white;
+    font-size:50px;
+    margin-bottom:20px;
+  }
+
+  .nav-item a sub-item{
+    color:white;
+  }
+
+ 
+ </style>
+
+<div style="background-color:black; border-right:1px solid white" class="sidebar shadow" class="sidebar">
+  <div class="sidebar-logo">
+    <!-- Logo Header -->
+    <div class="logo-header" data-background-color="dark2">
+      <a href="{% url 'dash' %}" class="logo text-align-center" title="Tesla Legacy Capital Partners">
+        <h3 class="navbar-brand fw-bolder text-white text-center">Tesla Legacy Capital</h3>
+      </a>
+      <div class="nav-toggle">
+        <button class="btn btn-toggle toggle-sidebar">
+          <i style="color:yellow;" class="gg-menu-right"></i>
+        </button>
+        <button class="btn btn-toggle sidenav-toggler">
+          <i style="color:yellow;" class="gg-menu-left"></i>
+        </button>
+      </div>
+      <button class="topbar-toggler more">
+        <i style="color:yellow;" class="gg-more-vertical-alt"></i>
+      </button>
+    </div>
+    <!-- End Logo Header -->
+  </div>
+  <div class="sidebar-wrapper scrollbar scrollbar-inner">
+    <div class="sidebar-content">
+      <ul class="nav nav-secondary">
+        <li class="nav-item">
+          <a href="{% url 'dash' %}">
+            <i style="color:yellow;"  class="fas fa-home"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'profile' %}">
+            <i style="color:yellow;"  class="fa-solid fa-user"></i>
+            <p>Profile</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'Deposit' %}">
+            <i style="color:yellow;"  class="fas fa-wallet"></i>
+            <p>Deposit</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'Deposit_his' %}">
+            <i style="color:yellow;"  class="fas fa-wallet"></i>
+            <p>Deposit History</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'purchase_plan' %}">
+            <i style="color:yellow;"  class="fas fa-credit-card"></i>
+            <p>Purchase a plan</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'view_plans' %}">
+            <i style="color:yellow;"  class="fas fa-credit-card"></i>
+            <p>View plans</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'withdraw' %}">
+            <i style="color:yellow;"  class="fas fa-arrow-alt-circle-up"></i>
+            <p>Withdraw</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'withdraw_history' %}">
+            <i style="color:yellow;"  class="fas fa-history"></i>
+            <p>Withdraw History</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="mailto:info@tlcpn.com">
+            <i style="color:yellow;"  class="fa-solid fa-address-book"></i>
+            <p>Support</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" onclick="document.getElementById('logout-form').submit();" style="display: flex; align-items: center;">
+            <i style="color:yellow;"  class="fa-solid fa-right-from-bracket"></i>
+            <p>Log out</p>
+          </a>
+          <form id="logout-form" action="{% url 'logout_view' %}" method="POST" style="display: none;">
+            {% csrf_token %}
+          </form>
+        </li>
+      </ul>
+    </div>
+
+
+  </div>
+</div>
+<!-- End Sidebar -->
+
+<div class="main-panel">
+  <div class="main-header">
+    <div class="main-header-logo">
+      <!-- Logo Header -->
+      <div class="logo-header" data-background-color="dark">
+         <a href="{% url 'dash' %}" class="logo text-align-center" title="Tesla Legacy Capital Partners">
+        <h3 class="navbar-brand fw-bolder text-white text-center">Tesla Legacy Capital</h3>
+      </a>
+        <div class="nav-toggle">
+          <button class="btn btn-toggle toggle-sidebar">
+            <i style="color:yellow;"  class="gg-menu-right"></i>
+          </button>
+          <button class="btn btn-toggle sidenav-toggler">
+            <i style="color:yellow;"  class="gg-menu-left"></i>
+          </button>
+        </div>
+        <button class="topbar-toggler more">
+          <i style="color:yellow;"  class="gg-more-vertical-alt"></i>
+        </button>
+      </div>
+      <!-- End Logo Header -->
+    </div>
+    <!-- Navbar Header -->
+    <nav class="navbar navbar-header navbar-header-dark bg-dark navbar-expand-lg border-bottom" >
+      <div class="container-fluid">
+        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+        </nav>
+
+        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+          <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+           
+          </li>
+
+          <li class="nav-item topbar-user dropdown hidden-caret">
+            <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+              <div class="avatar-sm">
+                <img src="{{ user.get_profile_picture_url }}" alt="..." class="avatar-img rounded-circle" />
+              </div>
+              <span class="profile-username">
+                <span class="op-7 text-light">Hi,</span>
+                <span class="fw-bold text-light">{{ request.user.username }}</span>
+              </span>
+            </a>
+            <ul class="dropdown-menu dropdown-user animated fadeIn">
+              <div class="dropdown-user-scroll scrollbar-outer">
+                <li>
+                  <div class="user-box">
+                    <div class="avatar-lg">
+                      <img src="{{ user.get_profile_picture_url }}" alt="Profile Picture" class="avatar-img rounded" />
+                    </div>
+                    <div class="u-text">
+                      <h4>{{ request.user.username }}</h4>
+                      <p class="text-muted">{{ request.user.email }}</p>
+                      <a href="{% url 'profile' %}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" onclick="document.getElementById('logout-form').submit();">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                  </a>
+                </li>
+                <form id="logout-form" action="{% url 'logout_view' %}" method="POST" style="display: none;">
+                  {% csrf_token %}
+                </form>
+              </div>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+  </div>
+

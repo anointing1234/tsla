@@ -1,0 +1,499 @@
+{% extends '../core/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block contents %}
+<style>
+  /* Custom styling for stat cards and weekly cards */
+  .stat-card {
+    background-color:black;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .stat-card .card-body {
+    padding: 20px;
+    text-align: center;
+    color: white;
+  }
+  .stat-card h5 {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .stat-card h3 {
+    font-size: 28px;
+    margin: 0;
+  }
+  .weekly-card {
+    background-color: #343a40;
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+  }
+  .weekly-card h6 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  .weekly-card .value {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .weekly-card .trend {
+    font-size: 14px;
+  }
+  /* Ensure charts and widget containers are responsive */
+  .tradingview-widget-container {
+    margin-bottom: 30px;
+  }
+</style>
+
+
+
+<style>
+    .table-container {
+        max-height: 250px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        position: relative;
+    }
+    .table thead {
+        position: sticky;
+        top: 0;
+        background-color: #0d6efd;
+        color: white;
+        z-index: 2;
+        font-size: 14px;
+    }
+    .table th, .table td {
+        padding: 8px;
+        font-size: 13px;
+        text-align: left;
+    }
+    .no-withdrawals {
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: gray;
+        padding: 10px;
+    }
+</style>
+
+<div class="container">
+  <div style="background-color:black;" class="page-inner  py-4">
+    <!-- Statistics Cards -->
+  
+        <!-- Total Balance Card -->
+        <div class="row justify-content-center">
+            <!-- Available Balance Card -->
+            <div class="col-sm-6 col-md-3">
+              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats  ">
+                <div class="card-body text-start">
+                  <div class="row align-items-center">
+                      <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                              <p class="card-category text-warning fw-bold">AVAILABLE BALANCE</p>
+                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.usdt_balance|intcomma }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-icon">
+                          <div class="icon-big text-center text-light  bubble-shadow-small">
+                          <i class="fas fa-dollar-sign fa-3x"></i>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Total Profits Card -->
+            <div class="col-sm-6 col-md-3">
+              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
+                <div class="card-body text-start">
+                  <div class="row align-items-center">
+                      <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                              <p class="card-categor text-light text-warning fw-bold">TOTAL PROFITS</p>
+                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.total_profits|intcomma }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-icon">
+                          <div class="icon-big text-center text-light bubble-shadow-small">
+                            <i class="fas fa-chart-line"></i>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Total Investments Card -->
+            <div class="col-sm-6 col-md-3">
+              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
+                <div class="card-body text-start">
+                  <div class="row align-items-center">
+                      <div class="col col-stats ms-3 ms-sm-0">
+                          <div class="numbers">
+                              <p class="card-category text-success">TOTAL INVESTMENTS</p>
+                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.invested_amount }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-icon">
+                          <div class="icon-big text-center text-light  bubble-shadow-small">
+                            <i class="fas fa-hand-holding-usd"></i>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Fourth Card (e.g., another stat) -->
+            <div class="col-sm-6 col-md-3">
+              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
+                <div class="card-body text-start">
+                  <div class="row align-items-center">
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                            <p class="card-category fw-bold text-info">ACCOUNT LEVEL</p>         
+                            {% if account_plan %}
+                              <h4 class="card-title">{{ account_plan.name }}</h4>
+                            {% else %}
+                              <h4 class="card-title text-light">STARTER</h4>
+                            {% endif %}
+                          </div>                          
+                        </div>
+                        <div class="col-icon">
+                          <div class="icon-big text-center text-light bubble-shadow-small">
+                            <i class="fas fa-university"></i>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+      
+
+    <!-- TradingView Widget -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="tradingview-widget-container">
+          <div id="tradingview_19631" style="height: 466px;"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+          <script type="text/javascript">
+            new TradingView.widget({
+              width: "100%",
+              height: 466,
+              symbol: "COINBASE:BTCUSD",
+              interval: "D",
+              timezone: "Etc/UTC",
+              theme: "Dark",
+              style: "0",
+              locale: "en",
+              toolbar_bg: "#f1f3f6",
+              enable_publishing: false,
+              allow_symbol_change: true,
+              hotlist: true,
+              container_id: "tradingview_19631"
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row containing Area Chart (left) and Doughnut Chart (right) -->
+<div class="row mt-4">
+    <!-- Left: Area Chart with Weekly Deposit & Withdraw -->
+    <div class="col-lg-8 mb-3">
+        <div class="card" style="background-color: #343a40; border: none;">
+            <div class="card-body">
+                <!-- Top Row: Weekly Deposit & Withdraw Info -->
+                <div class="d-flex justify-content-between align-items-center text-white mb-3">
+                    <div>
+                        <h6 class="mb-0">WEEKLY DEPOSIT</h6>
+                        <span class="fw-bold">$155,389</span>
+                        <span class="text-success ms-2">
+                            <i class="fa fa-level-up"></i> +99%
+                        </span>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">WEEKLY WITHDRAW</h6>
+                        <span class="fw-bold">$183,642</span>
+                        <span class="text-warning ms-2">
+                            <i class="fa fa-level-down"></i> -25%
+                        </span>
+                    </div>
+                </div>
+                <!-- Area Chart Canvas -->
+                <div style="height: 280px;">
+                    <canvas id="areaChart" width="100%" height="100%"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Doughnut Chart & Stats -->
+    <div class="col-lg-4 mb-3">
+        <div class="card" style="border: none;">
+            <div class="card-header bg-dark text-white">
+                <strong>Statistics</strong>
+            </div>
+            <div class="card-body" style="background-color: #343a40;">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <canvas id="doughnutChart" style="height: 200px; width: 100%;"></canvas>
+                    </div>
+                    <div class="col-md-6 text-white">
+                        <div class="mb-2 text-success">
+                            <i class="fa fa-circle-o me-2"></i>Desktop 74%
+                        </div>
+                        <div class="mb-2 text-info">
+                            <i class="fa fa-circle-o me-2"></i>Tablet 63%
+                        </div>
+                        <div class="mb-2 text-warning">
+                            <i class="fa fa-circle-o me-2"></i>Mobile 27%
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group list-group-divider list-group-full mt-3">
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                        Chrome
+                        <span class="float-right text-success">
+                            <i class="fa fa-caret-up"></i> 98%
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                        Firefox
+                        <span class="float-right text-success">
+                            <i class="fa fa-caret-up"></i> 40%
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                        Opera
+                        <span class="float-right text-danger">
+                            <i class="fa fa-caret-down"></i> 83%
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+
+
+                    
+    <div class="container mt-4">
+        <div class="card mt-4 pt-3">
+            <div class="card-header text-center bg-dark text-white">
+                <h5>My Withdrawals</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Uniqid</th>
+                                <th>Currency</th>
+                                <th>Amount</th>
+                                <th>Tx Ref</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if withdrawals %}
+                                {% for withdrawal in withdrawals %}
+                                    <tr>
+                                        <td>{{ withdrawal.uniqid }}</td>
+                                        <td>{{ withdrawal.currency }}</td>
+                                        <td>${{ withdrawal.amount|floatformat:2 }}</td>
+                                        <td>{{ withdrawal.tx_ref }}</td>
+                                        <td>{{ withdrawal.date|date:"M d, Y" }}</td>
+                                        <td>
+                                            {% if withdrawal.status == "pending" %}
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            {% elif withdrawal.status == "completed" %}
+                                                <span class="badge bg-success">Approved</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Rejected</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="no-withdrawals">No withdrawals found.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+
+
+
+</div>
+
+<!-- Include Chart.js (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // === AREA CHART ===
+    const areaCtx = document.getElementById('areaChart').getContext('2d');
+    new Chart(areaCtx, {
+        type: 'line',
+        data: {
+            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            datasets: [
+                {
+                    label: "Data 1",
+                    data: [15, 53, 45, 70, 55, 85, 95],  // Replace with real data
+                    borderColor: "#28a745",
+                    backgroundColor: "rgba(40, 167, 69, 0.2)",
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: "Data 2",
+                    data: [10, 30, 25, 50, 40, 60, 80],  // Replace with real data
+                    borderColor: "#007bff",
+                    backgroundColor: "rgba(0, 123, 255, 0.2)",
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { grid: { display: false } },
+                y: { grid: { color: "rgba(255,255,255,0.1)" }, ticks: { color: "#fff" } }
+            },
+            plugins: {
+                legend: { display: true, labels: { color: "#fff" } },
+                title: { display: false }
+            },
+            elements: {
+                point: { radius: 3 }
+            }
+        }
+    });
+
+    // === DOUGHNUT CHART ===
+    const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+    new Chart(doughnutCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ["Desktop", "Tablet", "Mobile"],
+            datasets: [{
+                data: [74, 63, 27], // Replace with real data
+                backgroundColor: ["#28a745", "#17a2b8", "#ffc107"]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }, // Hide legend if you prefer the custom labels
+                title: { display: false }
+            }
+        }
+    });
+});
+</script>
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+<!-- Live Prices Script -->
+<script>
+  const apiKey = 'coinrankingccb1f9fa3faa00602976ee13e42ad747132d9c6136b69225';
+  const coinsUrl = 'https://api.coinranking.com/v2/coins?limit=50&orderBy=marketCap&orderDirection=desc';
+
+  function fetchLivePrices() {
+    fetch(coinsUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': apiKey
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const coins = data.data.coins;
+      const btcData = coins.find(coin => coin.name === 'Bitcoin');
+      const ethData = coins.find(coin => coin.name === 'Ethereum');
+      const trxData = coins.find(coin => coin.name === 'TRON');
+      const ltcData = coins.find(coin => coin.name === 'Litecoin');
+
+      if (btcData) {
+        const btcPrice = parseFloat(btcData.price);
+        document.getElementById('btc-price').innerText = `$${btcPrice.toFixed(2)}`;
+      }
+      if (ethData) {
+        const ethPrice = parseFloat(ethData.price);
+        document.getElementById('eth-price').innerText = `$${ethPrice.toFixed(2)}`;
+      }
+      if (trxData) {
+        const trxPrice = parseFloat(trxData.price);
+        document.getElementById('trx-price').innerText = `$${trxPrice.toFixed(2)}`;
+      }
+      if (ltcData) {
+        const ltcPrice = parseFloat(ltcData.price);
+        document.getElementById('ltc-price').innerText = `$${ltcPrice.toFixed(2)}`;
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching prices:', error);
+    });
+  }
+
+  setInterval(fetchLivePrices, 30000);
+  fetchLivePrices();
+</script>
+
+<!-- Toggle Balance Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const toggleIcons = document.querySelectorAll(".toggle-balance-icon");
+
+      toggleIcons.forEach(function (icon) {
+          const targetId = icon.getAttribute("data-target");
+          const balanceElement = document.getElementById(targetId);
+          if (!balanceElement) return;
+          let storedState = localStorage.getItem("balanceHidden-savings") || "false";
+          let isHidden = storedState === "true";
+          balanceElement.textContent = isHidden ? "*******" : balanceElement.getAttribute("data-balance");
+          icon.classList.toggle("fa-eye", !isHidden);
+          icon.classList.toggle("fa-eye-slash", isHidden);
+          icon.addEventListener("click", function () {
+              const currentlyHidden = balanceElement.getAttribute("data-hidden") === "true";
+              const newHidden = !currentlyHidden;
+              balanceElement.textContent = newHidden ? "*******" : balanceElement.getAttribute("data-balance");
+              balanceElement.setAttribute("data-hidden", newHidden.toString());
+              icon.classList.toggle("fa-eye", !newHidden);
+              icon.classList.toggle("fa-eye-slash", newHidden);
+              localStorage.setItem("balanceHidden-savings", newHidden.toString());
+          });
+      });
+  });
+</script>
+
+{% endblock contents %}

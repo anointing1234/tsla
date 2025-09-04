@@ -1,0 +1,138 @@
+{% extends '../core/base.html' %}
+{% load static %}
+{% block contents %}
+
+<style>
+  /* Gradient background from black to white */
+  .gradient-bg {
+      background: linear-gradient(to right, black, white);
+      padding: 50px 0;
+      min-height: 100vh;
+  }
+  /* Center the inner content */
+  .centered-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+  }
+  /* Optional: Style the card so its background is transparent */
+  .form-card {
+      background: transparent;
+      border: none;
+  }
+  /* Ensure the form fields and header are centered */
+  .form-card .card-body {
+      text-align: center;
+  }
+  /* Limit form width */
+  .form-container {
+      width: 100%;
+      margin: 0 auto;
+  }
+</style>
+
+<div class="container-fluid gradient-bg mt-5 ">
+  <div class="centered-container">
+    <div class="card form-card mt-5 pt-5">
+      <div class="card-body">
+        <h4 class="mb-4 bg-white py-2 fw-bold">Select A Deposit Method</h4>
+        <form class="form" method="post" action="{% url 'deposit' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <fieldset class="form-container">
+            <!-- Payment Method Dropdown -->
+            <div class="mb-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-wallet"></i></span>
+                <select class="form-control" name="payment_method" id="paymentMethod" required onchange="updateWalletAddress()">
+                  {% for gateway in payment_gateways %}
+                    <option value="{{ gateway.currency }}">{{ gateway.currency }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <!-- Wallet Address with Copy Button -->
+            <div class="mb-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-coins"></i></span>
+                <input type="text" class="form-control" id="walletAddress" readonly>
+                <button type="button" class="btn btn-outline-secondary" onclick="copyWalletAddress()">
+                  <i class="fa fa-clipboard"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Deposit Amount -->
+            <div class="mb-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
+                <input type="number" class="form-control" name="deposit_amount" required placeholder="Deposit Amount" step="0.01" min="5000" onblur="if (this.value < 5000) this.value = 5000;">
+              </div>
+              <small class="text-white">Minimum deposit amount: $5000</small>
+            </div>
+            <!-- Payment Screenshot -->
+            <div class="mb-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-upload"></i></span>
+                <input type="file" class="form-control" name="payment_screenshot" accept="image/*" required>
+              </div>
+            </div>
+            <!-- Submit Button -->
+            <div class="mb-3">
+              <button type="submit" class="btn btn-dark w-100">Deposit</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let walletAddresses = {
+    {% for gateway in payment_gateways %}
+      "{{ gateway.currency }}": "{{ gateway.wallet_address }}",
+    {% endfor %}
+  };
+
+  function updateWalletAddress() {
+    let paymentMethod = document.getElementById("paymentMethod").value;
+    let walletAddressField = document.getElementById("walletAddress");
+    walletAddressField.value = walletAddresses[paymentMethod] || "No wallet found";
+  }
+
+  function copyWalletAddress() {
+    let walletAddressField = document.getElementById("walletAddress");
+    navigator.clipboard.writeText(walletAddressField.value)
+      .then(() => {
+        alert("Wallet address copied!");
+      })
+      .catch(err => console.error("Error copying wallet address:", err));
+  }
+
+  // Set default wallet address on page load
+  window.onload = updateWalletAddress;
+</script>
+
+<!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<!-- Toastify JS -->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+{% if messages %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      {% for message in messages %}
+        Toastify({
+          text: "{{ message }}",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "{% if message.tags == 'success' %}#28a745{% else %}#dc3545{% endif %}",
+          stopOnFocus: true
+        }).showToast();
+      {% endfor %}
+    });
+  </script>
+{% endif %}
+
+{% endblock contents %}

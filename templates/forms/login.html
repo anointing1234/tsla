@@ -1,0 +1,338 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    
+   
+    <title>Home | Tesla Legacy Capital Partners - Leading Trading Platform in the USA</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name='description' content='ACCESS FOREX CONCIERGE LTD is your trusted partner in the world of digital finance'>
+			
+			<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+            <link rel="stylesheet" href="{% static 'cores/assets/css/bootstrap.min.css' %}" data-name="bootstrap">
+			<link rel="stylesheet" href="{% static 'cores/assets/vendor/bootstrap-icons/bootstrap-icons.min.css' %}" data-name="bootstrap-icon">
+			<link rel="stylesheet" href="{% static 'cores/assets/css/animate.min.css' %}" data-name="animate">
+			<link rel="stylesheet" href="{% static 'cores/assets/vendor/glightbox/glightbox.min.css' %}" data-name="glightbox">
+			<link rel="stylesheet" href="{% static 'cores/assets/vendor/toastify/toastify.min.css' %}" data-name="toastify">
+			<link rel="stylesheet" href="{% static 'cores/assets/css/font-size.min.css' %}" data-name="font-size">
+			<link rel="stylesheet" href="{% static 'cores/assets/css/main.css' %}" data-name="main-css"> 				
+			<link rel="stylesheet" href="{% static 'modules/uss-dashboard/GUI/themes/classic/assets/css/default.css'%}">        
+</head>
+
+
+
+<style>
+.auth-cover-wrapper,
+.auth-bg-image {
+	background-image: url("{% static 'crypto_web.jpg' %}") !important;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+</style>
+
+
+<body>
+
+            
+        
+    <div class="row g-0 min-vh-100">
+
+        
+            <div class="col-lg-6">
+                
+                                
+                    <div  class="auth-cover-wrapper">
+                        <div class="auth-cover px-sm-5">
+                            <div class="title text-center">
+							
+                                                                                                                                                
+								
+                                                                    
+                               <h1 class="text-white mb-2">
+								Tesla Legacy Capital Partners 					
+                                    </h1>
+                                
+                                                                    <p class="text-light">
+																		
+																		LEADING TRADING PLATFORM IN THE USA
+																			
+                                    </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                                 
+            </div>
+
+         
+        
+            <div class="col-lg-6">
+                                                           
+			
+                
+                    <div class="row g-0 align-items-center justify-content-center bg-white p-5 h-100">
+                        <div class="col-sm-10 col-md-9 m-auto">
+
+                            
+							<h4 class="text-center text-dark mb-3">
+								SIGN IN				
+									</h4>  
+    <form class="form row" method="post" id="login-form">
+		{% csrf_token %}
+	<fieldset class="collection-wrapper col-12 primary-collection" data-el-context="collection.fieldset">
+		<div class="row collection-container" data-el-context="collection.container">
+			<div class="frame col-12 my-1 user-email-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container my-1 input-group" data-el-context="gadget.container">
+							<span class="input-affix input-group-text" data-el-context="gadget.prefix"><i class='bi bi-at'></i></span>
+							<input type="email" class="form-control" data-el-context="gadget.widget" required="" placeholder="Email" value="" name="user[email]" id="field-widget-1">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame col-12 my-1 user-password-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container my-1 input-group" data-el-context="gadget.container">
+							<span class="input-affix input-group-text" data-el-context="gadget.prefix"><i class='bi bi-lock'></i></span>
+							<input type="password" class="form-control" data-el-context="gadget.widget" required="" 
+							placeholder="Password" pattern="^.{4,}$" name="user[password]" id="field-widget-2">
+					  <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('field-widget-2', 'toggle-password-icon')">
+						 <i class="bi bi-eye" id="toggle-password-icon"></i>
+					 </button> 
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame col-12 my-1 user-agree-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container input-single my-1 form-check" data-el-context="gadget.container">
+							<input type="checkbox" class="form-check-input" data-el-context="gadget.widget" required="" data-anonymous="" id="field-widget-4">
+							<label class="form-check-label user-select-none small" data-el-context="gadget.label" for="field-widget-4"><span>
+                    I agree to the 
+                    <a href='javascript:void(0)' target='_self'>terms of service</a> &amp; 
+                    <a href='javascript:void(0)' target='_self'>privacy policy</a>
+                </span></label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame col-12 d-none nonce-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container input-single my-1" data-el-context="gadget.container">
+							<input type="hidden" class="form-control" data-el-context="gadget.widget" required="" value="836bc1a2116d4201c9c8c9bc1a84a4c91ebad483:a5788e" name="nonce" id="field-widget-5">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame col-12 my-1 submit-field" data-el-context="field.frame">
+				<div class="field-wrapper" data-el-context="field.wrapper">
+					<div class="gadget-wrapper" data-el-context="field.gadgetWrapper">
+						<div class="widget-container input-single my-1" data-el-context="gadget.container">
+							<button type="submit" class="btn btn-dark w-100" data-el-context="gadget.widget" required="" data-anonymous="" id="field-widget-6">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+</form> 
+
+
+                            
+    <hr>
+
+        <div class="my-1">
+        <p class="text-sm text-center">
+            <span>Don't have an account?</span>
+			<span>Forgot password?</span>
+            <a href="{% url 'signup' %}" class="hover-underline text-nowrap">
+                Signup
+            </a>
+
+        </p>
+		{% comment %} {% url 'send_pass' %} {% endcomment %}
+		<p class="text-sm text-center"><span><a href="{% url 'send_pass' %}">Forgot password?</a></span></p>
+    </div>
+
+
+
+                        </div>
+                    </div>
+
+                 
+            </div>
+
+         
+    </div>
+
+
+            
+<script type="text/javascript" src="{% static  'cores/assets/js/vue.global.prod.min.js' %}" data-name="vue"></script>
+<script type="text/javascript" src="{% static 'cores/assets/js/jquery-3.7.1.min.js' %}" data-name="jquery"></script>
+<script type="text/javascript" src="{% static 'cores/assets/js/bootstrap.bundle.min.js' %}" data-name="bootstrap-bundle"></script>
+<script type="text/javascript" src="{% static 'cores/assets/js/bootbox.all.min.js' %}" data-name="bootbox"></script>
+<script type="text/javascript" src="{% static 'cores/assets/vendor/glightbox/glightbox.min.js' %}" data-name="glightbox"></script>
+<script type="text/javascript" src="{% static 'cores/assets/vendor/toastify/toastify-js.js' %}" data-name="toastify"></script>
+<script type="text/javascript" src="{% static 'cores/assets/vendor/notiflix/notiflix-loading-aio-3.2.7.min.js' %}" data-name="notiflix-loading"></script>
+<script type="text/javascript" src="{% static 'cores/assets/vendor/notiflix/notiflix-block-aio-3.2.7.min.js' %}" data-name="notiflix-block"></script>
+<script type="text/javascript" src="{% static 'cores/assets/js/main.js" data-name="main-js' %}"></script>
+        
+
+    <script src="{% static 'modules/uss-dashboard/GUI/assets/js/data-magic.js' %}"></script>
+	<script src="{% static 'modules/uss-dashboard/Foundation/User/assets/js/security.js' %}"></script>
+    
+		<!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<!-- Toastify JS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const loginForm = document.getElementById("login-form");
+		const submitButton = document.getElementById("field-widget-6");
+	
+		loginForm.addEventListener("submit", function (event) {
+			event.preventDefault(); // Prevent default form submission
+	
+			let email = document.getElementById("field-widget-1").value;
+			let password = document.getElementById("field-widget-2").value;
+	
+			if (!email || !password) {
+				Toastify({
+					text: "Please fill in all fields!",
+					backgroundColor: "red",
+					duration: 3000,
+					gravity: "top",
+					position: "center",
+				}).showToast();
+				return;
+			}
+	
+			// Change button to loading state
+			submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`;
+			submitButton.disabled = true;
+	
+			fetch("{% url 'login_view' %}", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-CSRFToken": getCSRFToken(),
+				},
+				body: JSON.stringify({ email: email, password: password }),
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					Toastify({
+						text: data.message,
+						backgroundColor: "green",
+						duration: 3000,
+						gravity: "top",
+						position: "center",
+					}).showToast();
+					setTimeout(() => {
+						window.location.href = "{% url 'dash' %}"; // Redirect after successful login
+					}, 2000);
+				} else {
+					Toastify({
+						text: data.message,
+						backgroundColor: "red",
+						duration: 3000,
+						gravity: "top",
+						position: "center",
+					}).showToast();
+					submitButton.innerHTML = "Submit";
+					submitButton.disabled = false;
+				}
+			})
+			.catch(error => {
+				console.error("Error:", error);
+				Toastify({
+					text: "Something went wrong. Try again!",
+					backgroundColor: "red",
+					duration: 3000,
+					gravity: "top",
+					position: "center",
+				}).showToast();
+				submitButton.innerHTML = "Submit";
+				submitButton.disabled = false;
+			});
+		});
+	
+		function getCSRFToken() {
+			return document.querySelector("[name=csrfmiddlewaretoken]").value;
+		}
+	});
+	</script>
+
+
+	
+<script>
+    function togglePassword(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    }
+</script>
+
+
+
+<script>
+    function togglePassword(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    }
+    </script>
+    
+    <script>
+        var wa_btnSetting = {
+            btnColor: "#16BE45",
+            ctaText: "WhatsApp Us",
+            cornerRadius: 40,
+            marginBottom: 20,
+            marginLeft: 20,
+            marginRight: 20,
+            btnPosition: "left",
+            whatsAppNumber: "‪+2272712017‬",
+            welcomeMessage: "Hello",
+            zIndex: 999999,
+            btnColorScheme: "light",
+        };
+        window.onload = () => {
+            _waEmbed(wa_btnSetting);
+        };
+    </script>
+    
+    <script async src="https://d2mpatx37cqexb.cloudfront.net/delightchat-whatsapp-widget/embeds/embed.min.js"></script>
+    
+	
+    
+</body>
+
+</html>

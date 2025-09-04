@@ -1,0 +1,62 @@
+{% extends "../core/base/base.html" %}
+{% load static %}
+{% block contents %}
+
+    <div>
+        <img src="{% static 'images/news.jpg' %}" class="img-fluid img-responsive" width="100%">
+    </div>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Latest Crypto News</h2>
+
+        <!-- Bootstrap Carousel for Crypto News -->
+        <div id="cryptoNewsCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+
+                {% for article in articles|slice:":10" %}  {# Show only the latest 10 news articles #}
+                    {% if forloop.counter0|divisibleby:3 %} {# Start a new slide every 3 articles #}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="row d-flex justify-content-center">
+                    {% endif %}
+                    
+                                <div class="col-md-4">
+                                    <div class="card shadow mb-3">
+                                        <img src="{{ article.urlToImage }}" class="card-img-top" alt="News Image" 
+                                            style="height: 150px; object-fit: cover;">
+                                        <div class="card-body">
+                                            <h6 class="card-title">{{ article.title|truncatewords:10 }}</h6>
+                                            <p class="card-text text-muted small">{{ article.publishedAt|slice:":10" }}</p>
+                                            <p class="small"><strong>By:</strong> {{ article.author|default:"Unknown" }}</p>
+                                            <a href="{{ article.url }}" target="_blank" class="btn btn-sm btn-dark">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                    {% if forloop.counter0|add:1|divisibleby:3 or forloop.last %} {# Close row at every 3rd item or last item #}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+
+            <!-- Carousel Controls (Prev & Next) -->
+            <a class="carousel-control-prev" href="#cryptoNewsCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </a>
+            <a class="carousel-control-next" href="#cryptoNewsCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </a>
+
+        </div>
+    </div>
+
+    <script>
+        // Auto-slide every 5 seconds
+        $('#cryptoNewsCarousel').carousel({
+            interval: 5000,
+            wrap: true
+        });
+    </script>
+
+{% endblock contents %}

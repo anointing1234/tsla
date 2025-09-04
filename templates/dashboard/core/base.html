@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Dashboad</title>
+  <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+  <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+  <script src="https://kit.fontawesome.com/58f7fb8902.js" crossorigin="anonymous"></script>
+  <!-- Fonts and icons -->
+  <script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+  <script>
+    WebFont.load({
+      google: { families: ["Public Sans:300,400,500,600,700"] },
+      custom: {
+        families: [
+          "Font Awesome 5 Solid",
+          "Font Awesome 5 Regular",
+          "Font Awesome 5 Brands",
+          "simple-line-icons",
+        ],
+        urls: ["{% static 'assets/css/fonts.min.css' %}"],
+      },
+      active: function () {
+        sessionStorage.fonts = true;
+      },
+    });
+  </script>
+
+  <style>
+      /* Reset body and html margins and paddings */
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+   
+  </style>
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/plugins.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/kaiadmin.min.css' %}" />
+
+
+</head>
+
+<body class="bg-dark">
+  <div class="wrapper">
+  {% include '../sections/navbar.html' %}
+  {% block contents %}{% endblock contents %}
+  {% include '../sections/footer.html' %}
+  </div>
+  <!--   Core JS Files   -->
+  <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
+  <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+  <script src="{% static 'assets/js/core/bootstrap.min.js'%}"></script>
+  
+  <!-- jQuery Scrollbar -->
+  <script src="{% static 'assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+  
+  <!-- Chart JS -->
+  <script src="{% static 'assets/js/plugin/chart.js/chart.min.js' %}"></script>
+  
+  <!-- jQuery Sparkline -->
+  <script src="{% static 'assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' %}"></script>
+  
+  <!-- Chart Circle -->
+  <script src="{% static 'assets/js/plugin/chart-circle/circles.min.js' %}"></script>
+  
+  <!-- Datatables -->
+  <script src="{% static 'assets/js/plugin/datatables/datatables.min.js' %}"></script>
+  
+  <!-- Bootstrap Notify -->
+  <script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+  
+  <!-- jQuery Vector Maps -->
+  <script src="{% static 'assets/js/plugin/jsvectormap/jsvectormap.min.js' %}"></script>
+  <script src="{% static 'assets/js/plugin/jsvectormap/world.js' %}"></script>
+  
+  <!-- Sweet Alert -->
+  <script src="{% static 'assets/js/plugin/sweetalert/sweetalert.min.js' %}"></script>
+  
+  <!-- Kaiadmin JS -->
+  <script src="{% static 'assets/js/kaiadmin.min.js' %}"></script>
+  
+
+
+   <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6891f1a1b40fb6192870bbc7/1j1t1fpl4';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+  <script
+    async
+    src="https://d2mpatx37cqexb.cloudfront.net/delightchat-whatsapp-widget/embeds/embed.min.js"
+  ></script>
+
+  
+  <script>
+    var wa_btnSetting = {
+      btnColor: "#16BE45",
+      ctaText: "WhatsApp Us",
+      cornerRadius: 40,
+      marginBottom: 20,
+      marginLeft: 20,
+      marginRight: 20,
+      btnPosition: "left",
+      whatsAppNumber: "‪+2272712017‬",
+      welcomeMessage: "Hello",
+      zIndex: 999999,
+      btnColorScheme: "light",
+    };
+    window.onload = () => {
+      _waEmbed(wa_btnSetting);
+    };
+  </script>
+
+
+  </body>
+  
+  </html>    

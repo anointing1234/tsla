@@ -1,0 +1,545 @@
+ {% extends "../core/base/base.html" %} 
+{% load static %}
+{% block contents %}
+
+
+      <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/" rel="noopener" target="_blank"><span class="blue-text"></span></a> </div>
+  <script type="text/javascript" src="{% static 'external-embedding/embed-widget-ticker-tape.js' %}" async="">
+  {
+  "symbols": [
+    {
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500"
+    },
+    {
+      "proName": "FOREXCOM:NSXUSD",
+      "title": "US 100"
+    },
+    {
+      "proName": "FX_IDC:EURUSD",
+      "title": "EUR/USD"
+    },
+    {
+      "proName": "BITSTAMP:BTCUSD",
+      "title": "Bitcoin"
+    },
+    {
+      "proName": "BITSTAMP:ETHUSD",
+      "title": "Ethereum"
+    },
+    {
+      "description": "",
+      "proName": "BINGX:TRXUSDT"
+    },
+    {
+      "description": "",
+      "proName": "BYBIT:ADAUSDT.P"
+    },
+    {
+      "description": "",
+      "proName": "BITGET:BCHUSDT.P"
+    },
+    {
+      "description": "",
+      "proName": "BINANCE:MATICUSDT"
+    }
+  ],
+  "showSymbolLogo": true,
+  "colorTheme": "light",
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "locale": "en"
+}
+  </script>
+</div>
+ 
+      
+
+    
+    <div id="demo" class="carousel slide" data-ride="carousel">
+      <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+        <li data-target="#demo" data-slide-to="3"></li>
+        <li data-target="#demo" data-slide-to="4"></li>   
+        <li data-target="#demo" data-slide-to="5"></li> 
+      </ul>
+      <div id="tradingCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+           
+            <div class="carousel-item active">
+                <img src="{% static 'images/main/sxx.png' %}" class="d-block w-100" alt="Global Trading Assets">
+                <div class="carousel-caption d-md-block">
+                    <h2>GLOBAL TRADING ASSETS</h2>
+                    <h4>Access over 100 global trading assets.</h4>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/main/s3.png' %}" class="d-block w-100 h-50" alt="Start Investing Today">
+                <div class="carousel-caption d-md-block">
+                    <h2>START INVESTING TODAY</h2>
+                    <h4>The right place for online investments in financial markets.</h4>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/main/s4.png' %}" class="d-block w-100" alt="Seamless Withdrawals">
+                <div class="carousel-caption d-md-block">
+                    <h2>SEAMLESS WITHDRAWALS</h2>
+                    <h4>Withdraw funds quickly and securely.</h4>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/main/s5.png' %}" class="d-block w-100" alt="Excellent Services">
+                <div class="carousel-caption d-md-block">
+                    <h2>EXCELLENT SERVICES</h2>
+                    <h4>Optimized investment plans to maximize profits.</h4>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/main/s6.png' %}" class="d-block w-100" alt="Driven by Passion">
+                <div class="carousel-caption d-md-block">
+                    <h2>DRIVEN BY PASSION</h2>
+                    <h4>Innovative traders guided by values and expertise.</h4>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#tradingCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#tradingCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div class="intro">
+			<div class="container">
+			<div class="row">
+           
+				<div class="col-md-6">
+          <h2 class="intro-header">MAKE YOUR MONEY WORK FOR YOU</h2>
+          <h5 class="sub-intro-header">Keeping money in the bank loses value over time. Invest wisely and let your wealth grow with strategic opportunities.</h5>
+          <p class="intro-body">
+              You no longer need years of experience, a fortune in capital, or full-time commitment to start earning from financial markets. Trading and investing come with risks, but with the right expertise, those risks can be turned into profitable opportunities. Our team of seasoned traders and financial analysts carefully allocate funds into well-researched investments, ensuring growth while mitigating potential downsides.
+          </p>
+      </div>
+      
+
+				<div class="col-md-6 slideanimation"><br>
+					<img src="{% static 'images/main/devices.webp' %}" class="img-responsive img-fluid" alt="Elite Tesla Traders Firm">
+				</div>
+
+			</div>
+			</div>
+    </div>
+    
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 1800 186.6" enable-background="new 0 0 1800 186.6" xml:space="preserve">
+      <path fill="black" d="M-0.3,187.6c0,0,501.9-221,875-70.2S1779.9,33.8,1800,0v187.6H-0.3z"></path>
+    </svg>
+
+    <div class="container-fluid coloured-steps">
+		  <h2>IT'S EASY TO GET STARTED</h2><br>
+
+		    <div class="row">
+
+		  	<div class="col">
+				  <div>
+				  	<i class="fa-solid fa-user-pen fa-bounce fa-3x" style="color: #d81326;"></i>
+          </div>   
+        	<p class="simpleicontext">Register</p>
+		  	</div>
+
+		  	<div class="col">
+				  <div>
+				  	<i class="fa-solid fa-circle-dollar-to-slot fa-3x" style="color: #d81326;"></i>
+			  	</div>
+			  	<p class="simpleicontext">Fund your wallet</p>
+		  	</div>
+
+			  <div class="col">
+			  	<div>
+				  	<i class="fa-solid fa-hand-holding-dollar fa-3x" style="color: #d90812;"></i>
+			  	</div>
+			    <p class="simpleicontext">Start earning</p>
+		  	</div>
+
+	    	</div> <!--row closing--><br>
+
+		    <span class="startearning">		
+	      	<span class="navbar-btn">
+					  <a class="btn btn-red slideanim" href="{% url 'signup' %}">Start earning now !</a>  
+          </span>
+          
+	  </div> <!--container -->
+
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 1800 186.6" enable-background="new 0 0 1800 186.6" xml:space="preserve">
+      <path fill="black" d="M0-1.4v188c0,0,501.8-221,874.8-70.2C1247.9,267.2,1780,32.8,1800-1v-0.4L0-1.4z"></path>
+    </svg>
+
+    <div class="whyus">
+
+		  <span class="whyusheading">
+		<h2>WHY US</h2>
+		<h5>We have extensive experience in the field of cryptocurrencies, forex trading and the stock market.<br> Our knowledge helps us earn money for our clients. Here are our main features, what distinguishes us from our competitors.</h5>
+		  </span>
+
+		<div class="container">
+			<div class="row slideanimation">
+
+				<div class="col-6 col-sm-6 col-md-3 whyusbox">
+					<div>
+						<span class="icon-circle"><i style="color:black;" class="fas fa-headset fa-3x"></i></span>
+					</div><br>
+					<h6>24/7 SUPPORT</h6>
+					<p>We provide an unbeatable 24/7 customer support service to ensure your experience is smooth.</p>
+				</div>
+	
+				<div class="col-6 col-sm-6 col-md-3 whyusbox">
+					<div>
+						<span class="icon-circle"><i style="color:black;"  class="fas fa-lock fa-3x"></i></span>
+					</div><br>
+					<h6>STRONG SECURITY</h6>
+					<p>We implemented extra security to make sure your funds and data are not lost or stolen by hackers.</p>
+				</div>
+	
+				<div class="col-6 col-sm-6 col-md-3 whyusbox">
+					<div>
+						<span class="icon-circle"><i style="color:black;"  class="fas fa-credit-card fa-3x"></i></span>
+					</div><br>
+					<h6>INSTANT WITHDRAW</h6>
+					<p>Your funds are solely yours, you can withdraw at any time using a wide range of payment methods</p>
+				</div>
+	
+				<div class="col-6 col-sm-6 col-md-3 whyusbox">
+					<div>
+						<span class="icon-circle"><i style="color:black;"  class="fas fa-piggy-bank fa-3x"></i></span>
+					</div><br>
+					<h6>LUCRATIVE RETURNS</h6>
+					<p>We trade strategically and you share the returns. Your investments will always yield returns.</p>
+				</div>
+
+      </div>
+      
+      <div class="row slideanimation">
+
+				<div class="col-6 col-sm-6 col-md-3 whyusbox">
+					<div>
+						<span class="icon-circle"><i style="color:black;"  class="fas fa-award fa-3x"></i></span>
+					</div><br>
+					<h6>REGULATED & INSURED</h6>
+					<p>Our company is fully regulated by the United Kingdom government, FCA, and CySec.</p>
+				</div>
+	
+				<div class="col-6 col-sm-6 col-md-3 whyusbox">
+					<div>
+						<span class="icon-circle"><i style="color:black;"  class="fas fa-comments-dollar fa-3x"></i></span>
+					</div><br>
+					<h6>REFERRAL PROGRAM</h6>
+					<p>Our rich referral commission encourages the work of promoters, you can be part of the company.</p>
+				</div>
+	
+				<div class="col-6 col-sm-6 col-md-3 whyusbox">
+					<div>
+						<span class="icon-circle"><i style="color:black;"  class="fas fa-book-reader fa-3x"></i></span>
+					</div><br>
+					<h6>COMPREHENSIVE EDUCATION</h6>
+					<p>Our support section contains tutorials, mentorship, guides and various trading strategies.</p>
+				</div>
+	
+				<div class="col-6 col-sm-6 col-md-3 whyusbox">
+					<div>
+						<span class="icon-circle"><i style="color:black;"  class="fas fa-chart-line fa-3x"></i></span>
+					</div><br>
+					<h6>TRADING ADVANTAGES</h6>
+					<p>We provide cashback and other advantages for a more comfortable experience with minimal risks.</p>
+        </div>
+        
+			</div><br>
+
+      
+			<h4 class="bestcrypto"><i class="fas fa-trophy fasyellow"></i> &nbsp;&nbsp;BEST CRYPTO MINING ECN BROKER SINCE 2016</h4><br>
+
+    </div>
+
+    <img class="img-responsive img-fluid" src="{% static 'images/awar.png' %}" style="width: 100%;">
+
+
+    <section class="pricing py-5">
+			<h2 class="pricingheader">TRADING PLANS</h2>
+			<div class="container-fluid">
+			  <div class="row">
+				<!-- Free Tier -->
+				<div class="col-lg-3">
+				  <div class="card mb-5 mb-lg-0">
+					<div class="card-body">
+					  <h5 class="card-title text-muted text-uppercase text-center">Basic</h5>
+					  <h6 class="card-price text-center">&#36;5,000</h6>
+					  <hr>
+					  <ul class="fa-ul">
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>&#36;5,000-&#36;9,999 </li>
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>65% 24hours</li>
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>24/7 Support </li>
+            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Daily Status Report</li>  
+            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>5% commission</li>
+            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Capital Insurance: 0%</li>
+					  </ul>
+					  <a href="{% url 'register' %}" class="btn btn-block text-uppercase btn-dark">JOIN</a>
+					</div>
+				  </div>
+				</div>
+				<!-- Plus Tier -->
+				<div class="col-lg-3 slideanim">
+				  <div class="card mb-5 mb-lg-0">
+					<div class="card-body">
+					  <h5 class="card-title text-muted text-uppercase text-center">Standard</h5><center><span class="badge badge-pill badge-warning text-center">Recommended</span></center>
+					  <h6 class="card-price text-center">&#36;10,000<span class="period"></span></h6>
+					  <hr>
+					  <ul class="fa-ul">
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>&#36;10,000-&#36;99,999</li>
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>160% 24hours</li>
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>24/7 Support</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Daily Status Report</li>   
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>10% commission </li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Capital Insurance: 70%</li>
+					  </ul>
+					  <a href="{% url 'register' %}" class="btn btn-block btn-warning text-uppercase text-white">JOIN</a>
+					</div>
+				  </div>
+				</div>
+				
+								<!-- Plus Tier -->
+				<div class="col-lg-3">
+				  <div class="card mb-5 mb-lg-0">
+					<div class="card-body">
+					  <h5 class="card-title text-muted text-uppercase text-center">platinum</h5>
+					  <h6 class="card-price text-center">&#36;100,000<span class="period"></span></h6>
+					  <hr>
+					  <ul class="fa-ul">
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>&#36;100,000-&#36;499,999</li>
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>245% 24hours</li>
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>24/7 Support</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Daily Status Report</li>          
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>12% Commission</li> 
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Capital Insurance: 80%</li>
+					  </ul>
+					  <a href="{% url 'register' %}" class="btn btn-block text-uppercase btn-dark">JOIN</a>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- Pro Tier -->
+				<div class="col-lg-3">
+				  <div class="card">
+					<div class="card-body">
+					  <h5 class="card-title text-muted text-uppercase text-center">Diamond</h5>
+					  <h6 class="card-price text-center">&#36;500,000</h6>
+					  <hr>
+					  <ul class="fa-ul">
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>&#36;500,000-Unlimited</li>
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>300% 24hours</li>
+						<li><span class="fa-li"><i class="fas fa-check"></i></span>24/7 Support</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Daily Status Report</li> 
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>15% Commission</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Capital Insurance: 95%</li>
+					  </ul>
+					  <a href="{% url 'register' %}" class="btn btn-block text-uppercase btn-dark">JOIN</a>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+      </section><!--section closing-->
+      
+      <div class="counter">
+        <div class="container">
+          <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="asset">
+              
+             <span class="counter-count-style">
+            <span>&#36;</span><span class="counter-count">84</span><span>M+</span><br>
+           </span>
+    
+            <span class="employee-p">TOTAL  ASSETS <i class="fa fa-briefcase" aria-hidden="true"></i></span>
+            </div>
+          </div>
+        
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="experience">
+    
+            <span class="counter-count-style">
+             <span class="counter-count">16</span><br>
+            </span>
+    
+             <span class="employee-p">YEARS OF EXPERIENCE <i class="fas fa-trophy"></i></span>
+            </div>
+          </div>
+        
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="investors">
+    
+            <span class="counter-count-style">
+             <span class="counter-count">3</span><span>,</span><span class="counter-count">672</span><span>,</span><span class="counter-count">334</span><span>+</span><br>
+            </span>
+    
+             <span class="employee-p">REGISTERED INVESTORS <i class="fa fa-users" aria-hidden="true"></i></span>
+            </div>
+          </div>
+        
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="withdraw">
+    
+            <span class="counter-count-style">
+             <span>&#36;</span><span class="counter-count">6</span><span>,</span><span class="counter-count">542</span><span>,</span><span class="counter-count">170</span><span>+</span><br>
+            </span>
+    
+             <span class="employee-p">WITHDRAWN EACH MONTH <i class="fa fa-credit-card" aria-hidden="true"></i></span>	
+            </div>
+          </div>
+          </div>
+        </div>
+        </div>
+		
+
+	  </div><!--why us closing-->
+
+    <div id="about">
+      <div class="parallax">
+        <div id="aboutus" class="slideanim">
+          <h2>SERVICES</h2>
+
+         <p>Attracting investments, Elite Tesla Traders Firm implements dozens of projects related to the organization of cryptocurrency investment, forex, stocks and e-currency
+          trading processes. The inflow of funds provides a non-stop process of earning money for a company, at the same time,
+          the profit is evenly distributed among investors depending on the size of their deposits.</p>
+
+          <h3>Investment offers</h3>
+         <p>Elite Tesla Traders Firm offers a revolutionary investment model, modern, as transparent as possible and affordable for any person. If you already into investments, it’s time to form a stable passive income in this field.</p>
+
+          <h3>Mission</h3>
+         <p>To build as the Elite Tesla Traders Firm brand  as world most popular financial broker institution recognized for innovation, superior performance and creation of premium financial value for all stakeholders.</p>
+
+          <h3>Core Values</h3>
+          <p>Integrity, Professionalism, Corporate Governance, Loyalty and Excellent Service.</p>
+        </div>
+      </div>
+ </div>
+
+ <div class="container">
+ <div id="demo1" class="carousel slide" data-ride="carousel"><br>
+<h2 class="text-center about-h4 text-dark">WHAT OUR CLIENTS SAY</h2>
+<h5>At Tesla Legacy Capital Partners, we take pride in delivering exceptional investment opportunities. Here’s what some of our valued clients have to say about their experiences with us.</h5>
+
+<div class="row">
+  <div class="col-md-6">
+    <ul class="carousel-indicators">
+      <li data-target="#demo1" data-slide-to="0" class="active"></li>
+      <li data-target="#demo1" data-slide-to="1"></li>
+      <li data-target="#demo1" data-slide-to="2"></li>
+      <li data-target="#demo1" data-slide-to="3"></li>     
+      <li data-target="#demo1" data-slide-to="4"></li>
+    </ul>
+
+    <div class="carousel-inner text-center">
+      <div class="carousel-item active item">
+        <img src="{% static 'images/main/testifier-1.jpg' %}" style="width:150px;">
+        <h4>“Tesla Legacy Capital Partners provided me with a seamless investment experience. The customer support team guided me through every step. Highly recommended!”<br>
+        <span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><br>
+        <span style="font-style:normal;">Rebecca Smith <br><i><small>Los Angeles, California - USA</small></i> <img src="{% static 'images/united-states-of-america.png' %}" width="22px"></span></h4>
+      </div>
+
+      <div class="carousel-item item">
+        <img src="{% static 'images/main/testifier-2.jpg' %}" style="width:150px;">
+        <h4>“I’ve been investing for years, and Tesla Legacy Capital Partners stands out for its transparency and reliability. I’ve seen great returns!”<br>
+        <span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><br>
+        <span style="font-style:normal;">Harry Scott<br><i><small>London, England - UK</small></i> <img src="{% static 'images/united-kingdom.png' %}" width="22px"></span></h4>
+      </div>
+
+      <div class="carousel-item item">
+        <img src="{% static 'images/main/testifier-3.jpg' %}" style="width:150px;">
+        <h4>“I was skeptical at first, but Tesla Legacy Capital Partners has exceeded my expectations. My investment has grown significantly, and I feel secure.”<br>
+        <span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star-half-alt checked"></span><br>
+        <span style="font-style:normal;">Louis Martin <br><i><small>Paris, France</small></i> <img src="{% static 'images/france.png' %}" width="22px"></span></h4>
+      </div>
+
+      <div class="carousel-item item">
+        <img src="{% static 'images/main/testifier-4.jpg' %}" style="width:150px;">
+        <h4>“An outstanding investment firm! Tesla Legacy Capital Partners offers great opportunities with remarkable returns. The support team is always there to assist.”<br>
+        <span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><br>
+        <span style="font-style:normal;">Omar Al Sayegh <br><i><small>Dubai, UAE</small></i> <img src="{% static 'images/united-arab-emirates.png' %}" width="22px"></span></h4>
+      </div>
+
+      <div class="carousel-item item">
+        <img src="{% static 'images/main/testifier-5.jpg' %}" style="width:150px;">
+        <h4>“Reliable and professional! Tesla Legacy Capital Partners makes investing easy and stress-free. I’m excited to see my portfolio grow.”<br>
+        <span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star-half-alt checked"></span><br>
+        <span style="font-style:normal;">Maria Santos <br><i><small>Rio de Janeiro, Brazil</small></i> <img src="{% static 'images/brazil.png' %}" width="22px"></span></h4>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="col-md-6">
+      <h3 class="review">LEAVE A REVIEW - 2021</h3>
+      <h6>Your feedback helps us to improve service and provide you with a better trading experience tailored to your needs specifically. The reviews are published without any changes to the original text. We appreciate your feedback!</h6><br>
+      <form action="https://eliteteslatradersfirm.com/review.php" method="post" enctype="multipart/form-data">
+  
+        <div class="form-group">
+          <label><i>Upload your picture below</i></label>   
+          <input type="file" name="profileimage" id="profileimage" class="form-control"> <br>
+          <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full Name"><br>
+          <input type="text" name="address" id="address" class="form-control" placeholder="Full Address"><br>
+          <textarea name="feedback" id="feedback" class="form-control form-rounded" rows="3" placeholder="Your feedback"></textarea><br>
+          <button type="submit" class="btn btn-block btn-primary btn-dark">SUBMIT</button>
+        </div>
+  
+      </form>
+    </div> <!--col closing-->
+
+  </div><!--row closing-->
+
+  
+   </div> <!--demo1 closing-->
+   </div> <!--container closing--><br><br>
+
+   <h2 class="stock-screener text-center">STOCK SCREENER</h2>
+   <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/" rel="noopener" target="_blank"><span class="blue-text"></span></a></div>
+  <script type="text/javascript" src="{% static 'external-embedding/embed-widget-screener.js' %}" async="">
+  {
+  "width": "100%",
+  "height": "420",
+  "defaultColumn": "overview",
+  "defaultScreen": "general",
+  "market": "forex",
+  "showToolbar": true,
+  "colorTheme": "light",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END --><br><br>
+
+
+  <div class="row slideanimation">
+    <div class="col-sm-4">
+      <img src="{% static 'images/licenses/cysec_final.jpg' %}" class="certificate-home img-fluid img-responsive" width="">
+    </div>
+    <div class="col-sm-4">
+      <img src="{% static 'images/licenses/FSC_certificate _final.jpg' %}" class="certificate-home img-fluid img-responsive" width="">
+    </div>
+    <div class="col-sm-4">
+      <img src="{% static 'images/licenses/the_financial_commission_final.jpg' %}" class="certificate-home img-fluid img-responsive" width="">
+    </div>
+  </div>
+<br>
+
+
+
+
+{% endblock contents %}

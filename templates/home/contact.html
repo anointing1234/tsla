@@ -1,0 +1,84 @@
+{% extends "../core/base/base.html" %}
+{% load static %}
+{% block contents %}
+<div class="container-fluid">
+    <br><br>
+
+<!-- Banner Image -->
+<div class="mb-4">
+  <img src="{% static 'images/main/contact.jpg' %}" class="img-fluid" alt="Contact Us Banner" style="width: 100%; height: auto;">
+</div>
+
+<!-- Contact Form Section -->
+<div class="container mb-5">
+  <h1 class="text-center page-head mb-3">
+    WRITE TO US <i class="fas fa-pencil-alt"></i>
+  </h1>
+  <p class="text-center para mb-4">
+    Thank you for visiting. We look forward to assisting you in a professional and timely manner.
+    If you have any comments or feedback, please fill out the form below and our support team will get back to you soon.
+  </p>
+  
+  <form action="" id="contactForm" method="post" name="contactForm" novalidate enctype="multipart/form-data">
+    <div class="row">
+      <!-- Full Name -->
+      <div class="col-12 col-md-6 mb-3">
+        <div class="form-group">
+          <label for="name" class="contact-p1"><strong>Full Name:</strong></label>
+          <input type="text" class="form-control" id="name" name="name" required data-validation-required-message="Please enter your name.">
+          <div class="help-block"></div>
+        </div>
+      </div>
+      <!-- Phone Number -->
+      <div class="col-12 col-md-6 mb-3">
+        <div class="form-group">
+          <label for="phone" class="contact-p1"><strong>Phone Number:</strong></label>
+          <input type="tel" class="form-control" id="phone" name="phone" required data-validation-required-message="Please enter your phone number.">
+          <div class="help-block"></div>
+        </div>
+      </div>
+      <!-- Email Address -->
+      <div class="col-12 col-md-6 mb-3">
+        <div class="form-group">
+          <label for="email" class="contact-p1"><strong>Email Address:</strong></label>
+          <input type="email" class="form-control" id="email" name="email" required data-validation-required-message="Please enter your email address.">
+          <div class="help-block"></div>
+        </div>
+      </div>
+      <!-- Attachments -->
+      <div class="col-12 col-md-6 mb-3">
+        <div class="form-group">
+          <label for="contactfile" class="contact-p1"><strong>Attachments:</strong></label>
+          <input type="file" class="form-control" id="contactfile" name="contactfile" data-validation-required-message="Please add a file.">
+          <div class="help-block"></div>
+        </div>
+      </div>
+      <!-- Subject -->
+      <div class="col-12 mb-3">
+        <div class="form-group">
+          <label for="subject" class="contact-p1"><strong>Subject:</strong></label>
+          <input type="text" class="form-control" id="subject" name="subject" required data-validation-required-message="Please enter a subject.">
+          <div class="help-block"></div>
+        </div>
+      </div>
+      <!-- Message -->
+      <div class="col-12 mb-4">
+        <div class="form-group">
+          <label for="message" class="contact-p1"><strong>Message:</strong></label>
+          <textarea class="form-control" id="message" name="message" rows="7" required data-validation-required-message="Please enter your message" style="resize: none;" maxlength="999"></textarea>
+          <div class="help-block"></div>
+        </div>
+      </div>
+      <!-- Submit Button -->
+      <div class="col-12">
+        <button type="submit" form="contactForm" class="btn btn-dark btn-lg btn-block">
+          <strong>SUBMIT</strong>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<br>
+</div>
+
+{% endblock contents %}

@@ -1,0 +1,281 @@
+{% extends "../core/base/base.html" %}
+{% load static %}
+{% block contents %}
+
+<style>
+  /* Base Reset */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Timeline Container */
+  .timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+    /* Optionally add a background image */
+    background-color: #0a0a0c; /* fallback if you don't want an image */
+    /* background: url("{% static 'images/stonehenge.jpg' %}") center/cover no-repeat; */
+  }
+
+  /* Central Vertical Line */
+  .timeline::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    background-color: #fff;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+  }
+
+  /* Left & Right Containers */
+  .container-f {
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+    padding: 10px 40px;
+    margin-bottom: 2rem;
+  }
+  .left {
+    left: 0;
+  }
+  .right {
+    left: 50%;
+  }
+
+  /* Circles on the Central Line */
+  .container-f::after {
+    content: "";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: -17px; /* for .left */
+    background-color: #fff;
+    border: 4px solid #bb0000;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  .right::after {
+    left: -16px; /* overrides the .left setting */
+  }
+
+  /* Triangles for Arrows */
+  .left::before,
+  .right::before {
+    content: "";
+    position: absolute;
+    top: 22px;
+    width: 0;
+    height: 0;
+    z-index: 1;
+    border-style: solid;
+    border-color: transparent;
+  }
+  .left::before {
+    right: 30px;
+    border-width: 10px 0 10px 10px;
+    border-left-color: #1b1c1d;
+  }
+  .right::before {
+    left: 30px;
+    border-width: 10px 10px 10px 0;
+    border-right-color: #1b1c1d;
+  }
+
+  /* Content Box */
+  .content {
+    padding: 20px 30px;
+    background-color: #1b1c1d;
+    color: #fff;
+    border-radius: 6px;
+    text-align: center;
+  }
+  .content h2 {
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+  .content img {
+    margin-bottom: 1rem;
+  }
+  .content p {
+    margin: 0;
+  }
+
+  /* Responsive Adjustments */
+  @media screen and (max-width: 768px) {
+    .timeline::after {
+      left: 31px;
+    }
+    .container-f {
+      width: 100%;
+      padding: 10px 20px;
+    }
+    .container-f::after {
+      left: 15px;
+      right: auto;
+    }
+    .left::before,
+    .right::before {
+      left: 60px;
+      right: auto;
+    }
+    .right {
+      left: 0%;
+    }
+  }
+</style>
+
+<!-- Banner Image -->
+<div>
+  <img
+    src="{% static 'images/award.png' %}"
+    class="img-fluid w-100"
+    alt="Awards Banner"
+  />
+</div>
+<br />
+
+<!-- Awards & Recognitions Section -->
+<div class="container">
+  <div class="text-center mb-4">
+    <h1 class="display-4">
+      <i class="fas fa-medal award-blue"></i> Awards &amp; Recognitions
+    </h1>
+    <p class="lead">
+      We are honored to have received international recognition for our
+      commitment to excellence. Our innovative trading solutions and outstanding
+      services have earned accolades from prestigious industry bodies worldwide.
+    </p>
+  </div>
+</div>
+
+<!-- Timeline Section -->
+<div class="timeline">
+  <!-- 2020 -->
+  <div class="container-f left">
+    <div class="content">
+      <h2><b>2020</b></h2>
+      <img
+        src="{% static 'images/best-forex-copytrading-platform-2020.png' %}"
+        class="img-fluid img-thumbnail"
+        width="250"
+        alt="2020 Best Forex Copy Trading Platform"
+      />
+      <p class="mt-3">
+        <strong>BEST FOREX COPY TRADING PLATFORM 2020, FXSCOUTS</strong><br />
+        FxScouts awarded us for our advanced copy trading platform, recognizing
+        our innovative and efficient solutions for traders worldwide.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2019 -->
+  <div class="container-f right">
+    <div class="content">
+      <h2><b>2019</b></h2>
+      <img
+        src="{% static 'images/2019-Best-Trade-Execution.png' %}"
+        class="img-fluid img-thumbnail"
+        width="250"
+        alt="2019 Best USA Investment Platform"
+      />
+      <p class="mt-3">
+        <strong>BEST USA INVESTMENT PLATFORM 2019, GLOBAL FOREX</strong><br />
+        Our commitment to cutting-edge technology, low-cost trading, and
+        exceptional customer service earned us this award from Global Forex.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2018 -->
+  <div class="container-f left">
+    <div class="content">
+      <h2><b>2018</b></h2>
+      <img
+        src="{% static 'images/forex-ratings-best-2018-copy-trading-platform.png' %}"
+        class="img-fluid img-thumbnail"
+        alt="2018 Best Copy Trading Platform"
+      />
+      <p class="mt-3">
+        <strong>BEST COPY TRADING PLATFORM 2018, FOREX AWARDS</strong><br />
+        Recognized for our user-friendly copy trading system, we received this
+        award for providing traders with seamless, innovative investment tools.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2018 again -->
+  <div class="container-f left">
+    <div class="content">
+      <h2><b>2018</b></h2>
+      <img
+        src="{% static 'images/2018-award-world-finance.png' %}"
+        class="img-fluid img-thumbnail"
+        alt="2018 Best Trading Broker"
+      />
+      <p class="mt-3">
+        <strong>BEST TRADING BROKER 2018, WORLD FINANCE</strong><br />
+        Our excellence in trading services, customer support, and platform
+        innovation was recognized by World Finance.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2017 -->
+  <div class="container-f right">
+    <div class="content">
+      <h2><b>2017</b></h2>
+      <img
+        src="{% static 'images/best-forex-ecn-broker-2017.png' %}"
+        class="img-fluid img-thumbnail"
+        alt="2017 Best Forex ECN Broker"
+      />
+      <p class="mt-3">
+        <strong>BEST FOREX ECN BROKER 2017, USA FOREX AWARDS</strong><br />
+        Acknowledging our superior trading conditions and advanced technology,
+        USA Forex Awards honored us with this title.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2016 -->
+  <div class="container-f left">
+    <div class="content">
+      <h2><b>2016</b></h2>
+      <img
+        src="{% static 'images/best-trading-conditions-2016.png' %}"
+        class="img-fluid img-thumbnail"
+        alt="2016 Best Trading Conditions"
+      />
+      <p class="mt-3">
+        <strong>BEST TRADING CONDITIONS 2016, FOREX REPORT</strong><br />
+        We set new industry standards with our trading conditions, earning praise
+        from Forex Report magazine.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2015 -->
+  <div class="container-f right">
+    <div class="content">
+      <h2><b>2015</b></h2>
+      <img
+        src="{% static 'images/forex-ratings-best-islamic-account-forex-broker-2015.png' %}"
+        class="img-fluid img-thumbnail"
+        alt="2015 Best Islamic Account Forex Broker"
+      />
+      <p class="mt-3">
+        <strong>BEST ISLAMIC ACCOUNT FOREX BROKER 2015</strong><br />
+        We proudly received this award for providing ethical, Sharia-compliant
+        trading solutions for our Muslim clients.
+      </p>
+    </div>
+  </div>
+</div>
+<!-- End Timeline Section -->
+
+{% endblock contents %}

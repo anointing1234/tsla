@@ -1,0 +1,544 @@
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+body {
+  overflow-x: hidden;
+  height: 100%;
+  color: #000;
+  font-family: "Segoe UI", Helvetica, sans-serif;
+}
+nav.navbar .nav-item .nav-link {
+  color: #000;
+  font-weight: 500;
+}
+.navbar-brand {
+  font-weight: 800;
+  color: #012169 !important;
+}
+.nav-item .nav-link:hover {
+  color: #b00 !important;
+}
+.carousel-caption {
+  position: absolute;
+  right: 50%;
+  bottom: 40%;
+  left: 5.5%;
+  z-index: 10;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #fff;
+  text-align: left;
+}
+.carousel-caption h2 {
+  font-size: 35px;
+  font-weight: bolder;
+}
+@media (max-width: 800px) {
+  .carousel-caption {
+    right: 20%;
+    bottom: 39%;
+    left: 5%;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  #demo .navbar-btn .btn-red {
+    font-size: 10px;
+  }
+  #demo p {
+    font-size: 10px;
+  }
+  .carousel-caption h2 {
+    font-size: 21px;
+    font-weight: bolder;
+  }
+  .carousel-caption h4 {
+    font-size: 16px;
+  }
+}
+.call-to-action {
+  margin-top: 10px;
+}
+@media (max-width: 650px) {
+  .first-carousel-caption {
+    top: 20px;
+  }
+  .call-to-action {
+    font-size: 12.5px;
+    margin-top: 2px;
+  }
+  .featured-header {
+    font-size: 16px;
+  }
+}
+.featured {
+  background-color: #e6e6e6;
+  padding-top: 16px;
+  padding-bottom: 19px;
+}
+.featured-header {
+  font-style: italic;
+  margin-bottom: 8px;
+}
+.intro {
+  padding-top: 55px;
+}
+.intro-header {
+  font-weight: 900;
+}
+.sub-intro-header {
+  font-weight: 500;
+  font-family: "Minion Pro", Garamond, serif;
+}
+.coloured-steps {
+  background-color: black;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  color: #fff;
+  text-align: center;
+}
+.coloured-steps h2 {
+  font-weight: 900;
+  padding-bottom: 20px;
+}
+.coloured-steps .fas {
+  color: #a6ff0f;
+}
+.simpleicontext {
+  margin-top: 8px;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: "Minion Pro", Garamond, serif;
+}
+.startearning {
+  font-size: 25px;
+  font-family: "Minion Pro", Garamond, serif;
+  font-weight: 500;
+}
+.coloured-steps .navbar-btn .btn-warning {
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  color: #fff;
+}
+.whyus {
+  text-align: center;
+  color: #000;
+  padding-top: 10px;
+}
+.whyus h2,
+h2.stock-screener {
+  font-weight: 900;
+  padding-bottom: 10px;
+}
+.whyus .whyusheading h5 {
+  color: #404040;
+  margin-bottom: 45px;
+  font-family: "Minion Pro", Garamond, serif;
+}
+.whyus .fasyellow {
+  color: #f5a21c;
+}
+.whyus .icon-circle {
+  color: #012169;
+}
+.whyusbox h6 {
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.whyusbox p {
+  text-align: left;
+}
+.bestcrypto {
+  font-weight: 900;
+}
+@media (max-width: 650px) {
+  .bestcrypto {
+    font-size: 16px;
+  }
+}
+.pricing .card {
+  border: none;
+  border-radius: 1rem;
+  transition: all 0.2s;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.2);
+}
+.pricing hr {
+  margin: 1.5rem 0;
+}
+.pricing .card-title {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.1rem;
+  font-weight: 700;
+  font-family: "Minion Pro", Garamond, serif;
+}
+.pricing .card-price {
+  font-size: 3rem;
+  margin: 0;
+}
+.pricing .card-price .period {
+  font-size: 0.8rem;
+}
+.pricing ul li {
+  margin-bottom: 1rem;
+}
+.pricing .text-muted {
+  opacity: 0.8;
+}
+.pricing .btn {
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: 0.1rem;
+  font-weight: 800;
+  padding: 1rem;
+  opacity: 0.85;
+  transition: all 0.2s;
+  font-size: 17.5px;
+}
+.btn-blue {
+  background-color: #012169 !important;
+  color: #fff;
+}
+.pricing .card:hover .btn-blue {
+  color: #fff;
+}
+@media (min-width: 992px) {
+  .pricing .card:hover {
+    margin-top: -0.25rem;
+    margin-bottom: 0.25rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.4);
+  }
+  .pricing .card:hover .btn {
+    opacity: 1;
+  }
+}
+.pricingheader {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+section .btn-warning,
+section .badge-warning,
+section .btn-warning:hover {
+  background-color: #f5a21c;
+}
+section .badge-warning {
+  color: #fff;
+}
+.counter {
+  background-color: #000;
+  text-align: center;
+  margin: 0 auto;
+  padding-bottom: 25px;
+  padding-top: 25px;
+  color: #fff;
+}
+.counter-count-style {
+  font-size: 40px;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+.employee-p {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.counter .fa,
+.counter .fas {
+  color: #a6ff0f;
+}
+.parallax {
+  background-image: url(bg.jpg);
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#aboutus {
+  height: 545px;
+  color: #fff;
+  text-align: center;
+  padding: 30px 80px;
+}
+#aboutus p {
+  font-size: 20px;
+  font-weight: 600;
+}
+@media (min-width: 600px) and (max-width: 1100px) {
+  #aboutus {
+    padding-left: 9px;
+    padding-right: 9px;
+    padding-top: 18px;
+    color: #fff;
+    height: 600px;
+  }
+  #aboutus p {
+    font-size: 17px !important;
+  }
+}
+@media (max-width: 600px) {
+  #aboutus {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 14px;
+    height: 620px;
+    color: #fff;
+  }
+  #aboutus p {
+    font-size: 14px !important;
+  }
+}
+#aboutus h2 {
+  font-weight: 900;
+}
+#aboutus h3 {
+  font-weight: 800;
+}
+#demo1 {
+  color: #000;
+}
+#demo1 h2 {
+  padding-top: 25px;
+  font-weight: 900;
+}
+#demo1 h5 {
+  color: #404040;
+  margin-bottom: 45px;
+  font-family: "Minion Pro", Garamond, serif;
+  text-align: center;
+}
+.carousel-indicators li.active {
+  background-color: #b00;
+}
+.carousel-indicators li {
+  background-color: #595959;
+}
+.item h4 {
+  font-size: 21px;
+  line-height: 1.375em;
+  margin-bottom: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-top: 0.7em;
+}
+@media (max-width: 800px) {
+  .item h4 {
+    font-size: 19px;
+    padding-left: 23px;
+    padding-right: 23px;
+  }
+  .item > h4 span.quotation {
+    font-size: 23px;
+  }
+}
+.item span {
+  font-weight: 700;
+  font-size: 19px;
+}
+.item > h4 span.quotation {
+  font-weight: 700;
+  font-size: 25px;
+}
+.checked {
+  color: #f5a21c;
+}
+.fa-star {
+  margin-bottom: 3px;
+  margin-top: 7px;
+}
+#demo1 h3.review,
+.education .page-head {
+  font-weight: 800;
+  font-family: "Minion Pro", Garamond, serif;
+}
+#demo1 .btn-blue {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 5rem;
+  padding: 1rem;
+}
+.certificate-home {
+  margin-top: 15px;
+}
+#brokerregulation h2 {
+  font-weight: 900;
+}
+#brokerregulation h5 {
+  font-family: "Minion Pro", Garamond, serif;
+}
+.award-blue {
+  color: #b00;
+}
+footer {
+  background-color: #000;
+  color: #fff;
+  padding-top: 25px;
+  margin-bottom: 0;
+}
+.footer-top {
+  padding-bottom: 25px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.footer-bottom {
+  border-top: 1px solid #fff;
+  padding-bottom: 12px;
+  padding-top: 12px;
+}
+footer h5 {
+  padding-bottom: 20px;
+  font-weight: 800;
+}
+footer a,
+footer a:visited,
+footer a:hover {
+  color: #fff;
+}
+footer .socialmedia li {
+  padding-bottom: 9.5px;
+}
+footer .links li,
+footer .contactfooter li {
+  padding-bottom: 5px;
+  letter-spacing: 0.5px;
+}
+.footer-copyright {
+  font-size: 12px;
+  text-align: left;
+}
+@media (max-width: 750px) {
+  .footer-bottom,
+  .footer-copyright {
+    font-size: 10px;
+  }
+}
+.help .headings {
+  font-weight: 900;
+  margin: 15px;
+}
+.contact .page-head,
+.newsheading {
+  font-weight: 900;
+  font-family: "Minion Pro", Garamond, serif;
+  padding-bottom: 20px;
+}
+.contact .btn-blue {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff !important;
+}
+.education .btc-academy .page-head {
+  color: #012169;
+}
+.education .simple {
+  background-color: #012169;
+  color: #fff;
+  padding: 40px;
+}
+.education .simple .siple-icon {
+  color: #a6ff0f;
+}
+.affiliate h2 {
+  font-weight: 900;
+}
+.affiliate h5 {
+  font-family: "Minion Pro", Garamond, serif;
+}
+.btn-red,
+.btn-red:hover,
+.btn-red:focus,
+.btn-red:active {
+  font-weight: 700;
+  background-color: #b00;
+  border-color: #b00;
+  color: #fff;
+  outline-color: #b00;
+}
+.about-h4 {
+  color: #012169;
+  font-weight: 800;
+}
+.about h1 {
+  color: #012169;
+  font-weight: 900;
+}
+.about .img-container img {
+  margin-top: 20px;
+}
+.about .meet {
+  margin-top: 8px;
+}
+.partnerheader {
+  text-align: center;
+  font-weight: 700;
+  color: #fff;
+  padding-top: 12px;
+}
+.partnercontainer {
+  background-color: #0d0d0d;
+  text-align: center;
+  padding-bottom: 22px;
+}
+.slideanimation {
+  visibility: hidden;
+}
+.sliderider {
+  animation-name: slident;
+  -webkit-animation-name: slident;
+  animation-duration: 0.6s;
+  -webkit-animation-duration: 1s;
+  visibility: visible;
+}
+@keyframes slident {
+  0% {
+    opacity: 0;
+    transform: translateX(70%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+@-webkit-keyframes slident {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(70%);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0%);
+  }
+}
+.slideanim {
+  visibility: hidden;
+}
+.slider {
+  animation-name: sliden;
+  -webkit-animation-name: sliden;
+  animation-duration: 0.6s;
+  -webkit-animation-duration: 1s;
+  visibility: visible;
+}
+@keyframes sliden {
+  0% {
+    opacity: 0;
+    transform: translateY(70%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+@-webkit-keyframes sliden {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(70%);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0%);
+  }
+}
