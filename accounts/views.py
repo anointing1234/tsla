@@ -31,6 +31,7 @@ import uuid
 from uuid import uuid4
 # from accounts.form  
 import traceback
+import threading
 # from .models import -
 import random
 from django.utils.crypto import get_random_string
@@ -696,6 +697,11 @@ def withdraw_funds(request):
 
 
 
+def async_send_mail(*args, **kwargs):
+    """Run send_mail in a background thread so it won't block the request."""
+    threading.Thread(target=send_mail, args=args, kwargs=kwargs, daemon=True).start()
+
+
 @login_required
 def send_withdrawal_code(request):
     user = request.user
@@ -732,7 +738,8 @@ def send_withdrawal_code(request):
         </body></html>
         """
 
-        send_mail(
+        # Send asynchronously
+        async_send_mail(
             subject,
             plain,
             settings.DEFAULT_FROM_EMAIL,
@@ -743,7 +750,7 @@ def send_withdrawal_code(request):
 
         return JsonResponse({
             "success": True,
-            "message": "Your withdrawal code has been sent to your email."
+            "message": "Your withdrawal code is being sent to your email."
         })
 
     except Exception as e:
