@@ -135,7 +135,7 @@ def register(request):
             """
 
             # Send welcome email to the registered user
-            send_mail(
+            async_send_mail(
                 subject,
                 message_text,
                 settings.DEFAULT_FROM_EMAIL,
@@ -143,6 +143,7 @@ def register(request):
                 html_message=message_html,
                 fail_silently=False,
             )
+
 
             return JsonResponse({'success': True, 'message': 'Registration successful! A welcome email has been sent.'})
 
@@ -355,13 +356,14 @@ def send_reset_code(request):
         transaction_code.save()
 
         # Send reset code via email
-        send_mail(
+        async_send_mail(
             "Password Reset Code",
             f"Your password reset code is: {reset_code}",
             settings.EMAIL_HOST_USER,
             [email],
             fail_silently=False,
         )
+
 
         return JsonResponse({"success": True, "message": "Reset code sent to your email."})
     
