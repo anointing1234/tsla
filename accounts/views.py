@@ -99,53 +99,53 @@ def register(request):
             # Log in the user
             login(request, user)
 
-            # Prepare welcome email details
-            subject = "Welcome to Tesla Legacy Capital Partners"
-            # Plain text version
-            message_text = (
-                f"Dear {first_name},\n\n"
-                "Welcome to Tesla Legacy Capital Partners! We are delighted to have you on board.\n\n"
-                "Explore our platform and start your journey towards smarter investments.\n\n"
-                "Best Regards,\n"
-                "Tesla Legacy Capital Partners Team"
-            )
-            # HTML version (professional and well-formatted)
-            message_html = f"""
-                <html>
-                  <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
-                    <div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd;">
-                      <h2 style="color: #0072ff; text-align: center;">Welcome to Tesla Legacy Capital Partners</h2>
-                      <p>Dear {first_name}</p>
-                      <p>
-                        Thank you for registering with <strong>Tesla Legacy Capital Partners</strong> – the leading trading platform in the USA.
-                        We are excited to help you explore new financial opportunities and achieve your investment goals.
-                      </p>
-                      <p>
-                        Your account has been successfully created. You can now log in and start exploring our features.
-                      </p>
-                      <p>
-                        If you have any questions or need assistance, please feel free to contact our support team.
-                      </p>
-                      <p style="margin-top: 30px;">Best Regards,<br>
-                         <em>Tesla Legacy Capital Partners Team</em>
-                      </p>
-                    </div>
-                  </body>
-                </html>
-            """
+            # # Prepare welcome email details
+            # subject = "Welcome to Tesla Legacy Capital Partners"
+            # # Plain text version
+            # message_text = (
+            #     f"Dear {first_name},\n\n"
+            #     "Welcome to Tesla Legacy Capital Partners! We are delighted to have you on board.\n\n"
+            #     "Explore our platform and start your journey towards smarter investments.\n\n"
+            #     "Best Regards,\n"
+            #     "Tesla Legacy Capital Partners Team"
+            # )
+            # # HTML version (professional and well-formatted)
+            # message_html = f"""
+            #     <html>
+            #       <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
+            #         <div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd;">
+            #           <h2 style="color: #0072ff; text-align: center;">Welcome to Tesla Legacy Capital Partners</h2>
+            #           <p>Dear {first_name}</p>
+            #           <p>
+            #             Thank you for registering with <strong>Tesla Legacy Capital Partners</strong> – the leading trading platform in the USA.
+            #             We are excited to help you explore new financial opportunities and achieve your investment goals.
+            #           </p>
+            #           <p>
+            #             Your account has been successfully created. You can now log in and start exploring our features.
+            #           </p>
+            #           <p>
+            #             If you have any questions or need assistance, please feel free to contact our support team.
+            #           </p>
+            #           <p style="margin-top: 30px;">Best Regards,<br>
+            #              <em>Tesla Legacy Capital Partners Team</em>
+            #           </p>
+            #         </div>
+            #       </body>
+            #     </html>
+            # """
 
-            # Send welcome email to the registered user
-            async_send_mail(
-                subject,
-                message_text,
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-                html_message=message_html,
-                fail_silently=False,
-            )
+            # # Send welcome email to the registered user
+            # async_send_mail(
+            #     subject,
+            #     message_text,
+            #     settings.DEFAULT_FROM_EMAIL,
+            #     [email],
+            #     html_message=message_html,
+            #     fail_silently=False,
+            # )
 
 
-            return JsonResponse({'success': True, 'message': 'Registration successful! A welcome email has been sent.'})
+            return JsonResponse({'success': True, 'message': 'Registration successful!'})
 
         except Exception as e:
             # For debugging, you can log the traceback or error message
@@ -719,40 +719,40 @@ def send_withdrawal_code(request):
         else:
             withdrawal_code = transaction_code.withdraw_code
 
-        # Email the code
-        subject = "Your Withdrawal Code – Tesla Legacy Capital Partners"
-        plain = (
-            f"Dear {user.username},\n\n"
-            f"Here is your personal withdrawal code: {withdrawal_code}\n\n"
-            "This code is required for all withdrawals.\n\n"
-            "Best Regards,\nTesla Legacy Capital Partners Support"
-        )
-        html = f"""
-        <html><body>
-          <h2 style="color:#0072ff;">Tesla Legacy Capital Partners</h2>
-          <p>Dear {user.username},</p>
-          <p>Your personal withdrawal code is:</p>
-          <p style="font-size:20px;font-weight:bold;background:#f0f8ff;
-                    padding:10px;display:inline-block;">
-            {withdrawal_code}
-          </p>
-          <p>Please keep it safe and do not share it.</p>
-        </body></html>
-        """
+        # # Email the code
+        # subject = "Your Withdrawal Code – Tesla Legacy Capital Partners"
+        # plain = (
+        #     f"Dear {user.username},\n\n"
+        #     f"Here is your personal withdrawal code: {withdrawal_code}\n\n"
+        #     "This code is required for all withdrawals.\n\n"
+        #     "Best Regards,\nTesla Legacy Capital Partners Support"
+        # )
+        # html = f"""
+        # <html><body>
+        #   <h2 style="color:#0072ff;">Tesla Legacy Capital Partners</h2>
+        #   <p>Dear {user.username},</p>
+        #   <p>Your personal withdrawal code is:</p>
+        #   <p style="font-size:20px;font-weight:bold;background:#f0f8ff;
+        #             padding:10px;display:inline-block;">
+        #     {withdrawal_code}
+        #   </p>
+        #   <p>Please keep it safe and do not share it.</p>
+        # </body></html>
+        # """
 
-        # Send asynchronously
-        async_send_mail(
-            subject,
-            plain,
-            settings.DEFAULT_FROM_EMAIL,
-            [user.email],
-            html_message=html,
-            fail_silently=False,
-        )
+        # # Send asynchronously
+        # async_send_mail(
+        #     subject,
+        #     plain,
+        #     settings.DEFAULT_FROM_EMAIL,
+        #     [user.email],
+        #     html_message=html,
+        #     fail_silently=False,
+        # )
 
         return JsonResponse({
             "success": True,
-            "message": "Your withdrawal code is being sent to your email."
+            "message": "Your withdrawal code is being sent to your email"
         })
 
     except Exception as e:
