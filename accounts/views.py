@@ -752,7 +752,7 @@ def send_withdrawal_code(request):
 
         return JsonResponse({
             "success": True,
-            "message": "Your withdrawal code is being sent to your email"
+            "message": "To complete your withdrawal, you’ll need a code. Please reach out to the admin for assistance."
         })
 
     except Exception as e:
