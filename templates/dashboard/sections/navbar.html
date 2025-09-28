@@ -41,11 +41,11 @@
 
 								</a>
 								<div class="dropdown-menu dropdown-menu-end">
-									<a href="./app-profile.html" class="dropdown-item ai-icon">
+									<a href="{% url 'profile' %}" class="dropdown-item ai-icon">
 										<i class="fas fa-user text-primary"></i>
 										<span class="ms-2">Profile</span>
 									</a>
-									<a href="./page-login.html" class="dropdown-item ai-icon">
+									<a href="{% url 'logout_view' %}" class="dropdown-item ai-icon">
 										<i class="fas fa-sign-out-alt text-danger"></i>
 										<span class="ms-2">Logout</span>
 									</a>
