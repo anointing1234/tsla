@@ -3,52 +3,58 @@
 {% load humanize %}
 
 {% block contents %}
-<div class="container">
-    <div class="page-inner bg-dark">
-        <div class="row mb-5 pb-5 p-0">
-            <div class="row mx-1">
-                <h2 class="text-white text-center my-4">Investment Plans</h2>
-                {% for plan in plans %}
-                <div class="col-md-3 my-3">
-                    <div class="card text-center bg-light shadow">
-                        <div class="card-header bg-dark text-white">
-                            <h5>{{ plan.name }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="text-dark">
-                                <strong>{{ plan.percentage }}%</strong> Return in <strong>{{ plan.duration }}</strong>
-                            </p>
-                            <p class="text-dark">
-                                <strong>{{ plan.commission }}%</strong> Commission
-                            </p>
-                            <p class="text-dark">
-                                Capital Insurance: <strong>{{ plan.capital_insurance }}%</strong>
-                            </p>
-                            <p class="text-dark">
-                                Min Investment: <strong>${{ plan.min_amount|intcomma }}</strong>
-                            </p>
-                            <p class="text-dark">
-                                Max Investment: 
+
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- Title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-card">
+                    <div class="card-body text-center">
+                        <h4 class="fw-bold text-white">📊 Available Investment Plans</h4>
+                        <p class="text-muted mb-0">Choose the plan that best fits your financial goals</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plans -->
+        <div class="row g-4">
+            {% for plan in plans %}
+            <div class="col-md-4 col-lg-4">
+                <div class="card shadow-lg border-0 plan-card h-100">
+                    <div class="card-header text-center text-white plan-header">
+                        <h5 class="mb-0 fw-bold">{{ plan.name }}</h5>
+                    </div>
+                    <div class="card-body bg-dark text-light d-flex flex-column justify-content-between">
+                        <ul class="list-unstyled text-start mb-4">
+                            <li class="mb-2"><i class="fas fa-percentage text-success me-2 "></i> <strong>{{ plan.percentage }}%</strong> Return in <strong>{{ plan.duration }}</strong></li>
+                            <li class="mb-2"><i class="fas fa-coins text-warning me-2 "></i> <strong>{{ plan.commission }}%</strong> Commission</li>
+                            <li class="mb-2"><i class="fas fa-shield-alt text-info me-2 "></i> Capital Insurance: <strong>{{ plan.capital_insurance }}%</strong></li>
+                            <li class="mb-2"><i class="fas fa-arrow-up text-primary me-2 "></i> Min Investment: <strong>${{ plan.min_amount|intcomma }}</strong></li>
+                            <li class="mb-2"><i class="fas fa-arrow-down text-danger me-2 "></i> Max Investment: 
                                 {% if plan.max_amount %}
                                     <strong>${{ plan.max_amount|intcomma }}</strong>
                                 {% else %}
                                     <strong>Unlimited</strong>
                                 {% endif %}
-                            </p>
-                            <!-- Purchase Plan Button -->
-                            <form method="POST" action="{% url 'purchase-plan' %}" onsubmit="return confirmPurchase(this, event);">
-                                {% csrf_token %}
-                                <input type="hidden" name="plan_id" value="{{ plan.id }}">
-                                <input type="hidden" name="amount" value="{{ plan.min_amount }}">
-                                <button type="submit" class="btn btn-dark w-100">Purchase Plan</button>
-                            </form>
-                        </div>
+                            </li>
+                        </ul>
+                        <!-- Purchase Plan Button -->
+                        <form method="POST" action="{% url 'purchase-plan' %}" onsubmit="return confirmPurchase(this, event);">
+                            {% csrf_token %}
+                            <input type="hidden" name="plan_id" value="{{ plan.id }}">
+                            <input type="hidden" name="amount" value="{{ plan.min_amount }}">
+                            <button type="submit" class="btn btn-gradient w-100 fw-bold">
+                                Purchase Plan
+                            </button>
+                        </form>
                     </div>
                 </div>
-                {% empty %}
-                <p class="text-white text-center">No investment plans available.</p>
-                {% endfor %}
             </div>
+            {% empty %}
+            <p class="text-white text-center">No investment plans available.</p>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -58,32 +64,52 @@
 <!-- Toastify JS -->
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
+<style>
+    /* Plan Cards */
+    .plan-card {
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .plan-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+    .plan-header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 15px 15px 0 0;
+    }
+    .btn-gradient {
+        background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+        border: none;
+        border-radius: 8px;
+        padding: 10px;
+        color: #111;
+        transition: all 0.3s ease;
+    }
+    .btn-gradient:hover {
+        background: linear-gradient(135deg, #45a049, #76d6b0);
+        color: #fff;
+    }
+</style>
+
 <script>
-    // Custom confirmation function using a Toastify alert as a modal dialog.
+    // Confirmation with Toastify
     function confirmPurchase(form, event) {
-        // Prevent the default form submission
         event.preventDefault();
 
-        // Calculate an approximate vertical offset to center the toast (adjust as needed)
-        var offsetY = window.innerHeight / 2 - 100;
-
-        // Create the confirmation toast with custom HTML content.
         var confirmationToast = Toastify({
-            text: "<div style='text-align:center; color: white;'>Are you sure you want to make this purchase?<br><br>" +
-                  "<button id='confirmYes' class='btn btn-success btn-sm' style='margin-right:10px;'>Yes</button>" +
+            text: "<div style='text-align:center; color: white;'>Confirm Plan Purchase?<br><br>" +
+                  "<button id='confirmYes' class='btn btn-success btn-sm me-2'>Yes</button>" +
                   "<button id='confirmNo' class='btn btn-danger btn-sm'>Cancel</button></div>",
-            duration: 0,           // 0 means it will not auto-dismiss.
+            duration: 0,
             close: false,
-            gravity: "top",        // We'll use an offset to position it vertically.
-            position: "center",    // Horizontal centering.
-            offset: { x: 0, y: offsetY },
+            gravity: "top",
+            position: "center",
             backgroundColor: "#343a40",
-            stopOnFocus: true,
-            escapeMarkup: false    // Allows HTML in the text.
+            escapeMarkup: false
         });
         confirmationToast.showToast();
 
-        // Use a small delay to ensure the toast content is rendered.
         setTimeout(function() {
             var yesButton = document.getElementById("confirmYes");
             var noButton = document.getElementById("confirmNo");
@@ -91,11 +117,9 @@
             if (yesButton) {
                 yesButton.addEventListener("click", function() {
                     confirmationToast.hideToast();
-                    // Disable the submit button and show a loading spinner.
                     var button = form.querySelector("button[type='submit']");
                     button.disabled = true;
-                    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
-                    // Submit the form programmatically.
+                    button.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
                     form.submit();
                 });
             }
@@ -106,13 +130,12 @@
             }
         }, 100);
 
-        // Return false to prevent the default submission until confirmed.
         return false;
     }
-    
+
+    // Show Django messages
     document.addEventListener("DOMContentLoaded", function () {
         {% if messages %}
-            let successMessageShown = false;
             {% for message in messages %}
                 Toastify({
                     text: "{{ message|safe }}",
@@ -121,18 +144,7 @@
                     position: "right",
                     backgroundColor: "{% if message.tags == 'success' %}green{% else %}red{% endif %}",
                 }).showToast();
-
-                {% if message.tags == 'success' %}
-                    successMessageShown = true;
-                {% endif %}
             {% endfor %}
-
-            // Redirect after 5 seconds if a success message was shown.
-            if (successMessageShown) {
-                setTimeout(function () {
-                    window.location.href = "{% url 'view_plans' %}";
-                }, 5000); // Adjust timeout as needed.
-            }
         {% endif %}
     });
 </script>

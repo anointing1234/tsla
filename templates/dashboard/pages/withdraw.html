@@ -1,164 +1,545 @@
 {% extends '../core/base.html' %}
 {% load static %}
+{% load humanize %}
+
 {% block contents %}
+ 
+    <style>
+        /* Enhanced Professional Dark Theme */
+        :root {
+            --primary-color: #2E86C1;
+            --secondary-color: #148F77;
+            --success-color: #27AE60;
+            --danger-color: #E74C3C;
+            --warning-color: #F39C12;
+            --info-color: #3498DB;
+            --dark-color: #1B2631;
+            --darker-color: #0f1419;
+            --card-dark: #1e2328;
+            --light-color: #F8F9FA;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            --gradient-danger: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            --gradient-warning: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            --gradient-dark: linear-gradient(135deg, #1e2328 0%, #2b3139 100%);
+        }
 
-<style>
-    /* Gradient background from black to white */
-    .gradient-bg {
-        background: linear-gradient(to right, black, white);
-        padding: 50px 0;
-        min-height: 100vh;
-    }
-    /* Center the inner content */
-    .centered-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-    /* Optional: Style the card so its background is transparent */
-    .form-card {
-        background: transparent;
-        border: none;
-    }
-    /* Ensure the form fields and header are centered */
-    .form-card .card-body {
-        text-align: center;
-    }
-    /* Limit form width */
-    .form-container {
-        width: 100%;
-        margin: 0 auto;
-    }
-</style>
+        /* General Body Styling */
+        body {
+            background: var(--darker-color);
+            font-family: 'Inter', sans-serif;
+            color: white;
+        }
 
+        /* Enhanced Form Card */
+        .form-card {
+            background: var(--gradient-dark);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            margin-top: 3rem;
+        }
 
-<div class="container-fluid gradient-bg mt-5">
-    <div class="centered-container">
-        <div class="card form-card mt-5 pt-5" style="width: 100%; max-width: 600px;">
-            <div class="card-body">
-                <div class="card-header text-center bg-dark text-white py-2">
-                    <h4>Withdraw Funds</h4>
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-card h4 {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            color: white;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Form Inputs */
+        .form-control {
+            background: #2b3139;
+            border: 1px solid #3a3f45;
+            border-radius: 10px;
+            color: white;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: #2b3139;
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .form-control.is-invalid {
+            border-color: var(--danger-color);
+            box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+        }
+
+        .input-group-text {
+            background: #2b3139;
+            border: 1px solid #3a3f45;
+            color: white;
+            border-radius: 10px 0 0 10px;
+            padding: 10px 15px;
+        }
+
+        /* Select Styling */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 12px;
+            padding-right: 40px;
+        }
+
+        /* Toggle Buttons */
+        .toggle-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .toggle-container .btn {
+            flex: 1;
+            min-width: 150px;
+            max-width: 200px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            background: #2b3139;
+            border: 2px solid #3a3f45;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .toggle-container .btn.active,
+        .toggle-container .btn:hover {
+            background: var(--gradient-primary);
+            border-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Submit Button */
+        .btn-dark {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-dark:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background: var(--gradient-primary);
+        }
+
+        .btn-dark:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Small Text */
+        small.text-white {
+            color: rgba(255,255,255,0.7) !important;
+            font-size: 0.85rem;
+        }
+
+        /* Animation for Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gradient-success);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.error {
+            background: var(--gradient-danger);
+        }
+
+        .form-label {
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .top-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+            color: white;
+            background-color: #000;
+        }
+
+        .top-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('/static/asset/images/deposit_wallper.jpg') center center / cover no-repeat;
+            filter: brightness(30%);
+            z-index: 0;
+        }
+
+        .top-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .top-card h4 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin: 0;
+            padding: 1.5rem;
+        }
+
+        /* Balance Display */
+        .balance-display {
+            background: rgba(46, 134, 193, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .balance-display .balance-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .balance-display small {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-card {
+                margin-top: 1rem;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            .form-card h4 {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+
+            .top-card h4 {
+                font-size: 1.3rem;
+                padding: 1rem;
+            }
+
+            .toggle-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .toggle-container .btn {
+                flex: none;
+                min-width: auto;
+                max-width: none;
+                margin-bottom: 5px;
+            }
+
+            .form-control,
+            .input-group-text {
+                padding: 12px 15px;
+                font-size: 13px; /* Prevent zoom on iOS */
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            small.text-white {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 0.75rem;
+            }
+
+            .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+
+        /* Form Container Fixes */
+        .form-container {
+            width: 100%;
+        }
+
+        .form-container .row {
+            margin: 0;
+        }
+
+        .form-container [class*="col-"] {
+            padding-left: 0;
+            padding-right: 0;
+            width: 100%;
+        }
+    </style>
+
+<!-- Content Body -->
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-card">
+                    <div class="card-body">
+                        <h4>Withdraw Funds</h4>
+                    </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Toggle Buttons -->
-                <div class="text-center my-3">
-                    <button class="btn btn-dark me-2" onclick="toggleForm('crypto')">Crypto Withdrawal</button>
-                    <button class="btn btn-dark" onclick="toggleForm('bank')">Bank Withdrawal</button>
-                </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card form-card">
+                    <div class="card-body">
+                        <h4 class="mb-4 fw-bold">Withdrawal Details</h4>
 
-                <form class="form" id="withdrawForm" method="post">
-                    {% csrf_token %}
-                    <fieldset class="form-container">
+                        <!-- Account Balance Display -->
+                        <div class="balance-display">
+                            <p class="balance-amount">${{ request.user.balance.usdt_balance|intcomma|default:"0.00" }}</p>
+                            <small>Available Balance</small>
+                        </div>
 
-                        <!-- === Crypto Withdrawal Form === -->
-                        <div id="crypto-form">
-                            <!-- Currency -->
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa fa-wallet"></i></span>
-                                    <select class="form-control" name="withdraw_currency" id="withdrawCurrency" required onchange="updateWithdrawAddress()">
-                                        <option value="">Select Currency</option>
-                                        {% for wallet in wallet_addresses %}
-                                            <option value="{{ wallet.currency }}">{{ wallet.currency }}</option>
-                                        {% endfor %}
-                                    </select>
+                        <!-- Toggle Buttons -->
+                        <div class="toggle-container">
+                            <button class="btn active" id="cryptoToggle" type="button" onclick="toggleForm('crypto')">
+                                Crypto Withdrawal
+                            </button>
+                            <button class="btn" id="bankToggle" type="button" onclick="toggleForm('bank')">
+                                <i class="fa fa-university me-2"></i>Bank Withdrawal
+                            </button>
+                        </div>
+
+                        <form class="form" id="withdrawForm" method="post" action="{% url 'withdraw' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <fieldset class="form-container">
+                                <!-- === Crypto Withdrawal Form === -->
+                                <div id="crypto-form">
+                                    <!-- Currency -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="withdrawCurrency">Select Cryptocurrency</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-coins"></i></span>
+                                            <select class="form-control" name="withdraw_currency" id="withdrawCurrency" required onchange="updateWithdrawAddress()">
+                                                <option value="" disabled selected>Choose cryptocurrency to withdraw</option>
+                                                {% for wallet in wallet_addresses %}
+                                                    <option value="{{ wallet.currency }}">{{ wallet.currency }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <small class="text-white">Select the cryptocurrency you want to receive.</small>
+                                    </div>
+
+                                    <!-- User's Wallet Address -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="userWalletAddress">Your Wallet Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-wallet"></i></span>
+                                            <input type="text" class="form-control" id="userWalletAddress" name="withdraw_address" required placeholder="Enter your wallet address to receive funds">
+                                        </div>
+                                        <small class="text-white">Enter your personal wallet address where you want to receive the cryptocurrency.</small>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Wallet Address -->
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa fa-coins"></i></span>
-                                    <input type="text" class="form-control" id="withdrawAddress" name="withdraw_address" required readonly>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="copyWithdrawAddress()">
-                                        <i class="fa fa-clipboard"></i>
+                                <!-- === Bank Withdrawal Form === -->
+                                <div id="bank-form" style="display: none;">
+                                    <!-- Bank Name -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="bankName">Bank Name</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-university"></i></span>
+                                            <input type="text" class="form-control" name="bank_name" id="bankName" placeholder="Enter your bank name">
+                                        </div>
+                                        <small class="text-white">Enter the name of your bank.</small>
+                                    </div>
+
+                                    <!-- Account Name -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="accountName">Account Holder Name</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            <input type="text" class="form-control" name="account_name" id="accountName" placeholder="Enter account holder name">
+                                        </div>
+                                        <small class="text-white">Enter the full name on the bank account.</small>
+                                    </div>
+
+                                    <!-- SWIFT Code -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="swiftCode">SWIFT Code</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-code"></i></span>
+                                            <input type="text" class="form-control" name="swift_code" id="swiftCode" placeholder="Enter bank SWIFT code">
+                                        </div>
+                                        <small class="text-white">Enter your bank's SWIFT code for international transfers.</small>
+                                    </div>
+
+                                    <!-- Currency -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="bankCurrency">Currency</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-money-bill-wave"></i></span>
+                                            <select class="form-control" name="currency" id="bankCurrency">
+                                                <option value="" disabled selected>Select Currency</option>
+                                                <option value="USD">US Dollar (USD)</option>
+                                                <option value="EUR">Euro (EUR)</option>
+                                                <option value="GBP">British Pound (GBP)</option>
+                                                <option value="JPY">Japanese Yen (JPY)</option>
+                                                <option value="CAD">Canadian Dollar (CAD)</option>
+                                                <option value="AUD">Australian Dollar (AUD)</option>
+                                                <option value="CHF">Swiss Franc (CHF)</option>
+                                                <option value="CNY">Chinese Yuan (CNY)</option>
+                                                <option value="INR">Indian Rupee (INR)</option>
+                                            </select>
+                                        </div>
+                                        <small class="text-white">Select the currency for your bank withdrawal.</small>
+                                    </div>
+
+                                    <!-- Account Number -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="accountNumber">Account Number</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-hashtag"></i></span>
+                                            <input type="text" class="form-control" name="account_number" id="accountNumber" placeholder="Enter your account number">
+                                        </div>
+                                        <small class="text-white">Enter your bank account number.</small>
+                                    </div>
+                                </div>
+
+                                <!-- Amount (Common) -->
+                                <div class="form-group">
+                                    <label class="form-label" for="withdrawAmount">Withdrawal Amount (USD)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
+                                        <input type="number" class="form-control" name="withdraw_amount" id="withdrawAmount" required placeholder="Enter amount (min: $100)" step="0.01" min="100" onblur="if (this.value && this.value < 100) this.value = 100;">
+                                    </div>
+                                    <small class="text-white">Minimum withdrawal amount: $100 USD.</small>
+                                </div>
+
+                                <!-- Withdrawal Type (hidden) -->
+                                <input type="hidden" id="withdraw_type" name="withdraw_type" value="crypto">
+
+                
+                               <!-- Single Submit Button -->
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-dark w-100" id="submitButton">
+                                        <i class="fa fa-paper-plane me-2"></i>Submit Withdrawal Request
                                     </button>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- === Bank Withdrawal Form === -->
-                        <div id="bank-form" style="display: none;">
-                            <!-- Bank Name -->
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa fa-university"></i></span>
-                                    <input type="text" class="form-control" name="bank_name" placeholder="Bank Name">
-                                </div>
-                            </div>
-
-                            <!-- Account Name -->
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="account_name" placeholder="Account Name">
-                                </div>
-                            </div>
-
-                             <!-- SWIFT Code -->
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa fa-code"></i></span>
-                                    <input class="form-control" type="text" name="swift_code" placeholder="SWIFT Code" required>
-                                </div>
-                            </div>
-
-                            <!-- Currency -->
-                     
-                            <div class="mb-3">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fa fa-money-bill-wave"></i></span>
-                                <select class="form-control" name="currency" id="bankCurrency" required>
-                                <option value="">Select Currency</option>
-                                <option value="USD">US Dollar</option>
-                                <option value="EUR">Euro</option>
-                                <option value="GBP">British Pound</option>
-                                <option value="JPY">Japanese Yen</option>
-                                <option value="CAD">Canadian Dollar</option>
-                                <option value="AUD">Australian Dollar</option>
-                                <option value="CHF">Swiss Franc</option>
-                                <option value="CNY">Chinese Yuan</option>
-                                <option value="INR">Indian Rupee</option>
-                                </select>
-                            </div>
-                            </div>
-
-
-                            <!-- Account Number -->
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa fa-hashtag"></i></span>
-                                    <input type="text" class="form-control" name="account_number" placeholder="Account Number">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Amount (Common) -->
-                        <div class="mb-3">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
-                                <input type="number" class="form-control" name="withdraw_amount" required placeholder="Withdrawal Amount" step="0.01">
-                            </div>
-                        </div>
-
-                      
-                        <!-- Withdrawal Type (hidden) -->
-                        <input type="hidden" id="withdraw_type" name="withdraw_type" value="crypto">
-
-                        <!-- Request Code Button -->
-                        <div class="mb-3">
-                            <button type="button" id="request-code" class="btn btn-dark w-100">Withdraw</button>
-                        </div>
-                    </fieldset>
-                </form>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+    <!-- Toast Notifications -->
+    <div id="errorToast" class="toast error">
+        <i class="fa fa-exclamation-triangle me-2"></i>Please fill in all required fields correctly.
+    </div>
+
+    <div id="successToast" class="toast">
+        <i class="fa fa-check me-2"></i>Withdrawal request submitted successfully!
+    </div>
+
+   <!-- jQuery (needed for $.ajax) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    // === TOGGLE FORMS ===
+    function toggleForm(type) {
+        const cryptoForm   = document.getElementById('crypto-form');
+        const bankForm     = document.getElementById('bank-form');
+        const withdrawType = document.getElementById('withdraw_type');
+
+        if (type === 'crypto') {
+            cryptoForm.style.display = 'block';
+            bankForm.style.display   = 'none';
+            withdrawType.value       = 'crypto';
+
+            document.getElementById('withdrawCurrency').required   = true;
+            document.getElementById('userWalletAddress').required  = true;
+            setRequiredBank(false);
+        } else {
+            cryptoForm.style.display = 'none';
+            bankForm.style.display   = 'block';
+            withdrawType.value       = 'bank';
+
+            document.getElementById('withdrawCurrency').required   = false;
+            document.getElementById('userWalletAddress').required  = false;
+            setRequiredBank(true);
+        }
+    }
+
+    function setRequiredBank(required) {
+        const bankFields = ['bankName', 'accountName', 'swiftCode', 'bankCurrency', 'accountNumber'];
+        bankFields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field) field.required = required;
+        });
+    }
+
+    // === WALLET AUTO-FILL ===
     const walletAddresses = {
         {% for wallet in wallet_addresses %}
             "{{ wallet.currency }}": "{{ wallet.address }}",
@@ -167,175 +548,141 @@
 
     function updateWithdrawAddress() {
         let withdrawCurrency = document.getElementById("withdrawCurrency").value;
-        let withdrawAddressField = document.getElementById("withdrawAddress");
+        let withdrawAddressField = document.getElementById("userWalletAddress");
         withdrawAddressField.value = walletAddresses[withdrawCurrency] || '';
     }
 
-    function copyWithdrawAddress() {
-        let withdrawAddressField = document.getElementById("withdrawAddress");
-        navigator.clipboard.writeText(withdrawAddressField.value)
-            .then(() => {
-                alert("Withdrawal address copied!");
-            })
-            .catch(err => console.error("Error copying withdrawal address:", err));
-    }
-
-    // Set default withdrawal address on page load
-    window.onload = updateWithdrawAddress;
-</script>
-
-<!-- SweetAlert2 CSS & JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
     // === VALIDATION ===
     function validateForm() {
         const withdrawType = document.getElementById('withdraw_type').value;
         const amount = document.querySelector('input[name="withdraw_amount"]').value.trim();
 
-        if (!amount || parseFloat(amount) <= 0) {
-            Swal.fire({
-                icon: "error",
-                title: "Invalid Amount",
-                text: "Please enter a valid withdrawal amount greater than zero.",
-            });
+        if (!amount || parseFloat(amount) < 100) {
+            Swal.fire("Invalid Amount", "Enter a withdrawal amount greater than $100.", "error");
             return false;
         }
 
         if (withdrawType === 'crypto') {
             const currency = document.getElementById('withdrawCurrency').value;
+            const wallet   = document.getElementById('userWalletAddress').value.trim();
+
             if (!currency) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Select Currency",
-                    text: "Please select a withdrawal currency.",
-                });
+                Swal.fire("Missing Info", "Please select a cryptocurrency.", "error");
+                return false;
+            }
+            if (!wallet) {
+                Swal.fire("Missing Info", "Please enter your wallet address.", "error");
                 return false;
             }
         } else {
-            const bankName      = document.querySelector('input[name="bank_name"]').value.trim();
-            const accountName   = document.querySelector('input[name="account_name"]').value.trim();
-            const swiftCode     = document.querySelector('input[name="swift_code"]').value.trim();
-            const currency      = document.querySelector('select[name="currency"]').value.trim();
-            const accountNumber = document.querySelector('input[name="account_number"]').value.trim();
-
-            if (!bankName || !accountName || !swiftCode || !currency || !accountNumber) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Incomplete Bank Details",
-                    text: "Please fill in all required bank details.",
-                });
-                return false;
+            const bankFields = ['bankName', 'accountName', 'swiftCode', 'bankCurrency', 'accountNumber'];
+            for (let id of bankFields) {
+                if (!document.getElementById(id).value.trim()) {
+                    Swal.fire("Incomplete Bank Details", "Please fill in all required bank details.", "error");
+                    return false;
+                }
             }
         }
-
         return true;
     }
 
-    // === MAIN FLOW ===
-    document.getElementById("request-code").addEventListener("click", function () {
-        if (!validateForm()) return;
+    // === SINGLE BUTTON FLOW (request code → verify → submit) ===
+    document.addEventListener("DOMContentLoaded", function () {
+        const submitBtn  = document.getElementById("submitButton");
+        const form       = document.getElementById("withdrawForm");
 
-        const btn = this;
-        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
-        btn.disabled = true;
+        submitBtn.addEventListener("click", function () {
+            if (!validateForm()) return;
 
-        // 1) Send the withdrawal code to the user's email
-        $.ajax({
-            url: "{% url 'send_withdrawal_code' %}",
-            type: "GET"
-        })
-        .done(response => {
-            if (!response.success) {
-                Swal.fire("Error!", response.message || "Could not send code. Try again.", "error");
-                return btnReset();
-            }
+            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending Code...';
+            submitBtn.disabled  = true;
 
-            // 2) Prompt user for the code
-            Swal.fire({
-                title: "Enter Withdrawal Code",
-                input: "text",
-                inputPlaceholder: "The code we emailed you",
-                showCancelButton: true,
-                confirmButtonText: "Submit",
-                preConfirm: code => {
-                    return fetch("{% url 'verify_withdrawal_code' %}", {
-                        method: "POST",
-                        credentials: "same-origin",
-                        headers: {
-                            "X-CSRFToken": "{{ csrf_token }}",
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ code })
-                    })
-                    .then(res => res.ok ? res.json() : Promise.reject("Network error"))
-                    .then(data => {
-                        if (!data.valid) {
-                            Swal.showValidationMessage(data.message || "Invalid code. Please try again.");
-                            return false;
-                        }
-                        return true;
-                    })
-                    .catch(err => {
-                        Swal.showValidationMessage(err || "Something went wrong.");
-                    });
-                }
+            // Step 1 → Request withdrawal code
+            $.ajax({
+                url: "{% url 'send_withdrawal_code' %}",
+                type: "POST",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" }
             })
-            .then(result => {
-                if (!result.isConfirmed) return btnReset();
+            .done(response => {
+                if (!response.success) {
+                    Swal.fire("Error", response.message || "Could not send code.", "error");
+                    return resetBtn();
+                }
 
-                // 3) Code was valid → perform the withdrawal
-                const formEl  = document.getElementById('withdrawForm');
-                const formData = new FormData(formEl);
-
-                $.ajax({
-                    url: "{% url 'withdraw_funds' %}",
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    headers: { "X-CSRFToken": "{{ csrf_token }}" }
-                })
-                .done(resp => {
-                    if (resp.success) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Withdrawal Successful!",
-                            text: resp.message,
-                            timer: 2000,
-                            showConfirmButton: false
-                        }).then(() => {
-                            window.location.href = "{% url 'withdraw_history' %}";
-                        });
-                    } else {
-                        Swal.fire("Failed!", resp.message, "error");
+                // Step 2 → Prompt for code
+                Swal.fire({
+                    title: "Enter Withdrawal Code",
+                    input: "text",
+                    inputPlaceholder: "Enter the withdrawal code sent to your email. Contact support if not received.",
+                    showCancelButton: true,
+                    confirmButtonText: "Verify & Withdraw",
+                    preConfirm: code => {
+                        return fetch("{% url 'verify_withdrawal_code' %}", {
+                            method: "POST",
+                            credentials: "same-origin",
+                            headers: {
+                                "X-CSRFToken": "{{ csrf_token }}",
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ code })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.valid) {
+                                Swal.showValidationMessage(data.message || "Invalid code.");
+                                return false;
+                            }
+                            return true;
+                        })
+                        .catch(() => Swal.showValidationMessage("Network error"));
                     }
-                })
-                .fail(() => {
-                    Swal.fire("Oops!", "Server error, please try again.", "error");
-                })
-                .always(btnReset);
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        // Step 3 → Submit withdrawal request
+                        const formData = new FormData(form);
+                        submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+
+                        $.ajax({
+                            url: "{% url 'withdraw_funds' %}",
+                            type: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            headers: { "X-CSRFToken": "{{ csrf_token }}" }
+                        })
+                        .done(resp => {
+                            if (resp.success) {
+                                Swal.fire("Success", resp.message, "success").then(() => {
+                                    window.location.href = "{% url 'history' %}";
+                                });
+                            } else {
+                                Swal.fire("Failed", resp.message, "error");
+                            }
+                        })
+                        .fail(() => {
+                            Swal.fire("Server Error", "Please try again later.", "error");
+                        })
+                        .always(() => resetBtn());
+                    } else {
+                        resetBtn();
+                    }
+                });
+            })
+            .fail(() => {
+                Swal.fire("Error", "Could not request code. Try again.", "error");
+                resetBtn();
             });
-        })
-        .fail(() => {
-            Swal.fire("Oops!", "Could not request code. Try again.", "error");
-            btnReset();
+
+            function resetBtn() {
+                submitBtn.innerHTML = '<i class="fa fa-paper-plane me-2"></i>Submit Withdrawal Request';
+                submitBtn.disabled  = false;
+            }
         });
 
-        function btnReset() {
-            btn.innerHTML = "Withdraw";
-            btn.disabled  = false;
-        }
+        // Default to crypto form
+        toggleForm('crypto');
     });
-
-    // === TOGGLE FORMS ===
-    function toggleForm(type) {
-        document.getElementById('crypto-form').style.display = (type === 'crypto') ? 'block' : 'none';
-        document.getElementById('bank-form').style.display   = (type === 'bank')   ? 'block' : 'none';
-        document.getElementById('withdraw_type').value      = type;
-    }
 </script>
-
 
 
 {% endblock contents %}

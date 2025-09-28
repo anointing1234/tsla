@@ -26,6 +26,7 @@ urlpatterns = [
     path("update_password/",views.update_password, name="update_password"),
     path("update_withdrawal/",views.update_withdrawal_account, name="update_withdrawal"),
     path("deposit/",views.deposit_funds, name="deposit"),
+    path("quick-trade/", views.quick_trade, name="quick_trade"),
     path('purchase-plan/',views.purchase_plan_view,name='purchase-plan'),
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

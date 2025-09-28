@@ -45,7 +45,7 @@ from .models import Account
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.hashers import check_password
-from .models import  WalletAddress,PaymentGateway,DepositTransaction,WithdrawTransaction,Balance,TransactionCodes,Users_Investment,ForexPlan,BankWithdrawal
+from .models import  WalletAddress,PaymentGateway,DepositTransaction,WithdrawTransaction,Balance,TransactionCodes,Users_Investment,ForexPlan,BankWithdrawal,Order, Trade
 import logging
 
 User = get_user_model()
@@ -799,3 +799,90 @@ def custom_404_view(request, exception):
 def custom_500_view(request):
     return render(request, '500.html', status=500)
 
+def quick_trade(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        currency = request.POST.get("asset")  # BTC / ETH / USDT
+        side = request.POST.get("side")       # "buy" or "sell"
+        amount = Decimal(request.POST.get("amount", "0"))
+        price = Decimal(request.POST.get("price", "0"))
+        total_cost = amount * price
+        fee_rate = Decimal("0.001")  # 0.1%
+        trading_fee = total_cost * fee_rate
+
+        print("🔹 Quick Trade Request")
+        print(f"User: {request.user}")
+        print(f"Asset: {currency}, Side: {side}, Amount: {amount}, Price: {price}")
+        print(f"Total Cost: {total_cost}, Trading Fee: {trading_fee}")
+
+        try:
+            balance = Balance.objects.get(user=request.user)
+            print(f"✅ Found balance record: USDT Balance = {balance.usdt_balance}")
+        except Balance.DoesNotExist:
+            print("❌ No Balance object found for this user.")
+            messages.error(request, "No balance account found.")
+            return redirect("dash")
+
+        # ✅ Handle BUY order
+        if side == "buy":
+            print("➡️ Processing BUY order...")
+            if balance.usdt_balance >= (total_cost + trading_fee):
+                print(f"✅ Sufficient balance. Deducting {total_cost + trading_fee} USDT")
+                balance.usdt_balance -= (total_cost + trading_fee)
+                balance.save()
+                print(f"💰 New USDT Balance: {balance.usdt_balance}")
+
+                buy_order = Order.objects.create(
+                    user=request.user,
+                    order_type="buy",
+                    currency=currency,
+                    price=price,
+                    amount=amount,
+                    status="filled"
+                )
+                print(f"📝 Buy Order Created: {buy_order.id}")
+
+                trade = Trade.objects.create(
+                    buy_order=buy_order,
+                    sell_order=buy_order,  # placeholder
+                    amount=amount,
+                    price=price
+                )
+                print(f"📊 Trade Created: {trade.id}")
+
+                messages.success(request, f"Buy order for {amount} {currency} placed successfully!")
+            else:
+                print(f"❌ Insufficient balance. Required {total_cost + trading_fee}, Available {balance.usdt_balance}")
+                messages.error(request, "Insufficient USDT balance for this buy order.")
+
+        # ✅ Handle SELL order
+        elif side == "sell":
+            print("➡️ Processing SELL order...")
+            balance.usdt_balance += (total_cost - trading_fee)
+            balance.save()
+            print(f"💰 New USDT Balance after SELL: {balance.usdt_balance}")
+
+            sell_order = Order.objects.create(
+                user=request.user,
+                order_type="sell",
+                currency=currency,
+                price=price,
+                amount=amount,
+                status="filled"
+            )
+            print(f"📝 Sell Order Created: {sell_order.id}")
+
+            trade = Trade.objects.create(
+                buy_order=sell_order,
+                sell_order=sell_order,
+                amount=amount,
+                price=price
+            )
+            print(f"📊 Trade Created: {trade.id}")
+
+            messages.success(request, f"Sell order for {amount} {currency} placed successfully!")
+
+        print("✅ Quick Trade Process Completed")
+        return redirect("dash")
+
+    print("⚠️ Invalid request: either not POST or user not authenticated")
+    return redirect("dash")

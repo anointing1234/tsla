@@ -1,0 +1,159 @@
+{% extends '../core/base.html' %}
+{% load static %}
+{% block contents %}
+{% load humanize %}
+
+<style>
+    .history-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+    .status-completed {
+        background: #d4edda;
+        color: #155724;
+    }
+    .status-failed {
+        background: #f8d7da;
+        color: #721c24;
+    }
+</style>
+<div class="content-body">
+<div class="container-fluid">
+    <h3 class="fw-bold mb-4">📑 Transaction History</h3>
+
+    <!-- Deposit History -->
+    <div class="card mb-5 history-card">
+        <div class="card-header bg-dark text-white fw-bold">💰 Deposit History</div>
+        <div class="card-body">
+
+            <!-- Large Screen: Table -->
+            <div class="table-responsive d-none d-lg-block">
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Ref ID</th>
+                            <th>Method</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for deposit in deposits %}
+                        <tr>
+                            <td>{{ deposit.tx_ref }}</td>
+                            <td>{{ deposit.method }}</td>
+                            <td>${{ deposit.amount|floatformat:2|intcomma }}</td>
+                            <td>{{ deposit.date|date:"M d, Y H:i" }}</td>
+                            <td>
+                                <span class="status-badge status-{{ deposit.status }}">
+                                    {{ deposit.status|title }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No deposits yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Small Screen: Card View -->
+            <div class="d-lg-none">
+                {% for deposit in deposits %}
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="fw-bold">Ref: {{ deposit.tx_ref }}</h6>
+                        <p class="mb-2"><strong>Method:</strong> {{ deposit.method }}</p>
+                        <p class="mb-2"><strong>Amount:</strong> ${{ deposit.amount|floatformat:2|intcomma }}</p>
+                        <p class="mb-2"><strong>Date:</strong> {{ deposit.date|date:"M d, Y H:i" }}</p>
+                        <span class="status-badge status-{{ deposit.status }}">
+                         Status:   {{ deposit.status|title }}
+                        </span>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center text-muted">No deposits yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdrawal History -->
+    <div class="card history-card">
+        <div class="card-header bg-dark text-white fw-bold">🏦 Withdrawal History</div>
+        <div class="card-body">
+
+            <!-- Large Screen: Table -->
+            <div class="table-responsive d-none d-lg-block">
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Ref ID</th>
+                            <th>Currency</th>
+                            <th>Amount</th>
+                            <th>Wallet</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for withdraw in withdrawals %}
+                        <tr>
+                            <td>{{ withdraw.tx_ref }}</td>
+                            <td>{{ withdraw.currency }}</td>
+                            <td>{{ withdraw.amount|floatformat:2|intcomma }}</td>
+                            <td class="text-truncate" style="max-width: 200px;">{{ withdraw.withdraw_address }}</td>
+                            <td>{{ withdraw.date|date:"M d, Y H:i" }}</td>
+                            <td>
+                                <span class="status-badge status-{{ withdraw.status }}">
+                                    {{ withdraw.status|title }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No withdrawals yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Small Screen: Card View -->
+            <div class="d-lg-none">
+                {% for withdraw in withdrawals %}
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="fw-bold text-white">Ref: {{ withdraw.tx_ref }}</h6>
+                        <p class="mb-2 text-white"><strong>Currency:</strong> {{ withdraw.currency }}</p>
+                        <p class="mb-2 text-white"><strong>Amount:</strong> {{ withdraw.amount|floatformat:2|intcomma }}</p>
+                        <p class="mb-2 text-white"><strong>Wallet:</strong> {{ withdraw.withdraw_address }}</p>
+                        <p class="mb-2 text-white"><strong>Date:</strong> {{ withdraw.date|date:"M d, Y H:i" }}</p>
+                        <span class="status-badge text-dark status-{{ withdraw.status }}">Status: 
+                            {{ withdraw.status|title }}
+                        </span>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center text-muted">No withdrawals yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock contents %}

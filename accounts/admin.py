@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from unfold.admin import ModelAdmin as UnfoldModelAdmin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from .models import Account, Balance ,ForexPlan,DepositTransaction,WithdrawTransaction,WalletAddress, Referral, PaymentGateway,Users_Investment,TransactionCodes,BankWithdrawal
+from .models import Account, Balance ,ForexPlan,DepositTransaction,WithdrawTransaction,WalletAddress, Referral, PaymentGateway,Users_Investment,TransactionCodes,BankWithdrawal,Order, Trade
 from django.utils.html import format_html
 from django.conf import settings
 from django.urls import reverse
@@ -166,7 +166,7 @@ class PaymentGatewayAdmin(UnfoldModelAdmin):
 
 
 @admin.register(DepositTransaction)
-class DepositTransactionAdmin(admin.ModelAdmin):
+class DepositTransactionAdmin(UnfoldModelAdmin):
     list_display = ("user", "amount", "method", "tx_ref", "date", "status", "screenshot_preview", "confirm_button", "decline_button")
     search_fields = ("user__email", "tx_ref")
     list_filter = ("status", "method", "date")
@@ -301,3 +301,29 @@ class BankWithdrawalAdmin(UnfoldModelAdmin):
             "Rejected": "failed"
         }
         return mapping.get(bank_status, "pending")  # fallback to pending
+
+
+# --- Order Admin ---
+@admin.register(Order)
+class OrderAdmin(UnfoldModelAdmin):
+    list_display = (
+        "user", "order_type", "currency_display", "amount", "price", "status", "created_at"
+    )
+    list_filter = ("order_type", "currency", "status", "created_at")
+    search_fields = ("user__email", "currency")
+    ordering = ("-created_at",)
+    readonly_fields = ("created_at",)
+
+    def currency_display(self, obj):
+        return obj.get_currency_display()
+    currency_display.short_description = "Currency"
+
+
+# --- Trade Admin ---
+@admin.register(Trade)
+class TradeAdmin(UnfoldModelAdmin):
+    list_display = ("id", "buy_order", "sell_order", "amount", "price", "timestamp")
+    list_filter = ("timestamp",)
+    search_fields = ("buy_order__user__email", "sell_order__user__email")
+    ordering = ("-timestamp",)
+    readonly_fields = ("timestamp",)

@@ -4,496 +4,891 @@
 
 {% block contents %}
 <style>
-  /* Custom styling for stat cards and weekly cards */
-  .stat-card {
-    background-color:black;
-    border: none;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  .stat-card .card-body {
-    padding: 20px;
-    text-align: center;
-    color: white;
-  }
-  .stat-card h5 {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  .stat-card h3 {
-    font-size: 28px;
-    margin: 0;
-  }
-  .weekly-card {
-    background-color: #343a40;
-    border: none;
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    color: white;
-    margin-bottom: 20px;
-  }
-  .weekly-card h6 {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  .weekly-card .value {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  .weekly-card .trend {
-    font-size: 14px;
-  }
-  /* Ensure charts and widget containers are responsive */
-  .tradingview-widget-container {
-    margin-bottom: 30px;
-  }
-</style>
+		/* Enhanced Professional Dark Theme */
+		:root {
+			--primary-color: #2E86C1;
+			--secondary-color: #148F77;
+			--success-color: #27AE60;
+			--danger-color: #E74C3C;
+			--warning-color: #F39C12;
+			--info-color: #3498DB;
+			--dark-color: #1B2631;
+			--darker-color: #0f1419;
+			--card-dark: #1e2328;
+			--light-color: #F8F9FA;
+			--gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			--gradient-success: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+			--gradient-danger: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+			--gradient-warning: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+			--gradient-dark: linear-gradient(135deg, #1e2328 0%, #2b3139 100%);
+		}
+		
+		/* Professional Header Enhancement */
+		.header {
+			background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+			box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+		}
+		
+		.nav-header {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		}
+		
+		/* Enhanced Brand Logo */
+		.brand-title {
+			font-weight: 700;
+			letter-spacing: 1px;
+		}
+		
+		/* Professional Sidebar */
+		.deznav {
+			background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+			box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+		}
+		
+		.main-profile {
+			background: rgba(255,255,255,0.1);
+			border-radius: 15px;
+			backdrop-filter: blur(10px);
+		}
+		
+		/* Enhanced Dashboard Cards - Dark Theme */
+		.card-coin {
+			border: none;
+			border-radius: 20px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+			transition: all 0.3s ease;
+			background: var(--gradient-dark);
+			overflow: hidden;
+			position: relative;
+			color: white;
+		}
+		
+		.card-coin .text-black {
+			color: white !important;
+		}
+		
+		.card-coin::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 4px;
+		}
+		
+		.card-coin:nth-child(1)::before {
+			background: var(--gradient-success);
+		}
+		
+		.card-coin:nth-child(2)::before {
+			background: var(--gradient-warning);
+		}
+		
+		.card-coin:nth-child(3)::before {
+			background: var(--gradient-primary);
+		}
+		
+		.card-coin:nth-child(4)::before {
+			background: var(--gradient-danger);
+		}
+		
+		.card-coin:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+		}
+		
+		.currency-icon {
+			background: var(--gradient-primary) !important;
+			position: relative;
+			overflow: hidden;
+		}
+		
+		.currency-icon::before {
+			content: '';
+			position: absolute;
+			top: -50%;
+			left: -50%;
+			width: 200%;
+			height: 200%;
+			background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+			animation: shimmer 3s infinite;
+		}
+		
+		@keyframes shimmer {
+			0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+			100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+		}
+		
+		/* Market Overview Section */
+		.market-overview {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border-radius: 20px;
+			color: white;
+			padding: 2rem;
+			margin-bottom: 2rem;
+		}
+		
+		.market-stats {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 1rem;
+		}
+		
+		.market-stat-item {
+			text-align: center;
+			background: rgba(255,255,255,0.1);
+			padding: 1rem;
+			border-radius: 10px;
+			backdrop-filter: blur(10px);
+			min-width: 120px;
+		}
+		
+		.market-stat-value {
+			font-size: 1.5rem;
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+			color: white;
+		}
+		
+		.market-stat-label {
+			font-size: 0.8rem;
+			opacity: 0.9;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			color: rgba(255,255,255,0.8);
+		}
+		
+		/* Enhanced Trading Cards - Dark Theme */
+		.trading-card {
+			background: var(--gradient-dark);
+			border: none;
+			border-radius: 20px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+			transition: all 0.3s ease;
+			color: white;
+		}
+		
+		.trading-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+		}
+		
+		.trading-card .card-header {
+			background: transparent;
+			border-bottom: 2px solid #3a3f45;
+			padding: 1.5rem;
+			color: white;
+		}
+		
+		.trading-card .text-black {
+			color: white !important;
+		}
+		
+		/* Enhanced Buttons */
+		.btn-success {
+			background: var(--gradient-success);
+			border: none;
+			padding: 0.75rem 2rem;
+			border-radius: 25px;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			transition: all 0.3s ease;
+			color: white;
+		}
+		
+		.btn-danger {
+			background: var(--gradient-danger);
+			border: none;
+			padding: 0.75rem 2rem;
+			border-radius: 25px;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			transition: all 0.3s ease;
+			color: white;
+		}
+		
+		.btn-primary {
+			background: var(--gradient-primary);
+			border: none;
+			color: white;
+		}
+		
+		.btn-outline-primary {
+			border-color: #667eea;
+			color: #667eea;
+			background: transparent;
+		}
+		
+		.btn-outline-primary:hover {
+			background: #667eea;
+			border-color: #667eea;
+			color: white;
+		}
+		
+		.btn-success:hover,
+		.btn-danger:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+		}
+		
+		/* Professional Table Styling - Dark Theme */
+		.professional-table {
+			background: var(--card-dark);
+			border-radius: 15px;
+			overflow: hidden;
+			box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+			color: white;
+		}
+		
+		.professional-table thead {
+			background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+			color: white;
+		}
+		
+		.professional-table tbody tr {
+			transition: all 0.3s ease;
+			background: transparent;
+			color: white;
+		}
+		
+		.professional-table tbody tr:hover {
+			background: rgba(102, 126, 234, 0.1);
+			transform: scale(1.02);
+		}
+		
+		.professional-table td {
+			border-color: #3a3f45;
+			color: white;
+		}
+		
+		/* Status Badges */
+		.status-completed {
+			background: var(--gradient-success);
+			color: white;
+			border: none;
+		}
+		
+		.status-pending {
+			background: var(--gradient-warning);
+			color: white;
+			border: none;
+		}
+		
+		.status-cancelled {
+			background: var(--gradient-danger);
+			color: white;
+			border: none;
+		}
+		
+		/* TradingView Container Enhancement */
+		.tradingview-widget-container {
+			border-radius: 20px;
+			overflow: hidden;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+			margin-bottom: 2rem;
+		}
+		
+		/* Quick Stats Bar - Dark Theme */
+		.quick-stats {
+			background: var(--gradient-dark);
+			border-radius: 15px;
+			padding: 1.5rem;
+			margin-bottom: 2rem;
+			box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+			color: white;
+		}
+		
+		.quick-stats .row {
+			align-items: center;
+		}
+		
+		.quick-stat-item {
+			text-align: center;
+			padding: 1rem;
+		}
+		
+		.quick-stat-icon {
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 0 auto 0.5rem;
+			font-size: 1.2rem;
+			color: white;
+		}
+		
+		.quick-stat-value {
+			font-size: 1.2rem;
+			font-weight: 700;
+			color: white;
+			margin-bottom: 0.25rem;
+		}
+		
+		.quick-stat-label {
+			font-size: 0.8rem;
+			color: rgba(255,255,255,0.7);
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+		
+		/* Form Enhancements - Dark Theme */
+		.form-control {
+			border-radius: 10px;
+			border: 2px solid #3a3f45;
+			padding: 0.75rem 1rem;
+			transition: all 0.3s ease;
+			background: var(--card-dark);
+			color: white;
+		}
+		
+		.form-control:focus {
+			border-color: #667eea;
+			box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+			background: var(--card-dark);
+			color: white;
+		}
+		
+		.form-control::placeholder {
+			color: rgba(255,255,255,0.5);
+		}
+		
+		.form-label {
+			color: white;
+			font-weight: 500;
+		}
+		
+		.input-group-text {
+			background: var(--card-dark);
+			border-color: #3a3f45;
+			color: white;
+		}
+		
+		/* Table dark theme fixes */
+		.table {
+			color: white;
+		}
+		
+		.table td, .table th {
+			border-color: #3a3f45;
+		}
+		
+		.table-responsive {
+			background: var(--card-dark);
+			border-radius: 15px;
+		}
+		
+		/* General text colors */
+		.text-black {
+			color: white !important;
+		}
+		
+		.text-muted {
+			color: rgba(255,255,255,0.6) !important;
+		}
+		
+		/* Card headers */
+		.card-header {
+			background: transparent;
+			border-bottom: 2px solid #3a3f45;
+			color: white;
+		}
+		
+		.card-body {
+			color: white;
+		}
+		
+		/* Dropdown dark theme */
+		.dropdown-menu {
+			background: var(--card-dark);
+			border: 1px solid #3a3f45;
+		}
+		
+		.dropdown-item {
+			color: white;
+		}
+		
+		.dropdown-item:hover {
+			background: rgba(102, 126, 234, 0.1);
+			color: white;
+		}
+		
+		/* Font weight fixes */
+		.font-w600 {
+			color: white;
+		}
+		
+		/* Badge colors for dark theme */
+		.badge.bg-success {
+			background: var(--success-color) !important;
+		}
+		
+		.badge.bg-danger {
+			background: var(--danger-color) !important;
+		}
+		
+		/* Select styling */
+		select.form-control {
+			background: var(--card-dark);
+			color: white;
+			border: 2px solid #3a3f45;
+			padding: 5px;
+		}
+		
+		select.form-control option {
+			background: var(--card-dark);
+			color: white;
+		}
+		
+		/* Responsive Improvements */
+		@media (max-width: 768px) {
+			.market-stats {
+				justify-content: center;
+			}
+			
+			.market-stat-item {
+				min-width: 100px;
+			}
+			
+			.card-coin {
+				margin-bottom: 1.5rem;
+			}
+		}
+	</style>
+</head>
 
 
 
-<style>
-    .table-container {
-        max-height: 250px;
-        overflow-y: auto;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        position: relative;
-    }
-    .table thead {
-        position: sticky;
-        top: 0;
-        background-color: #0d6efd;
-        color: white;
-        z-index: 2;
-        font-size: 14px;
-    }
-    .table th, .table td {
-        padding: 8px;
-        font-size: 13px;
-        text-align: left;
-    }
-    .no-withdrawals {
-        text-align: center;
-        font-size: 14px;
-        font-weight: bold;
-        color: gray;
-        padding: 10px;
-    }
-</style>
 
-<div class="container">
-  <div style="background-color:black;" class="page-inner  py-4">
-    <!-- Statistics Cards -->
-  
-        <!-- Total Balance Card -->
-        <div class="row justify-content-center">
-            <!-- Available Balance Card -->
-            <div class="col-sm-6 col-md-3">
-              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats  ">
-                <div class="card-body text-start">
-                  <div class="row align-items-center">
-                      <div class="col col-stats ms-3 ms-sm-0">
-                          <div class="numbers">
-                              <p class="card-category text-warning fw-bold">AVAILABLE BALANCE</p>
-                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.usdt_balance|intcomma }}</h4>
-                            </div>
-                        </div>
-                        <div class="col-icon">
-                          <div class="icon-big text-center text-light  bubble-shadow-small">
-                          <i class="fas fa-dollar-sign fa-3x"></i>
-                          </div>
-                        </div>
-                  </div>
-                </div>
-              </div>
+		<!-- Enhanced Content Body -->
+		<div class="content-body">
+			<div class="container-fluid">
+				<!-- Professional Page Header -->
+				<div class="mb-4 d-flex flex-wrap align-items-center justify-content-between">
+					<div>
+						<h2 class="font-w600 title mb-2">Trading Dashboard</h2>
+						<p class="text-muted mb-0">Welcome back! Here's your portfolio overview and market insights.</p>
+					</div>
+					<div>
+						<button class="btn btn-primary me-2">
+							<i class="fas fa-plus me-2"></i>Deposit
+						</button>
+						<button class="btn btn-outline-primary">
+							<i class="fas fa-download me-2"></i>Withdraw
+						</button>
+					</div>
+				</div>
+
+				<!-- Enhanced Portfolio Cards -->
+				<div class="row">
+					<div class="col-xl-3 col-sm-6">
+						<div class="card card-coin">
+							<div class="card-body text-center">
+								<div class="mb-3 currency-icon" style="width: 80px; height: 80px; background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+									<i class="fas fa-wallet" style="font-size: 2rem; color: white;"></i>
+								</div>
+								<h5 class="text-black mb-2 font-w600">{{ request.user.currency }}  ${{ request.user.balance.usdt_balance|intcomma }}</h5>
+								<p class="mb-0 fs-14 text-success">
+									<i class="fas fa-arrow-up me-1"></i>AVAILABLE BALANCE
+								</p>
+						  </div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card card-coin">
+							<div class="card-body text-center">
+								<div class="mb-3 currency-icon" style="width: 80px; height: 80px; background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+									<i class="fas fa-chart-line" style="font-size: 2rem; color: white;"></i>
+								</div>
+								<h5 class="text-black mb-2 font-w600">{{ request.user.currency }}   ${{ request.user.balance.total_profits|intcomma }}</h5>
+								<p class="mb-0 fs-13 text-warning">
+									<i class="fas fa-trending-up me-1"></i>TODAY'S P&L
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card card-coin">
+							<div class="card-body text-center">
+								<div class="mb-3 currency-icon" style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+									<i class="fas fa-coins" style="font-size: 2rem; color: white;"></i>
+								</div>
+								<h5 class="text-black mb-2 font-w600">{{ request.user.currency }} ${{ request.user.balance.invested_amount }}</h5>
+								<p class="mb-0 fs-14 text-info">
+									<i class="fas fa-chart-pie me-1"></i>TOTAL INVESTED
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card card-coin">
+							<div class="card-body text-center">
+								<div class="mb-3 currency-icon" style="width: 80px; height: 80px; background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+									<i class="fas fa-trophy" style="font-size: 2rem; color: white;"></i>
+								</div>
+								<h5 class="text-black mb-2 font-w600">       {% if account_plan %}
+                      {{ account_plan.name|lower|capfirst }}
+                    {% else %}
+                      Starter
+                    {% endif %} </h5>
+								<p class="mb-0 fs-14 text-danger">
+									<i class="fas fa-star me-1"></i>ACCOUNT TIER
+								</p>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Market Overview Section -->
+				<!-- Enhanced Main Content -->
+<div class="row">
+	<div class="col-xl-12">
+		<div class="tradingview-widget-container">
+			<div id="tradingview_19631" style="height: 466px;"></div>
+
+			<!-- ✅ Correct TradingView CDN -->
+			<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
+			<!-- ✅ Widget Script -->
+			<script type="text/javascript">
+				new TradingView.widget({
+					width: "100%",
+					height: 466,
+					symbol: "COINBASE:BTCUSD",
+					interval: "D",
+					timezone: "Etc/UTC",
+					theme: "dark",
+					style: "0",
+					locale: "en",
+					toolbar_bg: "#667eea",
+					enable_publishing: false,
+					allow_symbol_change: true,
+					container_id: "tradingview_19631"
+				});
+			</script>
+		</div>
+	</div>
+</div>
+
+
+				<!-- Enhanced Trading Section -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card trading-card">
+							<div class="card-header d-flex justify-content-between align-items-center">
+								<div>
+									<h4 class="mb-0 fs-20 text-black"><i class="fas fa-chart-bar text-success me-2"></i>Buy Orders</h4>
+									<small class="text-muted">Active buy positions</small>
+								</div>
+								<div class="dropdown">
+									<button class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+										<i class="fas fa-filter me-1"></i>Filter
+									</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#">All Assets</a>
+										<a class="dropdown-item" href="#">Crypto</a>
+										<a class="dropdown-item" href="#">Stocks</a>
+										<a class="dropdown-item" href="#">Forex</a>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table professional-table">
+										<thead>
+											<tr>
+												<th>Asset</th>
+												<th>Price</th>
+												<th>Amount</th>
+												<th>Status</th>
+											</tr>
+										</thead>
+									<tbody>
+    {% for order in buy_orders %}
+    <tr>
+        <td>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-coins text-warning me-2"></i>
+                <span class="font-w600">{{ order.currency }}</span>
             </div>
-          
-            <!-- Total Profits Card -->
-            <div class="col-sm-6 col-md-3">
-              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
-                <div class="card-body text-start">
-                  <div class="row align-items-center">
-                      <div class="col col-stats ms-3 ms-sm-0">
-                          <div class="numbers">
-                              <p class="card-categor text-light text-warning fw-bold">TOTAL PROFITS</p>
-                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.total_profits|intcomma }}</h4>
-                            </div>
-                        </div>
-                        <div class="col-icon">
-                          <div class="icon-big text-center text-light bubble-shadow-small">
-                            <i class="fas fa-chart-line"></i>
-                          </div>
-                        </div>
-                  </div>
-                </div>
-              </div>
+        </td>
+        <td>${{ order.price }}</td>
+        <td>{{ order.amount }}</td>
+        <td>
+            <span class="badge 
+                {% if order.status == 'filled' %} status-completed
+                {% elif order.status == 'open' %} status-pending
+                {% else %} status-cancelled {% endif %}">
+                {{ order.status|title }}
+            </span>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4" class="text-center text-muted">No active buy orders</td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+										
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xl-6">
+						<div class="card trading-card">
+							<div class="card-header d-flex justify-content-between align-items-center">
+								<div>
+									<h4 class="mb-0 fs-20 text-black"><i class="fas fa-chart-bar text-danger me-2"></i>Sell Orders</h4>
+									<small class="text-muted">Active sell positions</small>
+								</div>
+								<div class="dropdown">
+									<button class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+										<i class="fas fa-filter me-1"></i>Filter
+									</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#">All Assets</a>
+										<a class="dropdown-item" href="#">High Volume</a>
+										<a class="dropdown-item" href="#">Recent</a>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table professional-table">
+										<thead>
+											<tr>
+												<th>Asset</th>
+												<th>Price</th>
+												<th>Amount</th>
+												<th>Status</th>
+											</tr>
+										</thead>
+										<tbody>
+    {% for order in sell_orders %}
+    <tr>
+        <td>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-coins text-warning me-2"></i>
+                <span class="font-w600">{{ order.currency }}</span>
             </div>
-          
-            <!-- Total Investments Card -->
-            <div class="col-sm-6 col-md-3">
-              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
-                <div class="card-body text-start">
-                  <div class="row align-items-center">
-                      <div class="col col-stats ms-3 ms-sm-0">
-                          <div class="numbers">
-                              <p class="card-category text-success">TOTAL INVESTMENTS</p>
-                              <h4 class="card-title text-light">{{ request.user.currency }} {{ request.user.balance.invested_amount }}</h4>
-                            </div>
-                        </div>
-                        <div class="col-icon">
-                          <div class="icon-big text-center text-light  bubble-shadow-small">
-                            <i class="fas fa-hand-holding-usd"></i>
-                          </div>
-                        </div>
-                  </div>
-                </div>
-              </div>
+        </td>
+        <td>${{ order.price }}</td>
+        <td>{{ order.amount }}</td>
+        <td>
+            <span class="badge 
+                {% if order.status == 'filled' %} status-completed
+                {% elif order.status == 'open' %} status-pending
+                {% else %} status-cancelled {% endif %}">
+                {{ order.status|title }}
+            </span>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4" class="text-center text-muted">No active buy orders</td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Quick Trade Section -->
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="card trading-card">
+							<div class="card-header d-flex justify-content-between align-items-center">
+							 <div class="row mt-2 col-12">
+                               	<div class="col-12 col-lg-6">
+									<h4 class="mb-0 fs-20 text-black"><i class="fas fa-bolt text-warning me-2"></i>Quick Trade</h4>
+									<small class="text-muted">Execute trades instantly with market prices</small>
+								</div>
+								<div class=" col-12 col-lg-6 d-flex gap-2">
+									<button class="btn btn-outline-success btn-sm">
+										<i class="fas fa-chart-line me-1"></i>Market Analysis
+									</button>
+									<button class="btn btn-outline-info btn-sm">
+										<i class="fas fa-history me-1"></i>Order History
+									</button>
+								</div>
+							 </div>
+							</div>
+							<div class="card-body">
+								<div class="row ">
+									<div class="col-lg-12">
+									<form method="post" action="{% url 'quick_trade' %}" class="form-wrapper">
+    {% csrf_token %}
+    <div class="row">
+        <!-- Asset -->
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label class="form-label">Asset Selection</label>
+                <select name="asset" class="form-control" required>
+                    <option value="">Select Asset</option>
+                    <option value="BTC/USD">Bitcoin (BTC/USD)</option>
+                    <option value="ETH/USD">Ethereum (ETH/USD)</option>
+                    <option value="TSLA">Tesla (TSLA)</option>
+                    <option value="AAPL">Apple (AAPL)</option>
+                    <option value="EUR/USD">EUR/USD</option>
+                </select>
             </div>
-          
-            <!-- Fourth Card (e.g., another stat) -->
-            <div class="col-sm-6 col-md-3">
-              <div style="background-color:black; border-bottom:5px solid white; border-top:4px solid white; border-right:2px solid yellow; border-left:2px solid blue;" class="card card-stats card-round">
-                <div class="card-body text-start">
-                  <div class="row align-items-center">
-                      <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
-                            <p class="card-category fw-bold text-info">ACCOUNT LEVEL</p>         
-                            {% if account_plan %}
-                              <h4 class="card-title">{{ account_plan.name }}</h4>
-                            {% else %}
-                              <h4 class="card-title text-light">STARTER</h4>
-                            {% endif %}
-                          </div>                          
-                        </div>
-                        <div class="col-icon">
-                          <div class="icon-big text-center text-light bubble-shadow-small">
-                            <i class="fas fa-university"></i>
-                          </div>
-                        </div>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <!-- Order Type -->
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label class="form-label">Order Type</label>
+                <select name="order_type" class="form-control" required>
+                    <option value="">Select Order</option>
+                    <option value="market">Market Order</option>
+                    <option value="limit">Limit Order</option>
+                    <option value="stop_loss">Stop Loss</option>
+                    <option value="take_profit">Take Profit</option>
+                </select>
             </div>
-          </div>
-          
+        </div>
+        <!-- Amount -->
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label class="form-label">Amount</label>
+                <div class="input-group">
+                    <input type="number" step="0.0001" name="amount" class="form-control" placeholder="0.00" required>
+                    <span class="input-group-text">Units</span>
+                </div>
+            </div>
+        </div>
+        <!-- Price -->
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label class="form-label">Price (USD)</label>
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="number" step="0.01" name="price" class="form-control" placeholder="68,234.56" required>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <!-- Buy -->
+        <div class="col-md-6 mb-4 mt-2">
+            <button type="submit" name="side" value="buy" class="btn btn-success btn-sm w-100">
+                <i class="fas fa-arrow-up me-2"></i>BUY ORDER
+            </button>
+        </div>
+        <!-- Sell -->
+        <div class="col-md-6 mt-2 mb-4">
+            <button type="submit" name="side" value="sell" class="btn btn-danger btn-sm w-100">
+                <i class="fas fa-arrow-down me-2"></i>SELL ORDER
+            </button>
+        </div>
+    </div>
+</form>
+
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Recent Activity Section -->
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="card trading-card">
+							<div class="card-header d-flex justify-content-between align-items-center">
+								<div class="row">
+                                  <div class="col-md-6 col-lg-8 mt-2">
+									<h4 class="mb-0 fs-20 text-black"><i class="fas fa-clock text-info me-2"></i>Recent Trading Activity</h4>
+									<small class="text-muted">Your latest transactions and trades</small>
+								</div>
+								<div class="d-flex gap-2 col-md-4 mt-2">
+									<button class="btn btn-outline-primary btn-sm active">All</button>
+									<button class="btn btn-outline-primary btn-sm">Crypto</button>
+									<button class="btn btn-outline-primary btn-sm">Stocks</button>
+									<button class="btn btn-outline-primary btn-sm">Forex</button>
+								</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table professional-table">
+										<thead>
+											<tr>
+											
+												<th>Asset</th>
+												<th>Type</th>
+												<th>Amount</th>
+												<th>Price</th>
+											
+											
+											</tr>
+										</thead>
+<tbody>
+    {% for trade in recent_trades %}
+    <tr>
       
+        <td>{{ trade.buy_order.currency }}</td>
+        <td>
+            <span class="badge {% if trade.buy_order.order_type == 'buy' %} bg-success {% else %} bg-danger {% endif %}">
+                {{ trade.buy_order.order_type|upper }}
+            </span>
+        </td>
+        <td>{{ trade.amount }}</td>
+        <td>${{ trade.price }}</td>
+       
+        
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="7" class="text-center text-muted">No trading activity yet</td>
+    </tr>
+    {% endfor %}
+</tbody>
 
-    <!-- TradingView Widget -->
-    <div class="row mb-4">
-      <div class="col-12">
-        <div class="tradingview-widget-container">
-          <div id="tradingview_19631" style="height: 466px;"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-          <script type="text/javascript">
-            new TradingView.widget({
-              width: "100%",
-              height: 466,
-              symbol: "COINBASE:BTCUSD",
-              interval: "D",
-              timezone: "Etc/UTC",
-              theme: "Dark",
-              style: "0",
-              locale: "en",
-              toolbar_bg: "#f1f3f6",
-              enable_publishing: false,
-              allow_symbol_change: true,
-              hotlist: true,
-              container_id: "tradingview_19631"
-            });
-          </script>
-        </div>
-      </div>
-    </div>
+</tbody>
+									</table>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <!-- Row containing Area Chart (left) and Doughnut Chart (right) -->
-<div class="row mt-4">
-    <!-- Left: Area Chart with Weekly Deposit & Withdraw -->
-    <div class="col-lg-8 mb-3">
-        <div class="card" style="background-color: #343a40; border: none;">
-            <div class="card-body">
-                <!-- Top Row: Weekly Deposit & Withdraw Info -->
-                <div class="d-flex justify-content-between align-items-center text-white mb-3">
-                    <div>
-                        <h6 class="mb-0">WEEKLY DEPOSIT</h6>
-                        <span class="fw-bold">$155,389</span>
-                        <span class="text-success ms-2">
-                            <i class="fa fa-level-up"></i> +99%
-                        </span>
-                    </div>
-                    <div>
-                        <h6 class="mb-0">WEEKLY WITHDRAW</h6>
-                        <span class="fw-bold">$183,642</span>
-                        <span class="text-warning ms-2">
-                            <i class="fa fa-level-down"></i> -25%
-                        </span>
-                    </div>
-                </div>
-                <!-- Area Chart Canvas -->
-                <div style="height: 280px;">
-                    <canvas id="areaChart" width="100%" height="100%"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Right: Doughnut Chart & Stats -->
-    <div class="col-lg-4 mb-3">
-        <div class="card" style="border: none;">
-            <div class="card-header bg-dark text-white">
-                <strong>Statistics</strong>
-            </div>
-            <div class="card-body" style="background-color: #343a40;">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <canvas id="doughnutChart" style="height: 200px; width: 100%;"></canvas>
-                    </div>
-                    <div class="col-md-6 text-white">
-                        <div class="mb-2 text-success">
-                            <i class="fa fa-circle-o me-2"></i>Desktop 74%
-                        </div>
-                        <div class="mb-2 text-info">
-                            <i class="fa fa-circle-o me-2"></i>Tablet 63%
-                        </div>
-                        <div class="mb-2 text-warning">
-                            <i class="fa fa-circle-o me-2"></i>Mobile 27%
-                        </div>
-                    </div>
-                </div>
-                <ul class="list-group list-group-divider list-group-full mt-3">
-                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
-                        Chrome
-                        <span class="float-right text-success">
-                            <i class="fa fa-caret-up"></i> 98%
-                        </span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
-                        Firefox
-                        <span class="float-right text-success">
-                            <i class="fa fa-caret-up"></i> 40%
-                        </span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
-                        Opera
-                        <span class="float-right text-danger">
-                            <i class="fa fa-caret-down"></i> 83%
-                        </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+	
+	</div>
 
 
-
-    
-
-
-                    
-    <div class="container mt-4">
-        <div class="card mt-4 pt-3">
-            <div class="card-header text-center bg-dark text-white">
-                <h5>My Withdrawals</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-container" style="max-height: 300px; overflow-y: auto;">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Uniqid</th>
-                                <th>Currency</th>
-                                <th>Amount</th>
-                                <th>Tx Ref</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if withdrawals %}
-                                {% for withdrawal in withdrawals %}
-                                    <tr>
-                                        <td>{{ withdrawal.uniqid }}</td>
-                                        <td>{{ withdrawal.currency }}</td>
-                                        <td>${{ withdrawal.amount|floatformat:2 }}</td>
-                                        <td>{{ withdrawal.tx_ref }}</td>
-                                        <td>{{ withdrawal.date|date:"M d, Y" }}</td>
-                                        <td>
-                                            {% if withdrawal.status == "pending" %}
-                                                <span class="badge bg-warning text-dark">Pending</span>
-                                            {% elif withdrawal.status == "completed" %}
-                                                <span class="badge bg-success">Approved</span>
-                                            {% else %}
-                                                <span class="badge bg-danger">Rejected</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="6" class="no-withdrawals">No withdrawals found.</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div> 
-
-
-
-
-</div>
-
-<!-- Include Chart.js (CDN) -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // === AREA CHART ===
-    const areaCtx = document.getElementById('areaChart').getContext('2d');
-    new Chart(areaCtx, {
-        type: 'line',
-        data: {
-            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            datasets: [
-                {
-                    label: "Data 1",
-                    data: [15, 53, 45, 70, 55, 85, 95],  // Replace with real data
-                    borderColor: "#28a745",
-                    backgroundColor: "rgba(40, 167, 69, 0.2)",
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: "Data 2",
-                    data: [10, 30, 25, 50, 40, 60, 80],  // Replace with real data
-                    borderColor: "#007bff",
-                    backgroundColor: "rgba(0, 123, 255, 0.2)",
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: { grid: { display: false } },
-                y: { grid: { color: "rgba(255,255,255,0.1)" }, ticks: { color: "#fff" } }
-            },
-            plugins: {
-                legend: { display: true, labels: { color: "#fff" } },
-                title: { display: false }
-            },
-            elements: {
-                point: { radius: 3 }
-            }
-        }
+	{% if messages %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      {% for message in messages %}
+        Toastify({
+          text: "{{ message }}",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "{% if message.tags == 'success' %}#28a745{% else %}#dc3545{% endif %}",
+          stopOnFocus: true
+        }).showToast();
+      {% endfor %}
     });
+  </script>
+{% endif %}
 
-    // === DOUGHNUT CHART ===
-    const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
-    new Chart(doughnutCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ["Desktop", "Tablet", "Mobile"],
-            datasets: [{
-                data: [74, 63, 27], // Replace with real data
-                backgroundColor: ["#28a745", "#17a2b8", "#ffc107"]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }, // Hide legend if you prefer the custom labels
-                title: { display: false }
-            }
-        }
-    });
-});
-</script>
-
-
-
-
-
-
-    
-  </div>
-</div>
-
-<!-- Live Prices Script -->
-<script>
-  const apiKey = 'coinrankingccb1f9fa3faa00602976ee13e42ad747132d9c6136b69225';
-  const coinsUrl = 'https://api.coinranking.com/v2/coins?limit=50&orderBy=marketCap&orderDirection=desc';
-
-  function fetchLivePrices() {
-    fetch(coinsUrl, {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': apiKey
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      const coins = data.data.coins;
-      const btcData = coins.find(coin => coin.name === 'Bitcoin');
-      const ethData = coins.find(coin => coin.name === 'Ethereum');
-      const trxData = coins.find(coin => coin.name === 'TRON');
-      const ltcData = coins.find(coin => coin.name === 'Litecoin');
-
-      if (btcData) {
-        const btcPrice = parseFloat(btcData.price);
-        document.getElementById('btc-price').innerText = `$${btcPrice.toFixed(2)}`;
-      }
-      if (ethData) {
-        const ethPrice = parseFloat(ethData.price);
-        document.getElementById('eth-price').innerText = `$${ethPrice.toFixed(2)}`;
-      }
-      if (trxData) {
-        const trxPrice = parseFloat(trxData.price);
-        document.getElementById('trx-price').innerText = `$${trxPrice.toFixed(2)}`;
-      }
-      if (ltcData) {
-        const ltcPrice = parseFloat(ltcData.price);
-        document.getElementById('ltc-price').innerText = `$${ltcPrice.toFixed(2)}`;
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching prices:', error);
-    });
-  }
-
-  setInterval(fetchLivePrices, 30000);
-  fetchLivePrices();
-</script>
-
-<!-- Toggle Balance Script -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-      const toggleIcons = document.querySelectorAll(".toggle-balance-icon");
-
-      toggleIcons.forEach(function (icon) {
-          const targetId = icon.getAttribute("data-target");
-          const balanceElement = document.getElementById(targetId);
-          if (!balanceElement) return;
-          let storedState = localStorage.getItem("balanceHidden-savings") || "false";
-          let isHidden = storedState === "true";
-          balanceElement.textContent = isHidden ? "*******" : balanceElement.getAttribute("data-balance");
-          icon.classList.toggle("fa-eye", !isHidden);
-          icon.classList.toggle("fa-eye-slash", isHidden);
-          icon.addEventListener("click", function () {
-              const currentlyHidden = balanceElement.getAttribute("data-hidden") === "true";
-              const newHidden = !currentlyHidden;
-              balanceElement.textContent = newHidden ? "*******" : balanceElement.getAttribute("data-balance");
-              balanceElement.setAttribute("data-hidden", newHidden.toString());
-              icon.classList.toggle("fa-eye", !newHidden);
-              icon.classList.toggle("fa-eye-slash", newHidden);
-              localStorage.setItem("balanceHidden-savings", newHidden.toString());
-          });
-      });
-  });
-</script>
 
 {% endblock contents %}

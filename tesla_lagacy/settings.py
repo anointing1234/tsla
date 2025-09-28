@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'accounts',
     'tesla',
+    'anymail',  
 ]
 
 MIDDLEWARE = [
@@ -178,14 +179,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_PORT = env.int("EMAIL_PORT", default=587)
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
-EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+DEFAULT_FROM_EMAIL = "info@tlcpn.com"   # your verified sender email
+
+ANYMAIL = {
+    "RESEND_API_KEY": env("RESEND_API_KEY"),  # put your Resend API key in .env
+}
+
 
 
 
@@ -240,6 +240,18 @@ UNFOLD = {
                 "icon": "account_balance_wallet",
                 "link": reverse_lazy("admin:accounts_bankwithdrawal_changelist"),
                 "description": _("Manage manual bank withdrawal requests."),
+            },
+            {
+                "title": _("Orders"),
+                "icon": "shopping_cart",
+                "link": reverse_lazy("admin:accounts_order_changelist"),
+                "description": _("Manage buy/sell orders."),
+            },
+            {
+                "title": _("Trades"),
+                "icon": "show_chart",
+                "link": reverse_lazy("admin:accounts_trade_changelist"),
+                "description": _("Monitor executed trades."),
             },
         ],
     },
@@ -299,6 +311,16 @@ UNFOLD = {
                         "title": _("Bank Withdrawals"),
                         "icon": "account_balance_wallet",
                         "link": reverse_lazy("admin:accounts_bankwithdrawal_changelist"),
+                    },
+                    {
+                        "title": _("Orders"),
+                        "icon": "shopping_cart",
+                        "link": reverse_lazy("admin:accounts_order_changelist"),
+                    },
+                    {
+                        "title": _("Trades"),
+                        "icon": "show_chart",
+                        "link": reverse_lazy("admin:accounts_trade_changelist"),
                     },
                 ],
             },
