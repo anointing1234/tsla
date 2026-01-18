@@ -149,7 +149,7 @@ User = settings.AUTH_USER_MODEL
 class WalletAddress(models.Model):
     """User Wallet Address Model"""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="wallet_addresses")
-    address = models.CharField(max_length=255, unique=True)
+    address = models.CharField(max_length=300, unique=True)
     currency = models.CharField(max_length=10, choices=[("BTC", "Bitcoin"), ("ETH", "Ethereum"),
                                                        ("USDT(TRC)", "USDT(TRC)"),("USDT(ETH)", "USDT(ETH)"), ("LTC", "Litecoin"),
                                                         ("TRX", "Tron"), ("BCH", "Bitcoin Cash")])
@@ -187,7 +187,7 @@ class DepositTransaction(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="deposits")
     uniqid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    method = models.CharField(max_length=50)  # Payment method (e.g., Bank Transfer, PayPal, Crypto)
+    method = models.CharField(max_length=100)  # Payment method (e.g., Bank Transfer, PayPal, Crypto)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     tx_ref = models.CharField(max_length=100, unique=True)
     screenshot = models.ImageField(upload_to="deposit_screenshots/", blank=True, null=True)
@@ -313,3 +313,43 @@ class BankWithdrawal(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.bank_name} ({self.currency}) - {self.status}"
+    
+
+
+
+class Order(models.Model):
+    ORDER_TYPES = [
+        ("buy", "Buy"),
+        ("sell", "Sell"),
+    ]
+    STATUS_CHOICES = [
+        ("open", "Open"),
+        ("filled", "Filled"),
+        ("cancelled", "Cancelled"),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
+    order_type = models.CharField(max_length=4, choices=ORDER_TYPES)
+    currency = models.CharField(
+        max_length=10,
+        choices=[("BTC", "Bitcoin"), ("ETH", "Ethereum"), ("USDT", "Tether")],
+        default="USDT"
+    )
+    amount = models.DecimalField(max_digits=15, decimal_places=8)  # how much to buy/sell
+    price = models.DecimalField(max_digits=15, decimal_places=2)   # unit price
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.order_type.upper()} {self.amount} {self.currency} @ {self.price}"
+    
+
+class Trade(models.Model):
+    buy_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="buy_trades")
+    sell_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="sell_trades")
+    amount = models.DecimalField(max_digits=15, decimal_places=8)
+    price = models.DecimalField(max_digits=15, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Trade {self.amount} {self.buy_order.currency} @ {self.price}"

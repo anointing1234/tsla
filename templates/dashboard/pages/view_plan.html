@@ -2,23 +2,31 @@
 {% load static %}
 {% block contents %}
 
-<div class="container">
-    <div class="page-inner bg-dark">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-lg-10 mt-3">  <!-- Adjusted card width -->
-                <div class="card mt-5 pt-4">
-                    <div class="card-body p-3"> <!-- Reduced padding -->
-                        <div class="card-header bg-dark text-white text-center py-2">
-                            <h5 class="mb-0">Purchased Investment Plans</h5> <!-- Smaller heading -->
-                        </div>
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- Title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-card">
+                    <div class="card-body text-center">
+                        <h4 class="fw-bold text-white">📊 Purchased Investment Plans</h4>
+                        <p class="text-muted mb-0">Track your active and completed investments here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Scrollable Table Wrapper -->
-                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                            <table class="table table-sm table-bordered table-hover text-center align-middle">
-                                <thead class="bg-dark text-white">
-                                    <tr class="small">  <!-- Reduced text size -->
-                                        <th>Uniq ID</th>
-                                        <th>Title</th>
+        <!-- Large Screen Table -->
+        <div class="row d-none d-lg-block">
+            <div class="col-12">
+                <div class="card shadow bg-dark">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-dark table-striped align-middle">
+                                <thead>
+                                    <tr>
+                                     
+                                        <th>Plan</th>
                                         <th>Profit</th>
                                         <th>Total</th>
                                         <th>Start Date</th>
@@ -28,34 +36,70 @@
                                 </thead>
                                 <tbody>
                                     {% for plan in purchased_plans %}
-                                    <tr>
-                                        <td>{{ plan.uniq_id }}</td> <!-- Corrected ID field -->
-                                        <td>{{ plan.plan }}</td>  <!-- Corrected plan title -->
-                                        <td>${{ plan.profit }}</td>  <!-- Profit from model -->
-                                        <td>${{ plan.total }}</td>  <!-- Total from model -->
-                                        <td>{{ plan.start_date }} days</td>  <!-- Method to calculate remaining days -->
-                                        <td>{{ plan.end_date }} days</td>  <!-- Method to calculate elapsed days -->
-                                        <td>
-                                            {% if plan.status == 'active' %}
-                                                <span class="badge bg-success">Active</span>
-                                            {% else %}
-                                                <span class="badge bg-danger">Expired</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                        
+                                            <td>{{ plan.plan }}</td>
+                                            <td>${{ plan.profit }}</td>
+                                            <td>${{ plan.total }}</td>
+                                            <td>{{ plan.start_date|date:"M d, Y" }}</td>
+                                            <td>{{ plan.end_date|date:"M d, Y" }}</td>
+                                            <td>
+                                                {% if plan.status == 'active' %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">Expired</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
                                     {% empty %}
-                                    <tr>
-                                        <td colspan="8" class="text-muted">No investment plans purchased yet.</td>
-                                    </tr>
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted">
+                                                No investment plans purchased yet.
+                                            </td>
+                                        </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
-                        </div> <!-- End of Scrollable Table Wrapper -->
-                        
+                        </div>
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
+
+        <!-- Small Screen Card Layout -->
+        <div class="row d-lg-none g-3">
+            {% for plan in purchased_plans %}
+                <div class="col-12">
+                    <div class="card shadow bg-dark text-white">
+                        <div class="card-body">
+                            <h5 class="fw-bold">{{ plan.plan }}</h5>
+                         
+                            <p class="mb-1"><strong>Profit:</strong> ${{ plan.profit }}</p>
+                            <p class="mb-1"><strong>Total:</strong> ${{ plan.total }}</p>
+                            <p class="mb-1"><strong>Start Date:</strong> {{ plan.start_date|date:"M d, Y" }}</p>
+                            <p class="mb-1"><strong>End Date:</strong> {{ plan.end_date|date:"M d, Y" }}</p>
+                            <p class="mb-0">
+                                <strong>Status:</strong>
+                                {% if plan.status == 'active' %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Expired</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="card shadow bg-dark text-white">
+                        <div class="card-body text-center">
+                            <p class="text-muted mb-0">No investment plans purchased yet.</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
     </div>
 </div>
 

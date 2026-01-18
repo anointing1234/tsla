@@ -1,92 +1,340 @@
 {% extends '../core/base.html' %}
 {% load static %}
+{% load humanize %}
+
 {% block contents %}
+ 
+    <style>
+        /* Enhanced Professional Dark Theme */
+        :root {
+            --primary-color: #2E86C1;
+            --secondary-color: #148F77;
+            --success-color: #27AE60;
+            --danger-color: #E74C3C;
+            --warning-color: #F39C12;
+            --info-color: #3498DB;
+            --dark-color: #1B2631;
+            --darker-color: #0f1419;
+            --card-dark: #1e2328;
+            --light-color: #F8F9FA;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            --gradient-danger: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            --gradient-warning: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            --gradient-dark: linear-gradient(135deg, #1e2328 0%, #2b3139 100%);
+        }
 
-<style>
-  /* Gradient background from black to white */
-  .gradient-bg {
-      background: linear-gradient(to right, black, white);
-      padding: 50px 0;
-      min-height: 100vh;
-  }
-  /* Center the inner content */
-  .centered-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-  }
-  /* Optional: Style the card so its background is transparent */
-  .form-card {
-      background: transparent;
-      border: none;
-  }
-  /* Ensure the form fields and header are centered */
-  .form-card .card-body {
-      text-align: center;
-  }
-  /* Limit form width */
-  .form-container {
-      width: 100%;
-      margin: 0 auto;
-  }
-</style>
+        /* General Body Styling */
+        body {
+            background: var(--darker-color);
+            font-family: 'Inter', sans-serif;
+            color: white;
+        }
 
-<div class="container-fluid gradient-bg mt-5 ">
-  <div class="centered-container">
-    <div class="card form-card mt-5 pt-5">
-      <div class="card-body">
-        <h4 class="mb-4 bg-white py-2 fw-bold">Select A Deposit Method</h4>
-        <form class="form" method="post" action="{% url 'deposit' %}" enctype="multipart/form-data">
-          {% csrf_token %}
-          <fieldset class="form-container">
-            <!-- Payment Method Dropdown -->
-            <div class="mb-3">
-              <div class="input-group">
-                <span class="input-group-text"><i class="fa fa-wallet"></i></span>
-                <select class="form-control" name="payment_method" id="paymentMethod" required onchange="updateWalletAddress()">
-                  {% for gateway in payment_gateways %}
-                    <option value="{{ gateway.currency }}">{{ gateway.currency }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-            <!-- Wallet Address with Copy Button -->
-            <div class="mb-3">
-              <div class="input-group">
-                <span class="input-group-text"><i class="fa fa-coins"></i></span>
-                <input type="text" class="form-control" id="walletAddress" readonly>
-                <button type="button" class="btn btn-outline-secondary" onclick="copyWalletAddress()">
-                  <i class="fa fa-clipboard"></i>
-                </button>
-              </div>
-            </div>
-            <!-- Deposit Amount -->
-            <div class="mb-3">
-              <div class="input-group">
-                <span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
-                <input type="number" class="form-control" name="deposit_amount" required placeholder="Deposit Amount" step="0.01" min="5000" onblur="if (this.value < 5000) this.value = 5000;">
-              </div>
-              <small class="text-white">Minimum deposit amount: $5000</small>
-            </div>
-            <!-- Payment Screenshot -->
-            <div class="mb-3">
-              <div class="input-group">
-                <span class="input-group-text"><i class="fa fa-upload"></i></span>
-                <input type="file" class="form-control" name="payment_screenshot" accept="image/*" required>
-              </div>
-            </div>
-            <!-- Submit Button -->
-            <div class="mb-3">
-              <button type="submit" class="btn btn-dark w-100">Deposit</button>
-            </div>
-          </fieldset>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+        /* Enhanced Form Card */
+        .form-card {
+            background: var(--gradient-dark);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            margin-top: 3rem;
+        }
 
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-card h4 {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            color: white;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Form Inputs */
+        .form-control {
+            background: #2b3139;
+            border: 1px solid #3a3f45;
+            border-radius: 10px;
+            color: white;
+            padding:5px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: #2b3139;
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .input-group-text {
+            background: #2b3139;
+            border: 1px solid #3a3f45;
+            border-right: none;
+            color: white;
+            border-radius: 10px 0 0 10px;
+        }
+
+        /* Select Styling */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 12px;
+        }
+
+        /* Copy Button */
+        .btn-outline-secondary {
+            border: 1px solid #3a3f45;
+            border-left: none;
+            background: #2b3139;
+            color: white;
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Submit Button */
+        .btn-dark {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-dark:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background: var(--gradient-primary);
+        }
+
+        /* Small Text */
+        small.text-white {
+            color: rgba(255,255,255,0.7) !important;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .form-card {
+                margin-top: 2rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .form-card h4 {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Animation for Form Elements */
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group .form-control,
+        .input-group .btn {
+            transition: all 0.3s ease;
+        }
+
+        .input-group .form-control:focus + .input-group-text {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        /* Toast Notification for Copy */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gradient-success);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* Form Layout Adjustments */
+        .form-container .row {
+            margin-left: -10px;
+            margin-right: -10px;
+        }
+
+        .form-container .col-6,
+        .form-container .col-12 {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .form-label {
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+.top-card {
+    position: relative;
+    overflow: hidden; /* ensures the pseudo-element doesn't overflow */
+    
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    margin-bottom: 2rem;
+    color: white;
+    background-color: #000; /* fallback color */
+}
+
+/* This pseudo-element holds the background image and brightness filter */
+.top-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/static/asset/images/deposit_wallper.jpg') center center / cover no-repeat;
+    filter: brightness(30%); /* darken the image only */
+    z-index: 0;
+}
+
+/* Ensure all content inside .top-card stays above the dark background */
+.top-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+        .top-card h4 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin: 0;
+            padding: 1.5rem;
+        }
+
+        @media (min-width: 769px) {
+            .form-container .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+
+
+       <!-- Content Body -->
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card top-card">
+                            <div class="card-body">
+                                <h4>Fund Your Account</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card form-card mt-3">
+                            <div class="card-body">
+                                <h4 class="mb-4 fw-bold">Deposit Details</h4>
+                                <form class="form" method="post" action="{% url 'deposit' %}" enctype="multipart/form-data" id="depositForm">
+                                    {% csrf_token %}
+                                    <fieldset class="form-container">
+                                        <div class="row">
+                                            <!-- Payment Method Dropdown -->
+                                            <div class="col-12 col-lg-6 col-md-6   mb-3">
+                                                <label class="form-label" for="paymentMethod">Payment Method</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fa fa-wallet"></i></span>
+                                                    <select class="form-control" name="payment_method" id="paymentMethod" required  onchange="updateWalletAddress()">
+                                                        <option value="" disabled selected>Select Cryptocurrency</option>
+                                                        {% for gateway in payment_gateways %}
+                                                            <option value="{{ gateway.currency }}">{{ gateway.currency }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <small class="text-white">Choose a cryptocurrency for your deposit.</small>
+                                            </div>
+                                            <!-- Wallet Address with Copy Button -->
+                                            <div class="col-12 col-lg-6 col-md-6 mb-3">
+                                                <label class="form-label" for="walletAddress">Wallet Address</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fa fa-coins"></i></span>
+                                                    <input type="text" class="form-control" id="walletAddress" readonly placeholder="Select a cryptocurrency to view wallet address">
+                                                    <button type="button" class="btn btn-outline-secondary" onclick="copyWalletAddress()">
+                                                        <i class="fa fa-clipboard"></i>
+                                                    </button>
+                                                </div>
+                                                <small class="text-white">Copy the wallet address to send your deposit.</small>
+                                            </div>
+                                            <!-- Deposit Amount -->
+                                            <div class="col-12 col-lg-6 col-md-6 mb-3">
+                                                <label class="form-label" for="depositAmount">Deposit Amount (USD)</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
+                                                    <input type="number" class="form-control" name="deposit_amount" id="depositAmount" required placeholder="Enter amount (min: $5000)" step="0.01" min="5000" onblur="if (this.value < 5000) this.value = 5000;">
+                                                </div>
+                                                <small class="text-white">Minimum deposit amount: $5000 USD.</small>
+                                            </div>
+                                            <!-- Payment Screenshot -->
+                                            <div class="col-12 col-lg-6 col-md-6 mb-3">
+                                                <label class="form-label" for="paymentScreenshot">Payment Confirmation</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fa fa-upload"></i></span>
+                                                    <input type="file" class="form-control" name="payment_screenshot" id="paymentScreenshot" accept="image/*" required>
+                                                </div>
+                                                <small class="text-white">Upload a screenshot of your transaction for verification.</small>
+                                            </div>
+                                            <!-- Submit Button -->
+                                            <div class="col-12 mb-3">
+                                                <button type="submit" class="btn btn-dark w-100">Submit Deposit</button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        
 <script>
   let walletAddresses = {
     {% for gateway in payment_gateways %}
@@ -134,5 +382,6 @@
     });
   </script>
 {% endif %}
+
 
 {% endblock contents %}

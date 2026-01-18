@@ -24,7 +24,7 @@ import requests
 from django.contrib.auth.decorators import login_required
 # from accounts.models import Transaction,Card
 from django.db.models import Sum
-from accounts.models import ForexPlan,PaymentGateway,DepositTransaction,WalletAddress,Users_Investment,WithdrawTransaction,Balance
+from accounts.models import ForexPlan,PaymentGateway,DepositTransaction,WalletAddress,Users_Investment,WithdrawTransaction,Balance,Order, Trade
 from django.db.models import Sum,Q
 
 
@@ -96,31 +96,60 @@ def dash(request):
 
     invested_amount = balance.invested_amount if balance else 0
 
-    # 2. Find matching plan:
+    # 1. Matching plan
     matching_plans = ForexPlan.objects.filter(
         min_amount__lte=invested_amount
     ).filter(
         Q(max_amount__gte=invested_amount) | Q(max_amount__isnull=True)
-    ).order_by('min_amount')
+    ).order_by("min_amount")
+    account_plan = matching_plans.first()
 
-    account_plan = matching_plans.first()  # None if no matches
+    # 2. User investment totals
     if request.user.is_authenticated:
-        plan = Users_Investment.objects.filter(user=request.user).order_by('-start_date')
-        investments_exist = Users_Investment.objects.filter(user=request.user).exists()
-        if investments_exist:
-            total_investment = Users_Investment.objects.filter(user=request.user).aggregate(total=Sum('total'))['total'] or 0.00
-        else:
-            total_investment = 0.00
-        print(f"Total Investment for {request.user}: {total_investment}")  # Debugging
+        plan = Users_Investment.objects.filter(user=request.user).order_by("-start_date")
+        total_investment = (
+            Users_Investment.objects.filter(user=request.user).aggregate(total=Sum("total"))["total"]
+            or Decimal("0.00")
+        )
     else:
-        total_investment = 0.00
-    return render(request,"dashboard/pages/index.html",
-                  {
-                     'account_plan': account_plan,
-                      'total_investment': total_investment,
-                      'plans': plan,
-                      })             
+        plan, total_investment = [], Decimal("0.00")
 
+    # 3. Trading data (only current user!)
+    buy_orders = Order.objects.filter(user=request.user, order_type="buy").order_by("-created_at")[:10]
+    sell_orders = Order.objects.filter(user=request.user, order_type="sell").order_by("-created_at")[:10]
+    recent_trades = Trade.objects.filter(buy_order__user=request.user).order_by("-timestamp")[:15]
+
+    # 4. Trade summary
+    estimated_total = trading_fee = net_amount = Decimal("0.00")
+    fee_rate = Decimal("0.001")
+
+    if request.method == "POST":
+        try:
+            amount = Decimal(request.POST.get("amount", "0"))
+            price = Decimal(request.POST.get("price", "0"))
+            estimated_total = amount * price
+            trading_fee = estimated_total * fee_rate
+            net_amount = estimated_total + trading_fee
+        except Exception as e:
+            print("❌ Error calculating trade summary:", e)
+
+    return render(
+        request,
+        "dashboard/pages/index.html",
+        {
+            "account_plan": account_plan,
+            "total_investment": total_investment,
+            "plans": plan,
+            "balance": balance,
+            "buy_orders": buy_orders,
+            "sell_orders": sell_orders,
+            "recent_trades": recent_trades,
+            "estimated_total": estimated_total,
+            "trading_fee": trading_fee,
+            "net_amount": net_amount,
+            "fee_rate": fee_rate * 100,
+        },
+    )
 
 
 def profile_view(request):
@@ -133,12 +162,6 @@ def Deposit_view(request):
     payment_gateways = PaymentGateway.objects.all()
     return render(request,'dashboard/pages/Deposit.html',{"payment_gateways": payment_gateways})  
 
-def Deposit_his_view(request):
-    deposits = DepositTransaction.objects.filter(user=request.user).order_by("-date") 
-    context = {
-        'deposits': deposits
-    }
-    return render(request,'dashboard/pages/Deposit_history.html',context)            
 
 def purchase_plan(request):
     plans = ForexPlan.objects.all() 
@@ -152,9 +175,14 @@ def withdraw_view(request):
     wallet_addresses = WalletAddress.objects.filter(user=request.user)
     return render(request,'dashboard/pages/withdraw.html', {'wallet_addresses': wallet_addresses})
 
-def withdraw_history_view(request):
+def history(request):
+    deposits = DepositTransaction.objects.filter(user=request.user).order_by("-date") 
     withdrawals = WithdrawTransaction.objects.filter(user=request.user)
-    return render(request,'dashboard/pages/withdraw_history.html',{'withdrawals': withdrawals})
+    context = {
+        'deposits': deposits,
+        'withdrawals': withdrawals
+    }
+    return render(request,'dashboard/pages/history.html',context)
 
 def first_view(request):
    return render(request,'dashboard/first_page.html')

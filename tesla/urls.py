@@ -23,11 +23,10 @@ urlpatterns = [
     path('profile/',views.profile_view,name='profile'),
     path('referals/',views.referals,name='referals'),
     path('Deposit/',views.Deposit_view,name='Deposit'),
-    path('Deposit_his/',views.Deposit_his_view,name='Deposit_his'),
     path('purchase_plan/',views.purchase_plan,name='purchase_plan'),
     path('view_plans/',views.view_plans,name='view_plans'),
     path('withdraw/',views.withdraw_view,name='withdraw'),
-    path('withdraw_history/',views.withdraw_history_view,name='withdraw_history'),
+    path('history/',views.history,name='history'),
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
