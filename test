@@ -1,0 +1,8 @@
+
+postgresql://postgres:fHNnLCdDFRGIgCqIwifUHosUOmmTzjUR@yamanote.proxy.rlwy.net:24720/railway
+
+pg_restore -h yamanote.proxy.rlwy.net -p 24720 -U postgres -d railway "C:\Users\HP\Documents\railway_backup_2025_09_27.dump"
+
+
+
+re_WMa4rPAj_MWQddLRhrzxGh2FEJDiikuoE
